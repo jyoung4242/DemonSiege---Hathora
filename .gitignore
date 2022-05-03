@@ -1,0 +1,7 @@
+/api/*
+/client/*
+/data/*
+.env
+/server/.hathora
+/server/node_modules
+/server/pack*
