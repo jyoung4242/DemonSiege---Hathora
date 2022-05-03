@@ -23,7 +23,7 @@ const abilityCardPool: Array<AbilityCard> = loadAbilityCardsFromJSON(abilities);
 const monsterCardPool: Array<MonsterCard> = loadMonsterCardsFromJSON(monsters);
 const locationCardPool: Array<LocationCard> = loadLocationCardsFromJSON(myLocations);
 const TdCardPool: Array<TowerDefense> = loadTDCardsFromJSON(TDcards);
-const playerOrder: Array<UserId> = [];
+let playerOrder: Array<UserId> = [];
 const numberMonstersActiveByLevel: Array<number> = [1, 1, 2, 2, 3, 3, 3, 3];
 const mappedStartingDeck = {
     [Roles.Barbarian]: bStartingDeck,
@@ -134,7 +134,7 @@ export class Impl implements Methods<InternalState> {
         //load all players deck with staring deck based on Roles, and shuffle deck
         state.players.forEach(player => {
             player.Deck = [...mappedStartingDeck[player.Role]];
-            //chance.shuffle(player.Deck);
+            player.Deck = ctx.chance.shuffle(player.Deck);
             //draw 5 cards for each player into hand
             dealCards(player.Deck, player.Hand, 5);
             //cards face up
@@ -144,7 +144,7 @@ export class Impl implements Methods<InternalState> {
         //load level 'gameLevel(state)' ability cards into working Ability Deck for that game
         state.abilityDeck = abilityCardPool.filter(card => card.Level <= state.gameLevel);
         //shuffle ability deck
-        //chance.shuffle(state.abilityDeck);
+        state.abilityDeck = ctx.chance.shuffle(state.abilityDeck);
         //draw 6 cards from ability deck into the ability pile
         dealCards(state.abilityDeck, state.abilityPile, 6);
         //cards face up
@@ -153,7 +153,7 @@ export class Impl implements Methods<InternalState> {
         //load leveled Monster Cards into active array, and shuffle
         state.monsterDeck = monsterCardPool.filter(card => card.Level <= state.gameLevel);
         //shuffle monster deck
-        //chance.shuffle(state.monsterDeck);
+        state.monsterDeck = ctx.chance.shuffle(state.monsterDeck);
         //draw right amount of cards from monster deck into the active Monsters array by level
         dealCards(state.monsterDeck, state.activeMonsters, numberMonstersActiveByLevel[state.gameLevel]);
         //cards face up
@@ -170,7 +170,7 @@ export class Impl implements Methods<InternalState> {
 
         //load leveled Tower Defense Cards into active array, and shuffle
         state.towerDefenseDeck = TdCardPool.filter(card => card.Level <= state.gameLevel);
-        //chance.shuffle(state.towerDefenseDeck);
+        state.towerDefenseDeck = ctx.chance.shuffle(state.towerDefenseDeck);
         //draw right amount of cards from TD Deck into the active Monsters array by location Card: TD property
         const loopIndex = state.locationPile?.TD || 1;
         dealCards(state.towerDefenseDeck, state.towerDefensePile, loopIndex);
@@ -180,7 +180,7 @@ export class Impl implements Methods<InternalState> {
         state.players.forEach(player => {
             playerOrder.push(player.Id);
         });
-        //chance.shuffle(playerOrder);
+        playerOrder = ctx.chance.shuffle(playerOrder);
         state.turn = playerOrder[0];
 
         return Response.ok();
