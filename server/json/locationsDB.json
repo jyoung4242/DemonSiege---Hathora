@@ -1,0 +1,254 @@
+{ 
+    "cellar":{
+    "type": "location",
+    "level": 1,
+    "TD": 1,
+    "sequence": 1,
+    "health": 5,
+    "script": {},
+    "title": "Cellar",
+    "image": "cellarlocation.png"
+  },
+    "dungeon":{
+    "type": "location",
+    "level": 1,
+    "TD": 1,
+    "sequence": 2,
+    "health": 5,
+    "script": {},
+    "title": "Dungeon",
+    "image": "dungeonlocation.png"
+  },
+    "crypt":{
+    "type": "location",
+    "level": 1,
+    "TD": 1,
+    "sequence": 3,
+    "health": 6,
+    "script": {},
+    "title": "Crypt",
+    "image": "cryptlocation.png"
+  },
+    "stable":{
+    "type": "location",
+    "level": 2,
+    "TD": 1,
+    "sequence": 1,
+    "health": 5,
+    "script": {},
+    "title": "Stable",
+    "image": "stablelocation.png"
+  },
+    "portcullis":{
+    "type": "location",
+    "level": 2,
+    "TD": 1,
+    "sequence": 2,
+    "health": 6,
+    "script": {},
+    "title": "Portcullis",
+    "image": "portcullislocation.png"
+  },
+    "greathall":{
+    "type": "location",
+    "level": 2,
+    "TD": 2,
+    "sequence": 3,
+    "health": 6,
+    "script": {},
+    "title": "Great Hall",
+    "image": "greathalllocation.png"
+  },
+    "kitchen":{
+    "type": "location",
+    "level": 3,
+    "TD": 1,
+    "sequence": 1,
+    "health": 6,
+    "script": {},
+    "title": "Kitchen",
+    "image": "kitchenlocation.png"
+  },
+    "dining":{
+    "type": "location",
+    "level": 3,
+    "TD": 1,
+    "sequence": 2,
+    "health": 6,
+    "script": {},
+    "title": "Dining Room",
+    "image": "diningroomlocation.png"
+  },
+    "lounge":{
+    "type": "location",
+    "level": 3,
+    "TD": 2,
+    "sequence": 3,
+    "health": 7,
+    "script": {},
+    "title": "Lounge",
+    "image": "loungelocation.png"
+  },
+    "chapel":{
+    "type": "location",
+    "level": 4,
+    "TD": 1,
+    "sequence": 1,
+    "health": 6,
+    "script": {},
+    "title": "Chapel",
+    "image": "chapellocation.png"
+  },
+    "laboratory":{
+    "type": "location",
+    "level": 4,
+    "TD": 2,
+    "sequence": 2,
+    "health": 7,
+    "script": {},
+    "title": "Laboratory",
+    "image": "lablocation.png"
+  },
+    "tower":{
+    "type": "location",
+    "level": 4,
+    "TD": 2,
+    "sequence": 3,
+    "health": 7,
+    "script": {},
+    "title": "Tower Keep",
+    "image": "towerlocation.png"
+  },
+    "armory":{
+    "type": "location",
+    "level": 5,
+    "TD": 1,
+    "sequence": 1,
+    "health": 7,
+    "script": {},
+    "title": "Armory",
+    "image": "armorylocation.png"
+  },
+    "barracks":{
+    "type": "location",
+    "level": 5,
+    "TD": 2,
+    "sequence": 2,
+    "health": 7,
+    "script": {},
+    "title": "Barracks",
+    "image": "barrackslocation.png"
+  },
+    "library":{
+    "type": "location",
+    "level": 5,
+    "TD": 2,
+    "sequence": 3,
+    "health": 7,
+    "script": {
+        "reveal":"All heroes, lose 1 weapon when revealed"
+    },
+    "title": "Library",
+    "image": "librarylocation.png"
+  },
+    "wizardchambers":{
+    "type": "location",
+    "level": 6,
+    "TD": 1,
+    "sequence": 1,
+    "health": 7,
+    "script": {},
+    "title": "Wizard Chambers",
+    "image": "wizardchamberlocation.png"
+  },
+    "royalchambers":{
+    "type": "location",
+    "level": 6,
+    "TD": 2,
+    "sequence": 2,
+    "health": 7,
+    "script": {},
+    "title": "Royal Chambers",
+    "image": "royalchamberlocation.png"
+  },
+    "den":{
+    "type": "location",
+    "level": 6,
+    "TD": 3,
+    "sequence": 3,
+    "health": 8,
+    "script": {
+        "reveal":"All heroes, lose 1 spell when revealed"
+    },
+    "title": "Den",
+    "image": "denlocation.png"
+  },
+    "throne":{
+    "type": "location",
+    "level": 7,
+    "TD": 2,
+    "sequence": 1,
+    "health": 8,
+    "script": {},
+    "title": "Throne Room",
+    "image": "thronelocation.png"
+  },
+    "observatory":{
+    "type": "location",
+    "level": 7,
+    "TD": 2,
+    "sequence": 2,
+    "health": 8,
+    "script": {},
+    "title": "Observatory",
+    "image": "observatorylocation.png"
+  },
+    "ceremony":{
+    "type": "location",
+    "level": 7,
+    "TD": 3,
+    "sequence": 3,
+    "health": 9,
+    "script": {
+        "reveal":"All heroes, lose 1 item when revealed"
+    },
+    "title": "Ceremonial Chamber",
+    "image": "ceremonylocation.png"
+  },
+    "temple":{
+    "type": "location",
+    "level": 8,
+    "TD": 3,
+    "sequence": 1,
+    "health": 9,
+    "script": {},
+    "title": "Dark Temple",
+    "image": "templelocation.png"
+  },
+    "alter":{
+    "type": "location",
+    "level": 8,
+    "TD": 3,
+    "sequence": 2,
+    "health": 10,
+    "script": {
+        "reveal":"All heroes, lose 1 health when revealed",
+        "bonus": "All Heroes, can discard 3 cards for +3 Health"
+    },
+    "title": "Demon Alter",
+    "image": "alterlocation.png"
+  },
+    "portal":{
+    "type": "location",
+    "level": 8,
+    "TD": 3,
+    "sequence": 3,
+    "health": 10,
+    "script": {
+        "reveal":"All heroes, lose 2 health when revealed",
+        "bonus": "All Heroes, can exchange 5 damage for removing 1 influence point"
+    },
+    "title": "Demon Portal",
+    "image": "portallocation.png"
+  }
+}

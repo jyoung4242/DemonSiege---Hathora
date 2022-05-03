@@ -1,0 +1,223 @@
+types:
+    #enums
+    Cardstatus:
+        - FaceUp
+        - FaceDown
+    PlayerStatus:
+        - Undefined
+        - Connected
+        - RoleSelection
+        - ReadyToPlay
+    CardType:
+        - MonsterCard
+        - TowerDefense
+        - AbilityCard
+        - LocationCard
+    Roles:
+        - Barbarian
+        - Wizard
+        - Paladin
+        - Rogue
+    RoundState:
+        - Idle
+        - TowerDefense
+        - MonsterCard
+        - PlayerTurn
+        - End
+    GameStates:
+        - Idle
+        - Setup
+        - InProgress
+        - Completed
+    DieFaces:
+        - GainHealth
+        - LoseHealth
+        - GainHealthAll
+        - GainAttack
+        - LoseAttack
+        - GainAbility
+        - LoseAbility
+        - DrawCard
+        - DiscardCard
+        - AddLocation
+        - RemoveLocation
+    Conditions:
+        - IfTopCardOfDeckAbilityScoreGT4
+        - ForEachCardInHandAbilityScoreGT1
+        - IfTopCardSpell
+        - IfMonsterKilled
+        - IfLocationAdded
+        - Choose2
+        - Choose3
+        - AllChoose
+        - IfPlayerDiscards
+        - ForEachFriendInHand
+        - ForEachSpell
+        - ForEachWeapon
+        - IfNewMonsterCardorNewMonsterRallyPlayed
+        - BlockCardDraw
+        - BlockHealing
+        - AllDrawOne
+        - CannotAddLocation
+        - IfPurchasedCardGT4
+        - DrawFromDiscard
+        - AllDrawFromDiscard
+        - ImmuneUntilLast
+
+    #cardobjects
+    LocationCard:
+        Title: string
+        Level: int
+        TD: int
+        Sequence: int
+        Health: int
+        Special: Effects[]
+        CardStatus: Cardstatus
+
+    TowerDefense:
+        Title: string
+        Level: int
+        Ability: Effects[]
+        CardStatus: Cardstatus
+
+    AbilityCard:
+        Title: string
+        Catagory: string
+        Level: int
+        Cost: int
+        Ability: Effects[]
+        CardStatus: Cardstatus
+
+    MonsterCard:
+        Title: string
+        Health: int
+        Level: int
+        Action: Effects[]
+        Reward: Effects[]
+        CardStatus: Cardstatus
+
+    #effects union
+    Effects:
+        - StandardEffect
+        - ConditionalEffect
+    StandardEffect:
+        - AbilityEffect
+        - AttackEffect
+        - AttackCapEffect
+        - HealthEffect
+        - HealthCapEffect
+        - LocationEffect
+        - DrawCardEffect
+        - DiscardEffect
+        - TowerDefenseEffect
+        - MonsterHealthEffect
+        - MonsterAbilityBlockEffect
+        - NoHealEffect
+        - DieRollEffect
+    ConditionalEffect:
+        Condition: Conditions
+        Effects: StandardEffect[]
+    AbilityEffect:
+        value: int
+        target: UserId[]
+    AttackEffect:
+        value: int
+        target: UserId[]
+    AttackCapEffect:
+        value: int
+        target: UserId[]
+    HealthEffect:
+        value: int
+        target: UserId[]
+    HealthCapEffect:
+        value: int
+        target: UserId[]
+    LocationEffect:
+        value: int
+    DrawCardEffect:
+        value: int
+        target: UserId[]
+    DiscardEffect:
+        value: int
+        target: UserId[]
+    TowerDefenseEffect:
+        value: int
+    MonsterHealthEffect:
+        value: int
+        target: string[]
+    MonsterAbilityBlockEffect:
+        user: UserId
+        turns: int
+    NoHealEffect:
+        user: UserId[]
+        turns: int
+    DieRollEffect:
+        user: UserId
+        numRolls: int
+
+    Events:
+        user: UserId
+        effect: Effects
+
+    Player:
+        Id: UserId
+        PlayerState: PlayerStatus
+        NumCards: int
+        Health: int
+        AttackPoints: int
+        AbilityPoints: int
+        Hand: AbilityCard[]
+        Deck: AbilityCard[]
+        Discard: AbilityCard[]
+        Role: Roles
+        LevelBonus: Effects[]
+        TurnComplete: boolean
+
+    GameState:
+        gameLevel: int
+        locationSequence: int
+        gameLog: string[]
+        eventLog: Events[]
+        roundSequence: RoundState
+        gameSequence: GameStates
+        abilityDeck: AbilityCard[]
+        abilityPile: AbilityCard[]
+        monsterDeck: MonsterCard[]
+        monsterPile: MonsterCard?
+        activeMonsters: MonsterCard[]
+        locationDeck: LocationCard[]
+        locationPile: LocationCard?
+        towerDefenseDeck: TowerDefense[]
+        towerDefensePile: TowerDefense[]
+        turn: UserId?
+        players: Player[]
+
+methods:
+    joinGame:
+    selectRole:
+        role: Roles
+    addAI:
+    startGame:
+    playCard:
+        card: AbilityCard
+    discard:
+        card: AbilityCard
+    drawCard:
+    endTurn:
+    startTurn:
+    applyAttack:
+        card: MonsterCard
+    buyAbilityCard:
+        card: AbilityCard
+    applyHealth:
+        user: UserId
+    applyChoice:
+        selection: int
+    applySelectedUser:
+        user: UserId
+
+auth:
+    anonymous: {}
+
+userState: GameState
+error: string

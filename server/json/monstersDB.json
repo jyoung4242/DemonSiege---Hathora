@@ -1,0 +1,362 @@
+{
+    "goblin": {
+        "type": "monster",
+        "level": 1,
+        "health": 5,
+        "attack": {
+            "custom": "Health -1, when discarded"
+        },
+        "reward": {
+            "draw": "alldrawone"
+        },
+        "title": "Goblin",
+        "image": "goblincard.png",
+        "description": "When player discards, Health -1",
+        "rewardtext": "All players draw one card"
+    },
+    "kobalt": {
+        "type": "monster",
+        "level": 1,
+        "health": 6,
+        "attack": {
+            "health": -1
+        },
+        "reward": {
+            "custom": "all +1 ability,+1 health"
+        },
+        "title": "Kobalt",
+        "image": "kobaltcard.png",
+        "description": "Active Hero -1 Health",
+        "rewardtext": "All players +1 Ability, +1 Health"
+    },
+    "skeleton": {
+        "type": "monster",
+        "level": 1,
+        "health": 6,
+        "attack": {
+            "custom": "-2 health, when location added"
+        },
+        "reward": {
+            "location": -1
+        },
+        "title": "Skeleton",
+        "image": "skeletoncard.png",
+        "description": "-2 Health if influence point added",
+        "rewardtext": "Remove 1 influence point from location"
+    },
+    "werewolf": {
+        "type": "monster",
+        "level": 2,
+        "health": 6,
+        "attack": {
+            "custom": "for each friend, discard one card,lose -2 health"
+        },
+        "reward": {
+            "custom": "all choose: health +2, draw1discard"
+        },
+        "title": "Werewolf",
+        "image": "werewolfcard.png",
+        "description": "For each friend card, choose: -2 Health -or- discard one card",
+        "rewardtext": "All Choose, +2 Health, or draw card from discard pile "
+    },
+    "assassin": {
+        "type": "monster",
+        "level": 2,
+        "health": 7,
+        "attack": {
+            "custom": "all villians -1 damage, when location +1"
+        },
+        "reward": {
+            "custom": "all gain +1 ability, -1 location"
+        },
+        "title": "Assassin",
+        "image": "assassincard.png",
+        "description": "When location influence added, all villians -1 damage",
+        "rewardtext": "All gain +1 Ability, and remove location influence point"
+    },
+    "hobgoblin": {
+        "type": "monster",
+        "level": 2,
+        "health": 7,
+        "attack": {
+            "custom": "top card deck not starter, discard one, +1 location"
+        },
+        "reward": {
+            "custom": "all gain +1 ability, -1 location"
+        },
+        "title": "Hobgoblin",
+        "image": "hobgoblincard.png",
+        "description": "If top card in deck cost > 1, then discard one card and add a location influence point",
+        "rewardtext": "All gain +1 Ability, and draw one card"
+    },
+    "ankheg": {
+        "type": "monster",
+        "level": 3,
+        "health": 7,
+        "attack": {
+            "custom": "all health, -2"
+        },
+        "reward": {
+            "custom": "all gain +1 health, -1 location"
+        },
+        "title": "Ankheg",
+        "image": "ankhegcard.png",
+        "description": "All hereos, Health -2",
+        "rewardtext": "All gain +1 Health, and remove location influence point"
+    },
+    "ogre": {
+        "type": "monster",
+        "level": 3,
+        "health": 8,
+        "attack": {
+            "custom": "for each spell, -1 health"
+        },
+        "reward": {
+            "custom": "all gain +1 health, +1 ability"
+        },
+        "title": "Ogre",
+        "image": "ogrecard.png",
+        "description": "For each spell in hand, -1 Health",
+        "rewardtext": "All gain +1 Health, +1 Ability"
+    },
+    "centaur": {
+        "type": "monster",
+        "level": 3,
+        "health": 8,
+        "attack": {
+            "custom": "for new monster or monster rally -2 health"
+        },
+        "reward": {
+            "custom": "all gain +1 health, -1 location"
+        },
+        "title": "Centaur",
+        "image": "centaurcard.png",
+        "description": "For each Monster Rally Tower Defense card or new monster card, -2 Health",
+        "rewardtext": "All gain +1 Health, and remove location influence point"
+    },
+    "basilisk": {
+        "type": "monster",
+        "level": 4,
+        "health": 8,
+        "attack": {
+            "custom": "block drawing new cards"
+        },
+        "reward": {
+            "custom": "all draw one card"
+        },
+        "title": "Basilisk",
+        "image": "basiliskcard.png",
+        "description": "Hero cannot draw extra cards",
+        "rewardtext": "All hereos draw one card, and remove location influence point"
+    },
+    "bugbear": {
+        "type": "monster",
+        "level": 4,
+        "health": 8,
+        "attack": {
+            "custom": "for each weapon, -1 health"
+        },
+        "reward": {
+            "custom": "all +2 health, +1 ability"
+        },
+        "title": "Bugbear",
+        "image": "bugbearcard.png",
+        "description": "For each weapon in hand, -1 Health",
+        "rewardtext": "All hereos +2 Health, +1 Ability"
+    },
+    "minotaur": {
+        "type": "monster",
+        "level": 4,
+        "health": 9,
+        "attack": {
+            "custom": "cannot remove influence points"
+        },
+        "reward": {
+            "location": -2
+        },
+        "title": "Minotaur",
+        "image": "minotaurcard.png",
+        "description": "Cannot remove location influence points",
+        "rewardtext": "Remove 2 location influence points"
+    },
+    "troll": {
+        "type": "monster",
+        "level": 5,
+        "health": 9,
+        "attack": {
+            "custom": "card acquired > 4, -1 health"
+        },
+        "reward": {
+            "custom": "all +1 health, +2 ability"
+        },
+        "title": "Troll",
+        "image": "trollcard.png",
+        "description": "If card acquired > 4, active hero -1 Health",
+        "rewardtext": "All hereos +1 Health, +2 Ability"
+    },
+    "owlbear": {
+        "type": "monster",
+        "level": 5,
+        "health": 9,
+        "attack": {
+            "custom": "for new monster or monster rally -2 health"
+        },
+        "reward": {
+            "custom": "all gain +1 health, -1 location"
+        },
+        "title": "Owlbear",
+        "image": "owlbearcard.png",
+        "description": "For each Monster Rally Tower Defense card or new monster card, -2 Health",
+        "rewardtext": "All gain +1 Health, and remove location influence point"
+    },
+    "giant": {
+        "type": "monster",
+        "level": 5,
+        "health": 9,
+        "attack": {
+            "custom": "when influence +1, -2 health"
+        },
+        "reward": {
+            "custom": "all gain +1 health, +1 ability, -1 location"
+        },
+        "title": "Giant",
+        "image": "giantcard.png",
+        "description": "When location influence added, all hereos -2 damage",
+        "rewardtext": "All gain +1 Health,+1 Ability, and remove location influence point"
+    },
+    "darkpriest": {
+        "type": "monster",
+        "level": 6,
+        "health": 9,
+        "attack": {
+            "custom": "cannot heal"
+        },
+        "reward": {
+            "custom": "all gain +3 health, -2 location"
+        },
+        "title": "Dark Priest",
+        "image": "darkpriestcard.png",
+        "description": "While this card is active, active hero cannot heal",
+        "rewardtext": "All gain +3 Health,and remove 2 location influence points"
+    },
+    "manticore": {
+        "type": "monster",
+        "level": 6,
+        "health": 10,
+        "attack": {
+            "custom": "draw additional Tower Defense card per turn"
+        },
+        "reward": {
+            "custom": "all draw card from discard, -2 location"
+        },
+        "title": "Manticore",
+        "image": "manticorecard.png",
+        "description": "Draw additional Tower Defense card each turn",
+        "rewardtext": "All draw card from discard,and remove 2 location influence points"
+    },
+    "demon1": {
+        "type": "monster",
+        "level": 6,
+        "health": 10,
+        "attack": {
+            "custom": "no damage till last, AH -1 health, discard 1 card"
+        },
+        "reward": {
+            "custom": "Level 6 complete"
+        },
+        "title": "Demon",
+        "image": "errtucard.png",
+        "description": "Cannot apply damage till last monster, active hereo -1 Health, discard one card ",
+        "rewardtext": "Level 6 Complete"
+    },
+    "wraith": {
+        "type": "monster",
+        "level": 7,
+        "health": 10,
+        "attack": {
+            "custom": "-1 health, +1 location"
+        },
+        "reward": {
+            "custom": "all gain +2 health, +2 ability, -2 location"
+        },
+        "title": "Wraith",
+        "image": "wraithcard.png",
+        "description": "Active hero -1 health, add 1 location influence point",
+        "rewardtext": "All hereos gain +2 Health, +2 ability, remove 2 location influence points"
+    },
+    "chimera": {
+        "type": "monster",
+        "level": 7,
+        "health": 11,
+        "attack": {
+            "custom": "card acquired > 4, -3 health"
+        },
+        "reward": {
+            "custom": "all +3 health, +3 ability, location -1"
+        },
+        "title": "Chimera",
+        "image": "chimeracard.png",
+        "description": "If card acquired > 4, active hero -3 Health",
+        "rewardtext": "All hereos gain +3 Health, +3 ability, remove 1 location influence points"
+    },
+    "demon2": {
+        "type": "monster",
+        "level": 7,
+        "health": 15,
+        "attack": {
+            "custom": "no damage till last, AH -1 health, +1 tower defense card"
+        },
+        "reward": {
+            "custom": "Level 7 complete"
+        },
+        "title": "Demon",
+        "image": "errtucard2.png",
+        "description": "Cannot apply damage till last monster, active hereo -1 Health, draw additionnal Tower Defense card ",
+        "rewardtext": "Level 7 Complete"
+    },
+    "warlock": {
+        "type": "monster",
+        "level": 8,
+        "health": 11,
+        "attack": {
+            "custom": "when location +1, -2 health, discard 1"
+        },
+        "reward": {
+            "custom": "all +3 health, draw3discard1, location -1"
+        },
+        "title": "Warlock",
+        "image": "warlockcard.png",
+        "description": "If location influence point added, active hero -3 health, discard one card",
+        "rewardtext": "All hereos gain +3 Health, draw 3 cards, discard one, remove 1 location influence points"
+    },
+    "dragon": {
+        "type": "monster",
+        "level": 8,
+        "health": 12,
+        "attack": {
+            "custom": "+1 location, all heroes -1 health, AH discard 1"
+        },
+        "reward": {
+            "custom": "location -2, draw 2 from discard, +2 health"
+        },
+        "title": "Dragon",
+        "image": "dragoncard.png",
+        "description": "If location influence point added, active hero -3 health, discard one card",
+        "rewardtext": "All hereos +2 Health, draw two cards from discard, and remove two location influence points"
+    },
+    "demon3": {
+        "type": "monster",
+        "level": 7,
+        "health": 20,
+        "attack": {
+            "custom": "no damage till last, AH -2 health, location +1, +1 tower defense card"
+        },
+        "reward": {
+            "custom": "Level 8 complete"
+        },
+        "title": "Demon",
+        "image": "errtucard3.png",
+        "description": "Cannot apply damage till last monster, active hereo -2 Health, draw additional Tower Defense card, add location influence point ",
+        "rewardtext": "Total Victory!!!"
+    }
+}
