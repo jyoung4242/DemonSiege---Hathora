@@ -1,4 +1,5 @@
-import { AbilityCard, MonsterCard, TowerDefense, LocationCard, Cardstatus } from '../../api/types';
+import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect } from '../../api/types';
+import { InternalState } from '../impl';
 
 export function loadMonsterCardsFromJSON(incoming: object): Array<MonsterCard> {
     let returnArray: Array<MonsterCard> = [];
@@ -6,10 +7,11 @@ export function loadMonsterCardsFromJSON(incoming: object): Array<MonsterCard> {
     for (const [key, value] of Object.entries(incoming)) {
         let tempCard: MonsterCard = {
             Title: key,
+            Damage: 0,
             Health: value.health,
             Level: value.level,
-            Action: [],
-            Reward: [],
+            Effects: [],
+            Rewards: [],
             CardStatus: Cardstatus.FaceDown,
         };
         returnArray.push(tempCard);
@@ -27,7 +29,7 @@ export function loadAbilityCardsFromJSON(incoming: object): Array<AbilityCard> {
             Catagory: value.catagory,
             Cost: value.cost,
             Level: value.level,
-            Ability: [],
+            Effects: [],
             CardStatus: Cardstatus.FaceDown,
         };
         returnArray.push(tempCard);
@@ -43,9 +45,10 @@ export function loadTDCardsFromJSON(incoming: object): Array<TowerDefense> {
         let tempCard: TowerDefense = {
             Title: key,
             Level: value.level,
-            Ability: [],
+            Effects: loadEffectArray(value.Effect),
             CardStatus: Cardstatus.FaceDown,
         };
+
         returnArray.push(tempCard);
     }
 
@@ -62,7 +65,7 @@ export function loadLocationCardsFromJSON(incoming: object): Array<LocationCard>
             TD: value.TD,
             Sequence: value.sequence,
             Health: value.health,
-            Special: [],
+            Effects: [],
             CardStatus: Cardstatus.FaceDown,
         };
         returnArray.push(tempCard);
@@ -76,4 +79,16 @@ export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: 
         const myCard: T = source.pop()!;
         destination.push(myCard);
     }
+}
+
+export function applyEffect(state: InternalState, userId: UserId, effect: Effect) {}
+
+function loadEffectArray(inputArray: Array<any>): Array<Effect> {
+    let rsltArray: Effect[] = [];
+    inputArray.forEach(effect => {
+        console.log(`effect: `, effect);
+        rsltArray.push(effect);
+    });
+
+    return rsltArray;
 }

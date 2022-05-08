@@ -5,3 +5,4 @@
 /server/.hathora
 /server/node_modules
 /server/pack*
+/node_modules/*

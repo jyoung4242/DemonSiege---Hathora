@@ -1,0 +1,58 @@
+{
+    "tripwire1": {
+        "type": "towerdefense",
+        "level": 1,
+        "Effect": [
+            {
+                "name": "DracoEffect",
+                "target": "Active Hero",
+                "callback": "passiveWhenLocationAdded",
+                "args": {
+                    "Health": -2
+                },
+                "type": "PASSIVE"
+            }
+        ],
+        "description": "-2 Health",
+        "title": "Trip Wire",
+        "image": "TDtripwire.png"
+    },
+    "tripwire2": {
+        "type": "towerdefense",
+        "level": 1,
+        "Effect": [
+            {
+                "name": "Health -2",
+                "target": "Active Hero",
+                "callback": "changeProperty",
+                "args": {
+                    "Health": -2
+                },
+                "type": "ACTIVE"
+            }
+        ],
+        "description": "-2 Health",
+        "title": "Trip Wire",
+        "image": "TDtripwire.png"
+    },
+    "goblin": {
+        "type": "monster",
+        "level": 1,
+        "health": 5,
+        "Effect": [
+            {
+                "name": "GoblinEffect",
+                "target": "Active Hero",
+                "callback": "passiveWhenDiscarded",
+                "args": {
+                    "Health": -1
+                },
+                "type": "PASSIVE"
+            }
+        ],
+        "title": "Goblin",
+        "image": "goblincard.png",
+        "description": "When player discards, Health -1",
+        "rewardtext": "All players draw one card"
+    }
+}

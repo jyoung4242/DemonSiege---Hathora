@@ -1,440 +1,999 @@
-{ 
-    "tripwire1":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "health": -2
+{
+    "tripwire1": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Condition": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-2 Health",
+        "title": "Trip Wire",
+        "image": "TDtripwire.png"
     },
-    "description":"-2 Health",
-    "title": "Trip Wire",
-    "image": "TDtripwire.png"
-  },
-     "tripwire2":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "health": -2
+    "tripwire2": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-2 Health",
+        "title": "Trip Wire",
+        "image": "TDtripwire.png"
     },
-    "description":"-2 Health",
-    "title": "Trip Wire",
-    "image": "TDtripwire.png"
-  }, 
-    "tripwire3":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "health": -2
+    "tripwire3": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-2 Health",
+        "title": "Trip Wire",
+        "image": "TDtripwire.png"
     },
-    "description":"-2 Health",
-    "title": "Trip Wire",
-    "image": "TDtripwire.png"
-  },
-    "net1":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "location": 1
+    "net1": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "Add 1 influence point to location",
+        "title": "Net Trap",
+        "image": "TDnettrap.png"
     },
-    "description":"Add 1 influence point to location",
-    "title": "Net Trap",
-    "image": "TDnettrap.png"
-  },
-    "net2":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "location": 1
+    "net2": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "Add 1 influence point to location",
+        "title": "Net Trap",
+        "image": "TDnettrap.png"
     },
-    "description":"Add 1 influence point to location",
-    "title": "Net Trap",
-    "image": "TDnettrap.png"
-  },
-    "net3":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "location": 1
+    "net3": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "Add 1 influence point to location",
+        "title": "Net Trap",
+        "image": "TDnettrap.png"
     },
-    "description":"Add 1 influence point to location",
-    "title": "Net Trap",
-    "image": "TDnettrap.png"
-  },
-    "pit1":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "health": -1,
-        "draw": "discardone"
+    "pit1": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "DiscardEffect",
+                "Data": {
+                    "value": 1,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-1 Health, Discard 1 card",
+        "title": "Pit Trap",
+        "image": "TDpittrap.png"
     },
-    "description":"-1 Health, Discard 1 card",
-    "title": "Pit Trap",
-    "image": "TDpittrap.png"
-  },
-    "pit2":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "health": -1,
-        "draw": "discardone"
+    "pit2": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "DiscardEffect",
+                "Data": {
+                    "value": 1,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-1 Health, Discard 1 card",
+        "title": "Pit Trap",
+        "image": "TDpittrap.png"
     },
-    "description":"-1 Health, Discard 1 card",
-    "title": "Pit Trap",
-    "image": "TDpittrap.png"
-  },
-    "quicksand1":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "allhealth": -1,
-        "draw": "nodraw"
+    "quicksand1": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "All Hereos"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "NoDrawEffect",
+                "Data": {
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-1 Health, Discard 1 card",
+        "title": "Quicksand",
+        "image": "TDquicksandtrap.png"
     },
-    "description":"-1 Health, Discard 1 card",
-    "title": "Quicksand",
-    "image": "TDquicksandtrap.png"
-  },
-    "quicksand2":{
-    "type": "towerdefense",
-    "level": 1,
-    "script": {
-        "allhealth": -1,
-        "draw": "nodraw"
+    "quicksand2": {
+        "type": "towerdefense",
+        "level": 1,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "All Hereos"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "NoDrawEffect",
+                "Data": {
+                    "target": "Active Hero"
+                }
+            }
+        ],
+        "description": "-1 Health, Discard 1 card",
+        "title": "Quicksand",
+        "image": "TDquicksandtrap.png"
     },
-    "description":"-1 Health, Discard 1 card",
-    "title": "Quicksand",
-    "image": "TDquicksandtrap.png"
-  },
-    "statues1":{
-    "type": "towerdefense",
-    "level": 2,
-    "script": {
-        "health": -1,
-        "location": 1
+    "statues1": {
+        "type": "towerdefense",
+        "level": 2,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "-1 Health, add 1 influence point to location",
+        "title": "Animated Statue",
+        "image": "TDanimatedstatues.png"
     },
-    "description":"-1 Health, add 1 influence point to location",
-    "title": "Animated Statue",
-    "image": "TDanimatedstatues.png"
-  },
-    "statues2":{
-    "type": "towerdefense",
-    "level": 2,
-    "script": {
-        "health": -1,
-        "location": 1
+    "statues2": {
+        "type": "towerdefense",
+        "level": 2,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "-1 Health, add 1 influence point to location",
+        "title": "Animated Statue",
+        "image": "TDanimatedstatues.png"
     },
-    "description":"-1 Health, add 1 influence point to location",
-    "title": "Animated Statue",
-    "image": "TDanimatedstatues.png"
-  },
-    "gastrap":{
-    "type": "towerdefense",
-    "level": 2,
-    "script": {
-        "choose": "all health -2, lose spell"
+    "gastrap": {
+        "type": "towerdefense",
+        "level": 2,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "Choose2",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -2,
+                            "target": "All Heroes"
+                        }
+                    },
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "DiscardTypeEffect",
+                        "Data": {
+                            "type": "Spell",
+                            "value": 1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+        "description": "All players choose: -2 Health, or lose spell card",
+        "title": "Poision Gas Trap",
+        "image": "TDgastrap.png"
     },
-    "description":"All players choose: -2 Health, or lose spell card",
-    "title": "Poision Gas Trap",
-    "image": "TDgastrap.png"
-  },
-    "rattrap":{
-    "type": "towerdefense",
-    "level": 2,
-    "script": {
-        "choose": "all health -2, lose item"
+    "rattrap": {
+        "type": "towerdefense",
+        "level": 2,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "Choose2",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -2,
+                            "target": "All Heroes"
+                        }
+                    },
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "DiscardTypeEffect",
+                        "Data": {
+                            "type": "Item",
+                            "value": 1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+
+        "description": "All players choose: -2 Health, or lose item card",
+        "title": "Rat Swarm Trap",
+        "image": "TDratsswarm.png"
     },
-    "description":"All players choose: -2 Health, or lose item card",
-    "title": "Rat Swarm Trap",
-    "image": "TDratsswarm.png"
-  },
-    "darts":{
-    "type": "towerdefense",
-    "level": 2,
-    "script": {
-        "choose": "all health -2, lose friend"
+    "darts": {
+        "type": "towerdefense",
+        "level": 2,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "Choose2",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -2,
+                            "target": "All Heroes"
+                        }
+                    },
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "DiscardTypeEffect",
+                        "Data": {
+                            "type": "Friend",
+                            "value": 1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+
+        "description": "All players choose: -2 Health, or lose friend card",
+        "title": "Dart Trap",
+        "image": "TDdarttrap.png"
     },
-    "description":"All players choose: -2 Health, or lose friend card",
-    "title": "Dart Trap",
-    "image": "TDdarttrap.png"
-  },
-    "rocks1":{
-    "type": "towerdefense",
-    "level": 3,
-    "script": {
-        "health": -1,
-        "allhealth": -1
+    "rocks1": {
+        "type": "towerdefense",
+        "level": 3,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Other Hereos"
+                }
+            }
+        ],
+        "description": "Active Hero -2 Health, all others -1",
+        "title": "Falling Rock Trap",
+        "image": "TDfallingrocktrap.png"
     },
-    "description":"Active Hero -2 Health, all others -1",
-    "title": "Falling Rock Trap",
-    "image": "TDfallingrocktrap.png"
-  },
-    "rocks2":{
-    "type": "towerdefense",
-    "level": 3,
-    "script": {
-        "health": -1,
-        "allhealth": -1
+    "rocks2": {
+        "type": "towerdefense",
+        "level": 3,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Other Hereos"
+                }
+            }
+        ],
+        "description": "Active Hero -2 Health, all others -1",
+        "title": "Falling Rock Trap",
+        "image": "TDfallingrocktrap.png"
     },
-    "description":"Active Hero -2 Health, all others -1",
-    "title": "Falling Rock Trap",
-    "image": "TDfallingrocktrap.png"
-  },
-    "axe":{
-    "type": "towerdefense",
-    "level": 3,
-    "script": {
-        "custom": "top card deck > 1, discard, health -1"
+    "axe": {
+        "type": "towerdefense",
+        "level": 3,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "IfTopCardOfDeckAbilityScoreGT1",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -1,
+                            "target": "Active Hero"
+                        }
+                    },
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "DiscardEffect",
+                        "Data": {
+                            "value": 1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+
+        "description": "If top card deck > 1 ability point, discard and Health -1",
+        "title": "Axe Trap",
+        "image": "TDaxetrap.png"
     },
-    "description":"If top card deck > 1 ability point, discard and Health -1",
-    "title": "Axe Trap",
-    "image": "TDaxetrap.png"
-  },
-    "glymph":{
-    "type": "towerdefense",
-    "level": 3,
-    "script": {
-        "custom": "-1 Health, 1 damage to monster"
+    "glymph": {
+        "type": "towerdefense",
+        "level": 3,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "AttackCapEffect",
+                "Data": {
+                    "value": 1,
+                    "target": "Active Hero"
+                }
+            }
+        ],
+
+        "description": "-1 Health, cannot apply more than 1 damage per monster",
+        "title": "Glymph Warding",
+        "image": "TDglympwarding.png"
     },
-    "description":"-1 Health, cannot apply more than 1 damage per monster",
-    "title": "Glymph Warding",
-    "image": "TDglympwarding.png"
-  },
-    "teleport":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "health": -1,
-        "location": 1
+    "teleport": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-1 Health, add 1 influence point to location ",
+        "title": "Teleport Trap",
+        "image": "TDteleporttrap.png"
     },
-    "description":"-1 Health, add 1 influence point to location ",
-    "title": "Teleport Trap",
-    "image": "TDteleporttrap.png"
-  },
-    "firetrap":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "health": -1,
-        "TD": 1
+    "firetrap": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-1 Health, draw another Tower Defense card",
+        "title": "Fire Trap",
+        "image": "TDfiretrap.png"
     },
-    "description":"-1 Health, draw another Tower Defense card",
-    "title": "Fire Trap",
-    "image": "TDfiretrap.png"
-  },
-    "snakepit":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "allmonsterhealth": -2
+    "snakepit": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "MonsterHealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "All Monsters"
+                }
+            }
+        ],
+
+        "description": "All monsters lose 2 damage",
+        "title": "Snake Pit",
+        "image": "TDsnakepit.png"
     },
-    "description":"All monsters lose 2 damage",
-    "title": "Snake Pit",
-    "image": "TDsnakepit.png"
-  },
-    "moat1":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "die": 1
+    "moat1": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "DieRollEffect",
+                "Data": {
+                    "user": "Active Hero",
+                    "numRolls": 1
+                }
+            }
+        ],
+
+        "description": "Roll Die 1 time",
+        "title": "Moat Pit",
+        "image": "TDmoattrap.png"
     },
-    "description":"Roll Die 1 time",
-    "title": "Moat Pit",
-    "image": "TDmoattrap.png"
-  },
-    "moat2":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "die": 1
+    "moat2": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "DieRollEffect",
+                "Data": {
+                    "user": "Active Hero",
+                    "numRolls": 1
+                }
+            }
+        ],
+        "description": "Roll Die 1 time",
+        "title": "Moat Pit",
+        "image": "TDmoattrap.png"
     },
-    "description":"Roll Die 1 time",
-    "title": "Moat Pit",
-    "image": "TDmoattrap.png"
-  },
-    "spear":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "custom": "another hero, -2 health",
-        "TD": 1
+    "spear": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Other Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "Choose another hero to lose 2 health and draw another Tower Defense Card",
+        "title": "Spear Trap",
+        "image": "TDspeartrap.png"
     },
-    "description":"Choose another hero to lose 2 health and draw another Tower Defense Card",
-    "title": "Spear Trap",
-    "image": "TDspeartrap.png"
-  },
-    "hulk":{
-    "type": "towerdefense",
-    "level": 4,
-    "script": {
-        "health": -3,
-        "TD": 1,
-        "location": 1
+    "hulk": {
+        "type": "towerdefense",
+        "level": 4,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-3 Health, add 1 point influence to location, draw another Tower Defense Card",
+        "title": "Umber Hulk Trap",
+        "image": "TDumberhulk.png"
     },
-    "description":"-3 Health, add 1 point influence to location, draw another Tower Defense Card",
-    "title": "Umber Hulk Trap",
-    "image": "TDumberhulk.png"
-  },
-    "spear2":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "custom": "Choose another hero -2 Health",
-        "TD": 1
+    "spear2": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Other Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "Choose another hero to lose 2 health and draw another Tower Defense Card",
+        "title": "Spear Trap",
+        "image": "TDspeartrap.png"
     },
-    "description":"Choose another hero to lose 2 health and draw another Tower Defense Card",
-    "title": "Spear Trap",
-    "image": "TDspeartrap.png"
-  },
-    "compactor1":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "custom": "each card > 4 ab, -1 health"
+    "compactor1": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Type": "ForEachCardInHandAbilityScoreGT4",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+
+        "description": "For each card in hand > 4 AB, -1 Health",
+        "title": "Compactor Trap",
+        "image": "TDcollapsingroom.png"
     },
-    "description":"For each card in hand > 4 AB, -1 Health",
-    "title": "Compactor Trap",
-    "image": "TDcollapsingroom.png"
-  },
-    "compactor2":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "custom": "each card > 4 ab, -1 health"
+    "compactor2": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Type": "ForEachCardInHandAbilityScoreGT4",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+        "description": "For each card in hand > 4 AB, -1 Health",
+        "title": "Compactor Trap",
+        "image": "TDcollapsingroom.png"
     },
-    "description":"For each card in hand > 4 AB, -1 Health",
-    "title": "Compactor Trap",
-    "image": "TDcollapsingroom.png"
-  },
-    "needles":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "health": -1,
-        "TD":1
+    "needles": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-1 Health, draw another Tower Defense Card",
+        "title": "Needle Trap",
+        "image": "TDneedles.png"
     },
-    "description":"-1 Health, draw another Tower Defense Card",
-    "title": "Needle Trap",
-    "image": "TDneedles.png"
-  },
-    "mechanical":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "allhealth": -1,
-        "location":1
+    "mechanical": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -1,
+                    "target": "All Hereos"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "All hereos -1 Health, add 1 influence point to location",
+        "title": "Mechanical Trap",
+        "image": "TDmechanictrap.png"
     },
-    "description":"All hereos -1 Health, add 1 influence point to location",
-    "title": "Mechanical Trap",
-    "image": "TDmechanictrap.png"
-  },
-    "scythe":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "health": -3,
-        "TD": 1,
-        "location":1
+    "scythe": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+        "description": "-3 Health, add 1 influence point to location, draw another Tower Defense Card",
+        "title": "Swinging Scythe Trap",
+        "image": "TDscythetrap.png"
     },
-    "description":"-3 Health, add 1 influence point to location, draw another Tower Defense Card",
-    "title": "Swinging Scythe Trap",
-    "image": "TDscythetrap.png"
-  },
-    "sawblades":{
-    "type": "towerdefense",
-    "level": 5,
-    "script": {
-        "custom": "top card spell, discard, -2 health"
+    "sawblades": {
+        "type": "towerdefense",
+        "level": 5,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "IfTopCardSpell",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -2,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+
+        "description": "Reveal top card of deck, if spell, -2 Health",
+        "title": "Sawblades Trap",
+        "image": "TDsawblades.png"
     },
-    "description":"Reveal top card of deck, if spell, -2 Health",
-    "title": "Sawblades Trap",
-    "image": "TDsawblades.png"
-  },    
-    "needles2":{
-    "type": "towerdefense",
-    "level": 6,
-    "script": {
-        "health": -1,
-        "TD":1
+    "needles2": {
+        "type": "towerdefense",
+        "level": 6,
+        "Ability": [
+            {
+                "Catagory": "ConditionalEffect",
+                "Condition": "ForEachCardInHandAbilityScoreGT4",
+                "Effects": [
+                    {
+                        "Catagory": "StandardEffect",
+                        "Type": "HealthEffect",
+                        "Data": {
+                            "value": -1,
+                            "target": "Active Hero"
+                        }
+                    }
+                ]
+            }
+        ],
+        "description": "For each card in hand > 4 AB, -1 Health",
+        "title": "Needle Trap",
+        "image": "TDneedles.png"
     },
-    "description":"For each card in hand > 4 AB, -1 Health",
-    "title": "Needle Trap",
-    "image": "TDneedles.png"
-  },
-    "darkcurse1":{
-    "type": "towerdefense",
-    "level": 6,
-    "script": {
-        "health": -2,
-        "custom": "cannot heal this turn"
+    "darkcurse1": {
+        "type": "towerdefense",
+        "level": 6,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "NoHealEffect",
+                "Data": {
+                    "user": "Active Hero",
+                    "turns": 1
+                }
+            }
+        ],
+
+        "description": "-2 Health, cannot heal this turn",
+        "title": "Dark Curse",
+        "image": "TDglympwarding.png"
     },
-    "description":"-2 Health, cannot heal this turn",
-    "title": "Dark Curse",
-    "image": "TDglympwarding.png"
-  },
-    "darkcurse2":{
-    "type": "towerdefense",
-    "level": 6,
-    "script": {
-        "health": -2,
-        "custom": "cannot heal this turn"
+    "darkcurse2": {
+        "type": "towerdefense",
+        "level": 6,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "NoHealEffect",
+                "Data": {
+                    "user": "Active Hero",
+                    "turns": 1
+                }
+            }
+        ],
+        "description": "-2 Health, cannot heal this turn",
+        "title": "Dark Curse",
+        "image": "TDglympwarding.png"
     },
-    "description":"-2 Health, cannot heal this turn",
-    "title": "Dark Curse",
-    "image": "TDglympwarding.png"
-  },
-    "spear3":{
-    "type": "towerdefense",
-    "level": 7,
-    "script": {
-        "custom": "Choose another hero -2 Health",
-        "TD": 1
+    "spear3": {
+        "type": "towerdefense",
+        "level": 7,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -2,
+                    "target": "Other Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "Choose another hero to lose 2 health and draw another Tower Defense Card",
+        "title": "Spear Trap",
+        "image": "TDspeartrap.png"
     },
-    "description":"Choose another hero to lose 2 health and draw another Tower Defense Card",
-    "title": "Spear Trap",
-    "image": "TDspeartrap.png"
-  },  
-    "scythe2":{
-    "type": "towerdefense",
-    "level": 7,
-    "script": {
-        "health": -3,
-        "TD": 1,
-        "location":2
+    "scythe2": {
+        "type": "towerdefense",
+        "level": 7,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-3 Health, add 2 influence point to location, draw another Tower Defense Card",
+        "title": "Swinging Scythe Trap",
+        "image": "TDscythetrap.png"
     },
-    "description":"-3 Health, add 2 influence point to location, draw another Tower Defense Card",
-    "title": "Swinging Scythe Trap",
-    "image": "TDscythetrap.png"
-  },
-    "needles3":{
-    "type": "towerdefense",
-    "level": 7,
-    "script": {
-        "health": -3,
-        "TD":1
+    "needles3": {
+        "type": "towerdefense",
+        "level": 7,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "Active Hero"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            }
+        ],
+
+        "description": "-3 Health, draw another Tower Defense Card",
+        "title": "Needle Trap",
+        "image": "TDneedles.png"
     },
-    "description":"-3 Health, draw another Tower Defense Card",
-    "title": "Needle Trap",
-    "image": "TDneedles.png"
+    "firetrap2": {
+        "type": "towerdefense",
+        "level": 7,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "All Heroes"
+                }
+            }
+        ],
+        "description": "All Heroes, -3 Health",
+        "title": "Fire Trap",
+        "image": "TDfiretrap.png"
     },
-    "firetrap2":{
-    "type": "towerdefense",
-    "level": 7,
-    "script": {
-        "allhealth": -3
-    },
-    "description":"All Heroes, -3 Health",
-    "title": "Fire Trap",
-    "image": "TDfiretrap.png"
-  },
-    "hulk2":{
-    "type": "towerdefense",
-    "level": 8,
-    "script": {
-        "allhealth": -3,
-        "TD": 1,
-        "location": 2
-    },
-    "description":"All Heroes, -3 Health, add 2 point influence to location, draw another Tower Defense Card",
-    "title": "Umber Hulk Trap",
-    "image": "TDumberhulk.png"
-  }
-    
+    "hulk2": {
+        "type": "towerdefense",
+        "level": 8,
+        "Ability": [
+            {
+                "Catagory": "StandardEffect",
+                "Type": "HealthEffect",
+                "Data": {
+                    "value": -3,
+                    "target": "All Heroes"
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "TowerDefenseEffect",
+                "Data": {
+                    "value": 1
+                }
+            },
+            {
+                "Catagory": "StandardEffect",
+                "Type": "LocationEffect",
+                "Data": {
+                    "value": 2
+                }
+            }
+        ],
+
+        "script": {
+            "allhealth": -3,
+            "TD": 1,
+            "location": 2
+        },
+        "description": "All Heroes, -3 Health, add 2 point influence to location, draw another Tower Defense Card",
+        "title": "Umber Hulk Trap",
+        "image": "TDumberhulk.png"
+    }
 }

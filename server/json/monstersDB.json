@@ -319,7 +319,7 @@
         "level": 8,
         "health": 11,
         "attack": {
-            "custom": "when location +1, -2 health, discard 1"
+            "custom": "when location +1, -3 health, discard 1"
         },
         "reward": {
             "custom": "all +3 health, draw3discard1, location -1"
@@ -341,7 +341,7 @@
         },
         "title": "Dragon",
         "image": "dragoncard.png",
-        "description": "If location influence point added, active hero -3 health, discard one card",
+        "description": "If location influence point added, all heroes -1 health, active Hero discards one card",
         "rewardtext": "All hereos +2 Health, draw two cards from discard, and remove two location influence points"
     },
     "demon3": {
