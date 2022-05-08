@@ -32,7 +32,7 @@ export class Impl implements Methods<InternalState> {
     }
 
     joinGame(state: InternalState, userId: UserId, ctx: Context, request: IJoinGameRequest): Response {
-        //Gaurd conditions
+        //Guard conditions
         if (state.players.length >= 4) return Response.error('Maximum Players Allowed');
         if (state.players.find(player => player.Id === userId) !== undefined) return Response.error('Already joined');
 
@@ -57,6 +57,7 @@ export class Impl implements Methods<InternalState> {
     }
 
     startGame(state: InternalState, userId: UserId, ctx: Context, request: IStartGameRequest): Response {
+        //Guard condition
         if (state.gameSequence != GameStates.ReadyForRound) Response.error('Not ready to start round');
 
         loadPlayersStartingDecks(state, ctx);
