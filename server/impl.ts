@@ -1,11 +1,8 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
-import { TdCardPool, playerOrder, numberMonstersActiveByLevel, monsterCardDiscardPoolArray, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks } from './lib/init';
-import { PlayerStatus, CardType, Roles, RoundState, GameStates, DieFaces, Conditions, LocationCard, TowerDefense, AbilityCard, MonsterCard, Events, Player, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IPlayCardRequest, IDiscardRequest, IDrawCardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, errorMessage } from '../api/types';
-import { loadMonsterCardsFromJSON, loadAbilityCardsFromJSON, loadTDCardsFromJSON, loadLocationCardsFromJSON, dealCards, applyEffect } from './lib/helper';
-
-//import { Chance } from 'chance';
-//let chance = new Chance();
+import { TdCardPool, playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks } from './lib/init';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IPlayCardRequest, IDiscardRequest, IDrawCardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, errorMessage } from '../api/types';
+import { dealCards, applyEffect } from './lib/helper';
 
 export type InternalState = GameState;
 
@@ -98,7 +95,9 @@ export class Impl implements Methods<InternalState> {
         //state.locationPile!.CardStatus = Cardstatus.FaceUp;
 
         //load leveled Tower Defense Cards into active array, and shuffle
+
         state.towerDefenseDeck = TdCardPool.filter(card => card.Level <= state.gameLevel);
+        console.log(`state TD `, state.towerDefenseDeck);
         //state.towerDefenseDeck = ctx.chance.shuffle(state.towerDefenseDeck);
 
         //load player id's into turn order array and shuffle, set to index 0 for turn state var
