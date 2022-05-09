@@ -98,8 +98,8 @@ export class Impl implements Methods<InternalState> {
         //load leveled Tower Defense Cards into active array, and shuffle
 
         state.towerDefenseDeck = TdCardPool.filter(card => card.Level <= state.gameLevel);
-        console.log(`state TD `, state.towerDefenseDeck);
-        //state.towerDefenseDeck = ctx.chance.shuffle(state.towerDefenseDeck);
+        //console.log(`state TD `, state.towerDefenseDeck);
+        state.towerDefenseDeck = ctx.chance.shuffle(state.towerDefenseDeck);
 
         //load player id's into turn order array and shuffle, set to index 0 for turn state var
         /*state.players.forEach(player => {

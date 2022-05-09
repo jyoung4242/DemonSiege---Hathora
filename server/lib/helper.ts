@@ -83,7 +83,7 @@ export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: 
 
 export function applyEffect(state: InternalState, userId: UserId, effect: Effect) {}
 
-function loadEffectArray(inputArray: Array<any>): Array<Effect> {
+function loadEffectArray(inputArray: Array<Effect>): Array<Effect> {
     let rsltArray: Effect[] = [];
     inputArray.forEach(effect => {
         console.log(`effect: `, effect);

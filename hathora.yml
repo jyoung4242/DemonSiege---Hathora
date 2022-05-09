@@ -96,8 +96,13 @@ types:
         - Passive
         - Active
 
+    effectProperty:
+        prop: string
+        val: int
+
     Effect:
-        value: int
+        name: string
+        value: effectProperty
         target: targetType
         type: effectType
         cb: string

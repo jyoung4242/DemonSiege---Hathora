@@ -1,6 +1,6 @@
 import { TowerDefense, UserId, MonsterCard, Player, PlayerStatus, Roles, errorMessage, GameStates, AbilityCard, Cardstatus } from '../../api/types';
 import { loadTDCardsFromJSON, loadAbilityCardsFromJSON, dealCards } from './helper';
-import TDcards from '../json/tdtest.json';
+import { TD } from '../json/tdtest';
 import { InternalState } from '../impl';
 import monsters from '../json/monstersDB.json';
 import abilities from '../json/cardsdb.json';
@@ -25,7 +25,7 @@ const mappedStartingDeck = {
     [Roles.Rogue]: rStartingDeck,
 };
 
-export const TdCardPool: Array<TowerDefense> = loadTDCardsFromJSON(TDcards);
+export const TdCardPool: Array<TowerDefense> = loadTDCardsFromJSON(TD);
 export let playerOrder: Array<UserId> = [];
 export const numberMonstersActiveByLevel: Array<number> = [1, 1, 2, 2, 3, 3, 3, 3];
 export let monsterCardDiscardPoolArray: Array<MonsterCard> = [];
