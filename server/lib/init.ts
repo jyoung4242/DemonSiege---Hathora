@@ -1,31 +1,31 @@
-import { TowerDefense, UserId, MonsterCard, Player, PlayerStatus, Roles, errorMessage, GameStates, AbilityCard, Cardstatus } from '../../api/types';
-import { loadTDCardsFromJSON, loadAbilityCardsFromJSON, dealCards } from './helper';
-import { TD } from '../json/tdtest';
+import { TowerDefense, UserId, MonsterCard, Player, PlayerStatus, Roles, errorMessage, GameStates, AbilityCard, Cardstatus, LocationCard } from '../../api/types';
+import { dealCards } from './helper';
+import TDpkg from '../json/tdtest';
 import { InternalState } from '../impl';
-import monsters from '../json/monstersDB.json';
-import abilities from '../json/cardsdb.json';
-import myLocations from '../json/locationsDB.json';
-import barbarian from '../json/starter_b.json';
-import wizard from '../json/starter_w.json';
-import paladin from '../json/starter_p.json';
-import rogue from '../json/starter_r.json';
+import monstersPkg from '../json/monsterTest';
+import abilitiesPkg from '../json/abilitytests';
+import myLocationsPkg from '../json/locationTest';
+import barbarianPKG from '../json/starter_b_TS';
+import wizardPKG from '../json/starter_w_TS';
+import paladinPKG from '../json/starter_p_TS';
+import roguePKG from '../json/starter_r_TS';
 import { Context } from '../.hathora/methods';
 
-const bStartingDeck: Array<AbilityCard> = loadAbilityCardsFromJSON(barbarian);
-const wStartingDeck: Array<AbilityCard> = loadAbilityCardsFromJSON(wizard);
-const pStartingDeck: Array<AbilityCard> = loadAbilityCardsFromJSON(paladin);
-const rStartingDeck: Array<AbilityCard> = loadAbilityCardsFromJSON(rogue);
-/*const abilityCardPool: Array<AbilityCard> = loadAbilityCardsFromJSON(abilities);
-const monsterCardPool: Array<MonsterCard> = loadMonsterCardsFromJSON(monsters);
-const locationCardPool: Array<LocationCard> = loadLocationCardsFromJSON(myLocations);*/
+export const TdCardPool: Array<TowerDefense> = TDpkg;
+export const monsterCardPool: Array<MonsterCard> = monstersPkg;
+export const abilityCardPool: Array<AbilityCard> = abilitiesPkg;
+export const locationCardPool: Array<LocationCard> = myLocationsPkg;
+export const bStartingDeck: Array<AbilityCard> = barbarianPKG;
+export const wStartingDeck: Array<AbilityCard> = wizardPKG;
+export const pStartingDeck: Array<AbilityCard> = paladinPKG;
+export const rStartingDeck: Array<AbilityCard> = roguePKG;
+
 const mappedStartingDeck = {
     [Roles.Barbarian]: bStartingDeck,
     [Roles.Wizard]: wStartingDeck,
     [Roles.Paladin]: pStartingDeck,
     [Roles.Rogue]: rStartingDeck,
 };
-
-export const TdCardPool: Array<TowerDefense> = loadTDCardsFromJSON(TD);
 export let playerOrder: Array<UserId> = [];
 export const numberMonstersActiveByLevel: Array<number> = [1, 1, 2, 2, 3, 3, 3, 3];
 export let monsterCardDiscardPoolArray: Array<MonsterCard> = [];
@@ -78,4 +78,51 @@ export function loadPlayersStartingDecks(s: InternalState, c: Context) {
         //cards face up
         player.Hand.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
     });
+}
+
+export function setupAbilityDeck(s: InternalState, c: Context) {
+    //load level 'gameLevel(state)' ability cards into working Ability Deck for that game
+    s.abilityDeck = abilityCardPool.filter(card => card.Level <= s.gameLevel);
+    //shuffle ability deck
+    s.abilityDeck = c.chance.shuffle(s.abilityDeck);
+    //draw 6 cards from ability deck into the ability pile
+    dealCards(s.abilityDeck, s.abilityPile, 6);
+    //cards face up
+    s.abilityPile.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
+}
+
+export function setupMonsterDeck(s: InternalState, c: Context) {
+    //load level 'gameLevel(state)' monster cards into working monster Deck for that game
+    s.monsterDeck = monsterCardPool.filter(card => card.Level <= s.gameLevel);
+    //shuffle monster deck
+    s.monsterDeck = c.chance.shuffle(s.monsterDeck);
+    //draw card from monster deck into the monster pile
+    dealCards(s.monsterDeck, s.activeMonsters, numberMonstersActiveByLevel[s.gameLevel]);
+    //cards face up
+    s.activeMonsters.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
+}
+
+export function setupLocationDeck(s: InternalState, c: Context) {
+    //load appropriate level location cards into active location array
+    s.locationDeck = locationCardPool.filter(card => card.Level == s.gameLevel);
+    //inverst order by sequence number
+    s.locationDeck.sort((a, b): number => {
+        return b.Sequence - a.Sequence;
+    });
+    s.locationPile = s.locationDeck.pop();
+    s.locationPile!.CardStatus = Cardstatus.FaceUp;
+}
+
+export function setupTDDeck(s: InternalState, c: Context) {
+    //load appropriate level location cards into active location array
+    s.towerDefenseDeck = locationCardPool.filter(card => card.Level <= s.gameLevel);
+    s.towerDefenseDeck = c.chance.shuffle(s.towerDefenseDeck);
+}
+
+export function setupPlayerOrder(s: InternalState, c: Context) {
+    s.players.forEach(player => {
+        playerOrder.push(player.Id);
+    });
+    playerOrder = c.chance.shuffle(playerOrder);
+    s.turn = playerOrder[0];
 }

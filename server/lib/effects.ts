@@ -11,43 +11,14 @@ type effectCallback = {
 type passiveWhenDiscarded = (active: boolean) => void;
 type passiveWhenLocationAdded = (active: boolean) => void;
 type passiveWhenMonsterCardPlayed = (active: boolean) => void;
+type passiveWhenMonsterDefeated = (active: boolean) => void;
 
-type validPassiveCallback = passiveWhenDiscarded | passiveWhenLocationAdded | passiveWhenMonsterCardPlayed;
+type validPassiveCallback = passiveWhenDiscarded | passiveWhenLocationAdded | passiveWhenMonsterCardPlayed | passiveWhenMonsterDefeated;
 
 export let flagCardDiscardedCheck: boolean = false;
 export let flagLocationAddedCheck: boolean = false;
 export let flagMonsterCardPlayedCheck: boolean = false;
-
-/**
- * Class Definition
- */
-export class Effect {
-    value: number = 0;
-    target: targetType = targetType.ActiveHero;
-    eType: effectType = effectType.;
-    cb: effectCallback;
-    vcb: validPassiveCallback;
-
-    constructor(public name: string, typePassed: effectType, cb: effectCallback, args: object, target: targetType) {
-        this.name = name;
-        this.eType = typePassed;
-        this.cb = cb;
-        this.vcb = cb.callbackName;
-        this.target = target;
-    }
-
-    get_type() {
-        return this.eType;
-    }
-
-    activate() {
-        this.vcb(true);
-    }
-
-    deactivate() {
-        this.vcb(false);
-    }
-}
+export let flagMonsterDefeatedCheck: boolean = false;
 
 /**
  * Helper Functions for effects
@@ -56,13 +27,13 @@ export class Effect {
 function arrayOfTargets(p: UserId, u: Array<UserId>, t: targetType): Array<UserId> {
     let returnArray: Array<UserId> = [];
     switch (t) {
-        case 'Active Hero':
+        case targetType.ActiveHero:
             returnArray.push(p);
             break;
-        case 'All Hereos':
+        case targetType.AllHeroes:
             returnArray = [...u];
             break;
-        case 'Other Hereos':
+        case targetType.OtherHeroes:
             let r = u.filter(user => {
                 user != p;
             });
@@ -90,4 +61,8 @@ function passiveWhenLocationAdded(active: boolean) {
 
 function passiveWhenMonsterCardPlayed(active: boolean) {
     flagMonsterCardPlayedCheck = active;
+}
+
+function passiveWhenMonsterDefeated(active: boolean) {
+    flagMonsterDefeatedCheck = active;
 }

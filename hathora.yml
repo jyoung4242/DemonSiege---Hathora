@@ -1,6 +1,10 @@
 types:
     #enums
-
+    Cards:
+        - AbilityCard
+        - TowerDefense
+        - MonsterCard
+        - LocationCard
     CardType:
         - Spell
         - Weapon
@@ -86,11 +90,18 @@ types:
         status: int
         message: string
 
+    userResponse:
+        userData: boolean
+        cardPlayed: Cards
+        selectedUsers?: UserId[]
+        selectedMonsters?: MonsterCard[]
+
     targetType:
         - AllHeroes
         - ActiveHero
         - OtherHeroes
         - ChooseOther
+        - AnyHero
 
     effectType:
         - Passive
@@ -173,10 +184,13 @@ types:
         monsterDeck: MonsterCard[]
         monsterPile: MonsterCard?
         activeMonsters: MonsterCard[]
+        monsterDiscard: MonsterCard[]
         locationDeck: LocationCard[]
         locationPile: LocationCard?
+        locationDiscard: LocationCard[]
         towerDefenseDeck: TowerDefense[]
         towerDefensePile: TowerDefense[]
+        towerDefenseDiscard: TowerDefense[]
         turn: UserId?
         players: Player[]
 
@@ -186,6 +200,8 @@ methods:
         role: Roles
     addAI:
     startGame:
+    selectTowerDefense:
+        response: userResponse
     playCard:
         card: AbilityCard
     discard:

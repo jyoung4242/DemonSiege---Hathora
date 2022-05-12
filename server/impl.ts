@@ -1,10 +1,11 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
-import { TdCardPool, playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IPlayCardRequest, IDiscardRequest, IDrawCardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, errorMessage } from '../api/types';
+import { TdCardPool, abilityCardPool, playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IPlayCardRequest, IDiscardRequest, IDrawCardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, errorMessage, ISelectTowerDefenseRequest } from '../api/types';
 import { dealCards, applyEffect } from './lib/helper';
 
 export type InternalState = GameState;
+//console.log(`Init TdCardPool:`, typeof TdCardPool, TdCardPool);
 
 export class Impl implements Methods<InternalState> {
     initialize(ctx: Context, request: IInitializeRequest): InternalState {
@@ -21,11 +22,14 @@ export class Impl implements Methods<InternalState> {
             abilityPile: [],
             monsterDeck: [],
             monsterPile: undefined,
+            monsterDiscard: [],
             activeMonsters: [],
             locationDeck: [],
             locationPile: undefined,
+            locationDiscard: [],
             towerDefenseDeck: [],
             towerDefensePile: [],
+            towerDefenseDiscard: [],
             turn: undefined,
             players: [],
         };
@@ -61,54 +65,12 @@ export class Impl implements Methods<InternalState> {
         if (state.gameSequence != GameStates.ReadyForRound) Response.error('Not ready to start round');
 
         loadPlayersStartingDecks(state, ctx);
-
-        //load level 'gameLevel(state)' ability cards into working Ability Deck for that game
-
-        //state.abilityDeck = abilityCardPool.filter(card => card.Level <= state.gameLevel);
-
-        //shuffle ability deck
-
-        //state.abilityDeck = ctx.chance.shuffle(state.abilityDeck);
-
-        //draw 6 cards from ability deck into the ability pile
-
-        //dealCards(state.abilityDeck, state.abilityPile, 6);
-
-        //cards face up
-        //state.abilityPile.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
-
-        //load leveled Monster Cards into active array, and shuffle
-        //state.monsterDeck = monsterCardPool.filter(card => card.Level <= state.gameLevel);
-        //shuffle monster deck
-        //state.monsterDeck = ctx.chance.shuffle(state.monsterDeck);
-        //draw right amount of cards from monster deck into the active Monsters array by level
-        //dealCards(state.monsterDeck, state.activeMonsters, numberMonstersActiveByLevel[state.gameLevel]);
-        //cards face up
-        //state.activeMonsters.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
-
-        //load appropriate level location cards into active location array
-        //state.locationDeck = locationCardPool.filter(card => card.Level == state.gameLevel);
-        //inverst order by sequence number
-        /*state.locationDeck.sort((a, b): number => {
-            return b.Sequence - a.Sequence;
-        });*/
-        //state.locationPile = state.locationDeck.pop();
-        //state.locationPile!.CardStatus = Cardstatus.FaceUp;
-
-        //load leveled Tower Defense Cards into active array, and shuffle
-
-        state.towerDefenseDeck = TdCardPool.filter(card => card.Level <= state.gameLevel);
-        //console.log(`state TD `, state.towerDefenseDeck);
-        state.towerDefenseDeck = ctx.chance.shuffle(state.towerDefenseDeck);
-
-        //load player id's into turn order array and shuffle, set to index 0 for turn state var
-        /*state.players.forEach(player => {
-            playerOrder.push(player.Id);
-        });
-        playerOrder = ctx.chance.shuffle(playerOrder);
-        state.turn = playerOrder[0];*/
+        setupAbilityDeck(state, ctx);
+        setupMonsterDeck(state, ctx);
+        setupLocationDeck(state, ctx);
+        setupTDDeck(state, ctx);
+        setupPlayerOrder(state, ctx);
         state.gameSequence = GameStates.ReadyForRound;
-
         return Response.ok();
     }
 
@@ -118,23 +80,24 @@ export class Impl implements Methods<InternalState> {
         state.gameSequence = GameStates.InProgress;
         state.roundSequence = RoundState.TowerDefense;
 
-        /*********************
-        Tower Defense Round
-        *********************/
         //draw right amount of cards from TD Deck into the active Monsters array by location Card: TD property
         const loopIndex = state.locationPile?.TD || 1;
         dealCards(state.towerDefenseDeck, state.towerDefensePile, loopIndex);
         state.towerDefensePile.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
+        ctx.broadcastEvent('Enable TD');
+        ctx.sendEvent('SelectTD', state.turn);
+        return Response.ok();
+    }
 
-        //For Each TD card in pile, apply effects of card
-        state.towerDefensePile.forEach(card => {
-            //cycle through each Ability of the TD card
-            card.Effects.forEach(effect => {
-                applyEffect(state, userId, effect);
-            });
-        });
+    selectTowerDefense(state: GameState, userId: string, ctx: Context, request: ISelectTowerDefenseRequest): Response {
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.roundSequence != RoundState.TowerDefense) return Response.error('Not ready for this response yet');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
 
-        state.eventLog.push();
+        //evaluate effect of TD card
+        if (request.response.userData) {
+            ctx.sendEvent('i made it', state.turn);
+        }
 
         return Response.ok();
     }

@@ -1,44 +1,66 @@
-export let TD = {
-    tripwire1: {
-        level: 1,
-        Effect: [
+import { Cardstatus, TowerDefense, targetType, effectType } from '../../api/types';
+let TDCardPool: TowerDefense[];
+
+export default TDCardPool = [
+    {
+        Title: 'Tripwire1',
+        Level: 1,
+        Effects: [
             {
                 name: 'DracoEffect',
-                target: 'ActiveHero',
+                target: targetType.ActiveHero,
                 cb: 'passiveWhenLocationAdded',
                 value: {
-                    Health: -2,
+                    prop: 'Health',
+                    val: -2,
                 },
-                type: 'PASSIVE',
+                type: effectType.Passive,
+            },
+            {
+                name: 'someothereffect',
+                target: targetType.ActiveHero,
+                cb: 'passiveWhenLocationAdded',
+                value: {
+                    prop: 'Health',
+                    val: -1,
+                },
+                type: effectType.Passive,
             },
         ],
+        CardStatus: Cardstatus.FaceDown,
     },
-    tripwire2: {
-        level: 1,
-        Effect: [
+    {
+        Title: 'Tripwire2',
+        Level: 1,
+        Effects: [
             {
                 name: 'Health -2',
-                target: 'ActiveHero',
+                target: targetType.ActiveHero,
                 cb: 'changeProperty',
                 value: {
-                    Health: -2,
+                    prop: 'Health',
+                    val: -2,
                 },
-                type: 'ACTIVE',
+                type: effectType.Active,
             },
         ],
+        CardStatus: Cardstatus.FaceDown,
     },
-    goblin: {
-        level: 1,
-        Effect: [
+    {
+        Title: 'Goblin',
+        Level: 1,
+        Effects: [
             {
                 name: 'GoblinEffect',
-                target: 'Active Hero',
+                target: targetType.ActiveHero,
                 cb: 'passiveWhenDiscarded',
                 value: {
-                    Health: -1,
+                    prop: 'Health',
+                    val: -1,
                 },
-                type: 'PASSIVE',
+                type: effectType.Passive,
             },
         ],
+        CardStatus: Cardstatus.FaceDown,
     },
-};
+];

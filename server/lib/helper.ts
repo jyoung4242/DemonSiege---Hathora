@@ -1,6 +1,6 @@
 import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect } from '../../api/types';
 import { InternalState } from '../impl';
-
+/* 
 export function loadMonsterCardsFromJSON(incoming: object): Array<MonsterCard> {
     let returnArray: Array<MonsterCard> = [];
 
@@ -38,23 +38,6 @@ export function loadAbilityCardsFromJSON(incoming: object): Array<AbilityCard> {
     return returnArray;
 }
 
-export function loadTDCardsFromJSON(incoming: object): Array<TowerDefense> {
-    let returnArray: Array<TowerDefense> = [];
-
-    for (const [key, value] of Object.entries(incoming)) {
-        let tempCard: TowerDefense = {
-            Title: key,
-            Level: value.level,
-            Effects: loadEffectArray(value.Effect),
-            CardStatus: Cardstatus.FaceDown,
-        };
-
-        returnArray.push(tempCard);
-    }
-
-    return returnArray;
-}
-
 export function loadLocationCardsFromJSON(incoming: object): Array<LocationCard> {
     let returnArray: Array<LocationCard> = [];
 
@@ -72,7 +55,7 @@ export function loadLocationCardsFromJSON(incoming: object): Array<LocationCard>
     }
 
     return returnArray;
-}
+} */
 
 export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: number) {
     for (let index = 0; index < numCards; index++) {
@@ -82,13 +65,3 @@ export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: 
 }
 
 export function applyEffect(state: InternalState, userId: UserId, effect: Effect) {}
-
-function loadEffectArray(inputArray: Array<Effect>): Array<Effect> {
-    let rsltArray: Effect[] = [];
-    inputArray.forEach(effect => {
-        console.log(`effect: `, effect);
-        rsltArray.push(effect);
-    });
-
-    return rsltArray;
-}
