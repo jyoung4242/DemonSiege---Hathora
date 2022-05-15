@@ -7,18 +7,11 @@ export default AbilityCardPool = [
         Catagory: 'weapon',
         Level: 2,
         Cost: 3,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 2,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack2',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -26,28 +19,16 @@ export default AbilityCardPool = [
         Catagory: 'weapon',
         Level: 5,
         Cost: 6,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 2,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'DrawCard',
-                target: targetType.ActiveHero,
-                cb: 'passiveWhenMonsterDefeated',
-                value: {
-                    prop: 'Draw',
-                    val: 1,
-                },
-                type: effectType.Passive,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack2',
+            userPrompt: false,
+        },
+        PassiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'passiveWhenMonsterDefeatedDraw1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -55,18 +36,12 @@ export default AbilityCardPool = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 3,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1',
+            userPrompt: false,
+        },
+
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -74,28 +49,11 @@ export default AbilityCardPool = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 3,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1Ability1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -103,18 +61,11 @@ export default AbilityCardPool = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 3,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            cb: 'addAttack1',
+            target: targetType.ActiveHero,
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -122,28 +73,11 @@ export default AbilityCardPool = [
         Catagory: 'item',
         Level: 1,
         Cost: 4,
-        Effects: [
-            {
-                name: 'Health',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addHealth1Ability1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -151,18 +85,11 @@ export default AbilityCardPool = [
         Catagory: 'item',
         Level: 1,
         Cost: 3,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAbility1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -170,18 +97,11 @@ export default AbilityCardPool = [
         Catagory: 'spell',
         Level: 1,
         Cost: 2,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
 ];

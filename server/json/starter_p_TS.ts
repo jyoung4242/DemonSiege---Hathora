@@ -7,28 +7,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseHealth11Ability1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -36,18 +19,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAbility1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -55,18 +31,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.AnyHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.AnyHero,
+            cb: 'addAbility1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -74,18 +43,11 @@ export default starterDeckPaladin = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -93,18 +55,11 @@ export default starterDeckPaladin = [
         Catagory: 'item',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Health',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addHealth1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -112,28 +67,11 @@ export default starterDeckPaladin = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Draw',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseAttack1Draw1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -141,18 +79,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Health',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addHealth1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -160,18 +91,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Health',
-                target: targetType.AnyHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.AnyHero,
+            cb: 'addHealth1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -179,28 +103,11 @@ export default starterDeckPaladin = [
         Catagory: 'item',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseHealth1Ability1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -208,28 +115,11 @@ export default starterDeckPaladin = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Draw2',
-                target: targetType.AnyHero,
-                cb: 'Draw',
-                value: {
-                    prop: 'Draw',
-                    val: 2,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Discard',
-                target: targetType.AnyHero,
-                cb: 'Discard',
-                value: {
-                    prop: 'Discard',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.AnyHero,
+            cb: 'draw2lose1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
 ];

@@ -13,6 +13,7 @@ types:
     Cardstatus:
         - FaceUp
         - FaceDown
+        - FaceUpDisabled
     PlayerStatus:
         - Undefined
         - Connected
@@ -53,6 +54,18 @@ types:
         - DiscardCard
         - AddLocation
         - RemoveLocation
+    StatusEffect:
+        - Stunned
+        - NoHeal
+        - NoDraw
+        - DamageCap
+        - MonsterDefeatPerk
+        - LocationCursed
+        - NoLocation
+        - PurchaseCurse
+        - DiscardCurse
+        - ImmuneUntilLast
+        - MonsterRally
     Conditions:
         - Standard
         - IfTopCardOfDeckAbilityScoreGT4
@@ -86,11 +99,11 @@ types:
     #Passive: string
     #Active: string
 
-    errorMessage:
+    ErrorMessage:
         status: int
         message: string
 
-    userResponse:
+    UserResponse:
         userData: boolean
         cardPlayed: Cards
         selectedUsers?: UserId[]
@@ -100,23 +113,17 @@ types:
         - AllHeroes
         - ActiveHero
         - OtherHeroes
-        - ChooseOther
         - AnyHero
+        - RandomHero
 
     effectType:
         - Passive
         - Active
 
-    effectProperty:
-        prop: string
-        val: int
-
     Effect:
-        name: string
-        value: effectProperty
         target: targetType
-        type: effectType
         cb: string
+        userPrompt: boolean
 
     MonsterCard:
         Title: string
@@ -124,21 +131,25 @@ types:
         Damage: int
         Level: int
         CardStatus: Cardstatus
-        Effects: Effect[]
-        Rewards: Effect[]
+        ActiveEffect: Effect?
+        PassiveEffect: Effect?
+        Rewards: Effect
+        StatusEffects: StatusEffect[]
 
     AbilityCard:
         Title: string
         Catagory: string
         Level: int
         Cost: int
-        Effects: Effect[]
+        ActiveEffect: Effect?
+        PassiveEffect: Effect?
         CardStatus: Cardstatus
 
     TowerDefense:
         Title: string
         Level: int
-        Effects: Effect[]
+        ActiveEffect: Effect?
+        PassiveEffect: Effect?
         CardStatus: Cardstatus
 
     LocationCard:
@@ -147,7 +158,9 @@ types:
         TD: int
         Sequence: int
         Health: int
-        Effects?: Effect[]
+        ActiveDamage: int
+        ActiveEffect: Effect?
+        PassiveEffect: Effect?
         CardStatus: Cardstatus
 
     UIEvents:
@@ -160,6 +173,7 @@ types:
 
     Player:
         Id: UserId
+        StatusEffects: StatusEffect[]
         PlayerState: PlayerStatus
         NumCards: int
         Health: int
@@ -182,7 +196,6 @@ types:
         abilityDeck: AbilityCard[]
         abilityPile: AbilityCard[]
         monsterDeck: MonsterCard[]
-        monsterPile: MonsterCard?
         activeMonsters: MonsterCard[]
         monsterDiscard: MonsterCard[]
         locationDeck: LocationCard[]
@@ -201,9 +214,11 @@ methods:
     addAI:
     startGame:
     selectTowerDefense:
-        response: userResponse
-    playCard:
-        card: AbilityCard
+        cardname: string
+    selectMonsterCard:
+        cardname: string
+    selectPlayerCard:
+        cardname: string
     discard:
         card: AbilityCard
     drawCard:

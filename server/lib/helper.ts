@@ -1,67 +1,57 @@
-import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect } from '../../api/types';
+import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect, effectType, Cards, Player } from '../../api/types';
+import { Context } from '../.hathora/methods';
 import { InternalState } from '../impl';
-/* 
-export function loadMonsterCardsFromJSON(incoming: object): Array<MonsterCard> {
-    let returnArray: Array<MonsterCard> = [];
+import { applyPassiveEffect } from './effects';
 
-    for (const [key, value] of Object.entries(incoming)) {
-        let tempCard: MonsterCard = {
-            Title: key,
-            Damage: 0,
-            Health: value.health,
-            Level: value.level,
-            Effects: [],
-            Rewards: [],
-            CardStatus: Cardstatus.FaceDown,
+export function checkPassiveTDEffects(s: InternalState, c: Context) {
+    s.towerDefensePile.forEach(card => {
+        let cardobject: Cards = {
+            type: 'TowerDefense',
+            val: card,
         };
-        returnArray.push(tempCard);
-    }
-
-    return returnArray;
+        if (card.PassiveEffect) {
+            applyPassiveEffect(s, s.turn!, cardobject, c);
+        }
+    });
 }
 
-export function loadAbilityCardsFromJSON(incoming: object): Array<AbilityCard> {
-    let returnArray: Array<AbilityCard> = [];
-
-    for (const [key, value] of Object.entries(incoming)) {
-        let tempCard: AbilityCard = {
-            Title: key,
-            Catagory: value.catagory,
-            Cost: value.cost,
-            Level: value.level,
-            Effects: [],
-            CardStatus: Cardstatus.FaceDown,
+export function checkPassiveMonsterEffects(s: InternalState, c: Context) {
+    s.activeMonsters.forEach(card => {
+        let cardobject: Cards = {
+            type: 'MonsterCard',
+            val: card,
         };
-        returnArray.push(tempCard);
-    }
-
-    return returnArray;
+        if (card.PassiveEffect) {
+            applyPassiveEffect(s, s.turn!, cardobject, c);
+            //if card doesn't have any ActiveEffects, disable it
+            if (!card.ActiveEffect) card.CardStatus = Cardstatus.FaceUpDisabled;
+        }
+    });
 }
 
-export function loadLocationCardsFromJSON(incoming: object): Array<LocationCard> {
-    let returnArray: Array<LocationCard> = [];
-
-    for (const [key, value] of Object.entries(incoming)) {
-        let tempCard: LocationCard = {
-            Title: key,
-            Level: value.level,
-            TD: value.TD,
-            Sequence: value.sequence,
-            Health: value.health,
-            Effects: [],
-            CardStatus: Cardstatus.FaceDown,
+export function checkPassivePlayerEffects(s: InternalState, c: Context) {
+    //find player index
+    const index = s.players.findIndex(p => p.Id == s.turn);
+    //go through player hand and check for passive effects
+    s.players[index].Hand.forEach(card => {
+        let cardobject: Cards = {
+            type: 'AbilityCard',
+            val: card,
         };
-        returnArray.push(tempCard);
-    }
+        if (card.PassiveEffect) {
+            applyPassiveEffect(s, s.turn!, cardobject, c);
+        }
+    });
+}
 
-    return returnArray;
-} */
-
-export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: number) {
+export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: number): void {
     for (let index = 0; index < numCards; index++) {
         const myCard: T = source.pop()!;
         destination.push(myCard);
     }
 }
 
-export function applyEffect(state: InternalState, userId: UserId, effect: Effect) {}
+export function discard<T>(source: Array<T>, destination: Array<T>, index: number): void {
+    const myCard: T[] = source.splice(index, 1);
+    destination.push(myCard[0]);
+}

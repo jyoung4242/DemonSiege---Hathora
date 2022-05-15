@@ -1,4 +1,4 @@
-import { TowerDefense, UserId, MonsterCard, Player, PlayerStatus, Roles, errorMessage, GameStates, AbilityCard, Cardstatus, LocationCard } from '../../api/types';
+import { TowerDefense, UserId, MonsterCard, Player, PlayerStatus, Roles, ErrorMessage, GameStates, AbilityCard, Cardstatus, LocationCard } from '../../api/types';
 import { dealCards } from './helper';
 import TDpkg from '../json/tdtest';
 import { InternalState } from '../impl';
@@ -30,7 +30,7 @@ export let playerOrder: Array<UserId> = [];
 export const numberMonstersActiveByLevel: Array<number> = [1, 1, 2, 2, 3, 3, 3, 3];
 export let monsterCardDiscardPoolArray: Array<MonsterCard> = [];
 
-export function joinNewPlayertoGame(u: UserId, s: InternalState): errorMessage {
+export function joinNewPlayertoGame(u: UserId, s: InternalState): ErrorMessage {
     let newPlayer: Player = {
         PlayerState: PlayerStatus.RoleSelection,
         Id: u,
@@ -44,6 +44,7 @@ export function joinNewPlayertoGame(u: UserId, s: InternalState): errorMessage {
         Role: Roles.Barbarian,
         LevelBonus: [],
         TurnComplete: false,
+        StatusEffects: [],
     };
 
     s.players.push(newPlayer);
@@ -51,7 +52,7 @@ export function joinNewPlayertoGame(u: UserId, s: InternalState): errorMessage {
     return { status: 0, message: 'All good' };
 }
 
-export function setPlayerRole(u: UserId, s: InternalState, r: Roles): errorMessage {
+export function setPlayerRole(u: UserId, s: InternalState, r: Roles): ErrorMessage {
     const playerIndex = s.players.findIndex(i => i.Id == u);
     if (playerIndex == -1) return { status: -1, message: 'User Not Found' };
     if (s.players[playerIndex].PlayerState != PlayerStatus.RoleSelection) return { status: -2, message: 'Player not able to set role currently' };
@@ -115,7 +116,7 @@ export function setupLocationDeck(s: InternalState, c: Context) {
 
 export function setupTDDeck(s: InternalState, c: Context) {
     //load appropriate level location cards into active location array
-    s.towerDefenseDeck = locationCardPool.filter(card => card.Level <= s.gameLevel);
+    s.towerDefenseDeck = TdCardPool.filter(card => card.Level <= s.gameLevel);
     s.towerDefenseDeck = c.chance.shuffle(s.towerDefenseDeck);
 }
 

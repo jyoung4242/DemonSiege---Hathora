@@ -5,62 +5,111 @@ export default TDCardPool = [
     {
         Title: 'Tripwire1',
         Level: 1,
-        Effects: [
-            {
-                name: 'DracoEffect',
-                target: targetType.ActiveHero,
-                cb: 'passiveWhenLocationAdded',
-                value: {
-                    prop: 'Health',
-                    val: -2,
-                },
-                type: effectType.Passive,
-            },
-            {
-                name: 'someothereffect',
-                target: targetType.ActiveHero,
-                cb: 'passiveWhenLocationAdded',
-                value: {
-                    prop: 'Health',
-                    val: -1,
-                },
-                type: effectType.Passive,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'lowerHealth2',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
         Title: 'Tripwire2',
         Level: 1,
-        Effects: [
-            {
-                name: 'Health -2',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: -2,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'lowerHealth2',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Goblin',
+        Title: 'Tripwire3',
         Level: 1,
-        Effects: [
-            {
-                name: 'GoblinEffect',
-                target: targetType.ActiveHero,
-                cb: 'passiveWhenDiscarded',
-                value: {
-                    prop: 'Health',
-                    val: -1,
-                },
-                type: effectType.Passive,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'lowerHealth2',
+            userPrompt: false,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'net1',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addLocation1',
+            userPrompt: false,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'net2',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addLocation1',
+            userPrompt: false,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'net3',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addLocation1',
+            userPrompt: false,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'pit1',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'lowerHealth1Discard1',
+            userPrompt: true,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'pit2',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'lowerHealth1Discard1',
+            userPrompt: true,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'quicksand1',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.AllHeroes,
+            cb: 'lowerHealth1',
+            userPrompt: false,
+        },
+        PassiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'NoDraw',
+            userPrompt: false,
+        },
+        CardStatus: Cardstatus.FaceDown,
+    },
+    {
+        Title: 'quicksand2',
+        Level: 1,
+        ActiveEffect: {
+            target: targetType.AllHeroes,
+            cb: 'lowerHealth1',
+            userPrompt: false,
+        },
+        PassiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'NoDraw',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
 ];

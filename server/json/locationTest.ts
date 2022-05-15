@@ -8,8 +8,8 @@ export default LocationCardPool = [
         Health: 5,
         Level: 1,
         TD: 1,
-        Effects: [],
         CardStatus: Cardstatus.FaceDown,
+        ActiveDamage: 0,
     },
     {
         Title: 'Dungeon',
@@ -17,8 +17,8 @@ export default LocationCardPool = [
         Health: 5,
         Level: 1,
         TD: 1,
-        Effects: [],
         CardStatus: Cardstatus.FaceDown,
+        ActiveDamage: 0,
     },
     {
         Title: 'Crypt',
@@ -26,7 +26,7 @@ export default LocationCardPool = [
         Health: 6,
         Level: 1,
         TD: 1,
-        Effects: [],
         CardStatus: Cardstatus.FaceDown,
+        ActiveDamage: 0,
     },
 ];

@@ -7,28 +7,11 @@ export default starterDeckWizard = [
         Catagory: 'item',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseHealth1Ability1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -36,18 +19,11 @@ export default starterDeckWizard = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -55,18 +31,11 @@ export default starterDeckWizard = [
         Catagory: 'item',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 2,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAbility2',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -74,28 +43,11 @@ export default starterDeckWizard = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseAttack1Ability1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -103,28 +55,11 @@ export default starterDeckWizard = [
         Catagory: 'friend',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1Ability1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -132,18 +67,12 @@ export default starterDeckWizard = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Attack',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAttack1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -151,18 +80,11 @@ export default starterDeckWizard = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Health',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Health',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addHealth1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -170,28 +92,11 @@ export default starterDeckWizard = [
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Draw',
-                target: targetType.ActiveHero,
-                cb: 'drawCard',
-                value: {
-                    prop: 'Draw',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAbility1Draw1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -199,18 +104,11 @@ export default starterDeckWizard = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Ability',
-                target: targetType.ActiveHero,
-                cb: 'changeProperty',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'addAbility1',
+            userPrompt: false,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
     {
@@ -218,28 +116,11 @@ export default starterDeckWizard = [
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
-        Effects: [
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Attack',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-            {
-                name: 'Choose',
-                target: targetType.ActiveHero,
-                cb: 'choose',
-                value: {
-                    prop: 'Ability',
-                    val: 1,
-                },
-                type: effectType.Active,
-            },
-        ],
+        ActiveEffect: {
+            target: targetType.ActiveHero,
+            cb: 'chooseAttack1Ability1',
+            userPrompt: true,
+        },
         CardStatus: Cardstatus.FaceDown,
     },
 ];

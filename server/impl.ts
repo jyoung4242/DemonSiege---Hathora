@@ -1,8 +1,9 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
 import { TdCardPool, abilityCardPool, playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IPlayCardRequest, IDiscardRequest, IDrawCardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, errorMessage, ISelectTowerDefenseRequest } from '../api/types';
-import { dealCards, applyEffect } from './lib/helper';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest } from '../api/types';
+import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects } from './lib/helper';
+import { applyActiveEffect } from './lib/effects';
 
 export type InternalState = GameState;
 //console.log(`Init TdCardPool:`, typeof TdCardPool, TdCardPool);
@@ -21,7 +22,6 @@ export class Impl implements Methods<InternalState> {
             abilityDeck: [],
             abilityPile: [],
             monsterDeck: [],
-            monsterPile: undefined,
             monsterDiscard: [],
             activeMonsters: [],
             locationDeck: [],
@@ -41,13 +41,13 @@ export class Impl implements Methods<InternalState> {
         if (state.players.find(player => player.Id === userId) !== undefined) return Response.error('Already joined');
 
         state.gameSequence = GameStates.PlayersJoining;
-        const stsObject: errorMessage = joinNewPlayertoGame(userId, state);
+        const stsObject: ErrorMessage = joinNewPlayertoGame(userId, state);
         if (stsObject.status < 0) return Response.error(stsObject.message);
         else return Response.ok();
     }
 
     selectRole(state: InternalState, userId: UserId, ctx: Context, request: ISelectRoleRequest): Response {
-        const stsObject: errorMessage = setPlayerRole(userId, state, request.role);
+        const stsObject: ErrorMessage = setPlayerRole(userId, state, request.role);
         if (stsObject.status < 0) return Response.error(stsObject.message);
         else return Response.ok();
     }
@@ -84,30 +84,150 @@ export class Impl implements Methods<InternalState> {
         const loopIndex = state.locationPile?.TD || 1;
         dealCards(state.towerDefenseDeck, state.towerDefensePile, loopIndex);
         state.towerDefensePile.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
+
+        ctx.broadcastEvent('PASSIVE TD EFFECTS');
+        checkPassiveTDEffects(state, ctx);
+
+        ctx.broadcastEvent('PASSIVE MONSTER EFFECTS');
+        checkPassiveMonsterEffects(state, ctx);
+
+        ctx.broadcastEvent('PASSIVE PLAYER EFFECTS');
+        checkPassivePlayerEffects(state, ctx);
+
         ctx.broadcastEvent('Enable TD');
         ctx.sendEvent('SelectTD', state.turn);
         return Response.ok();
     }
 
     selectTowerDefense(state: GameState, userId: string, ctx: Context, request: ISelectTowerDefenseRequest): Response {
+        console.log('TD method from client');
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.roundSequence != RoundState.TowerDefense) return Response.error('Not ready for this response yet');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
 
-        //evaluate effect of TD card
-        if (request.response.userData) {
-            ctx.sendEvent('i made it', state.turn);
+        //find card in state
+        const index = state.towerDefensePile.findIndex(card => card.Title == request.cardname);
+        if (index < 0) return Response.error('Invalid Card Played');
+
+        //cards matchup
+        ctx.sendEvent('Found TD card', state.turn);
+        // found card, so implement effect
+
+        let cardObject: Cards = { type: 'TowerDefense', val: state.towerDefensePile[index] };
+        applyActiveEffect(state, state.turn, cardObject, ctx);
+
+        //once played,flip card and move to discard
+        state.towerDefensePile[index].CardStatus = Cardstatus.FaceDown;
+        discard(state.towerDefensePile, state.towerDefenseDiscard, index);
+        ctx.broadcastEvent(`discard TD card: ${index}`);
+
+        // check if other TD cards to play
+        if (state.towerDefensePile.length) {
+            //play next td card
+            ctx.broadcastEvent('Enable TD');
+            ctx.sendEvent('SelectTD', state.turn);
+        } else {
+            //move on to monster cards
+            //check if any active monsters are enabled
+            if (state.activeMonsters.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {
+                //all disabled
+                //all monster cards done
+                state.roundSequence = RoundState.PlayerTurn;
+                ctx.broadcastEvent('Enable Current Users Cards');
+                console.log(`Moving on to Players cards`);
+            } else {
+                state.roundSequence = RoundState.MonsterCard;
+                ctx.broadcastEvent('Enable Monsters');
+                console.log(`Moving on to Monster cards`);
+            }
         }
+        // if empty, move gamestate onto monstercard
 
         return Response.ok();
     }
 
-    playCard(state: InternalState, userId: UserId, ctx: Context, request: IPlayCardRequest): Response {
-        return Response.error('Not implemented');
+    selectMonsterCard(state: GameState, userId: string, ctx: Context, request: ISelectMonsterCardRequest): Response {
+        console.log('Monster Card method from client');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.roundSequence != RoundState.MonsterCard) return Response.error('Not ready for this response yet');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
+
+        //find index of card sent
+        const index = state.activeMonsters.findIndex(card => card.Title == request.cardname);
+        if (index < 0) return Response.error('Invalid Card Played');
+
+        //Gaurd condition, card submitted doesn't have an Active Effect
+        if (!state.activeMonsters[index].ActiveEffect) return Response.error('Invalid Card Played');
+
+        //cards matchup
+        ctx.sendEvent('Monster Card Effect being applied', state.turn);
+        // found card, so implement effect
+        let cardObject: Cards = {
+            type: 'MonsterCard',
+            val: state.activeMonsters[index],
+        };
+        applyActiveEffect(state, state.turn, cardObject, ctx);
+        state.activeMonsters[index].CardStatus = Cardstatus.FaceUpDisabled;
+
+        //check for additional monster cards that aren't disabled
+        if (state.activeMonsters.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {
+            //all monster cards done
+            state.roundSequence = RoundState.PlayerTurn;
+            ctx.broadcastEvent('Enable Current Users Cards');
+            console.log(`Moving on to Players cards`);
+        } else {
+            //more monster cards to process
+            state.roundSequence = RoundState.MonsterCard;
+            ctx.broadcastEvent('Next Monster Card');
+            console.log(`Next Monster Card`);
+        }
+
+        return Response.ok();
     }
+    selectPlayerCard(state: GameState, userId: string, ctx: Context, request: ISelectPlayerCardRequest): Response {
+        console.log('Monster Card method from client');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.roundSequence != RoundState.PlayerTurn) return Response.error('Not ready for this response yet');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
+
+        //find player index
+        const playerIndex = state.players.findIndex(player => player.Id == userId);
+        if (playerIndex < 0) return Response.error('invalid player submission');
+
+        //find index of card sent
+        const index = state.players[playerIndex].Hand.findIndex(card => card.Title == request.cardname);
+        if (index < 0) return Response.error('Invalid Card Played');
+
+        //cards matchup
+        ctx.sendEvent('Player Card Effect being applied', state.turn);
+        // found card, so implement effect
+        let cardObject: Cards = {
+            type: 'AbilityCard',
+            val: state.players[playerIndex].Hand[index],
+        };
+        applyActiveEffect(state, state.turn, cardObject, ctx);
+        state.activeMonsters[index].CardStatus = Cardstatus.FaceUpDisabled;
+
+        return Response.ok();
+    }
+
     discard(state: InternalState, userId: UserId, ctx: Context, request: IDiscardRequest): Response {
-        return Response.error('Not implemented');
+        const index = state.players.findIndex(p => p.Id == userId);
+        const cardspot = state.players[index].Hand.findIndex(c => c.Title == request.card.Title);
+        state.players[index].Hand = state.players[index].Hand.slice(cardspot, cardspot + 1);
+        ctx.broadcastEvent(`USER: ${userId} Discarded ${request.card}`);
+
+        //TBD - Check for discard status effects here
+
+        return Response.ok();
     }
+
     drawCard(state: InternalState, userId: UserId, ctx: Context, request: IDrawCardRequest): Response {
         return Response.error('Not implemented');
     }
