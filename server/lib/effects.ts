@@ -59,15 +59,61 @@ function arrayOfTargets(p: UserId, u: Array<Player>, t: targetType, c: Context, 
  * Active Effects
  * instantly changes something in the game when called
  */
-function addAttack1() {}
 
-function addHealth1() {}
+const addAttack1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding attack to player by 1`);
 
-function addAttack2() {}
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AttackPoints += 1;
+        c.sendEvent('Attack added 1 ', player);
+    });
+};
 
-function addAbility1() {}
+const addHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding health to player by 1`);
 
-function addAbility2() {}
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].Health += 1;
+        c.sendEvent('Health added 1 ', player);
+    });
+};
+
+const addAttack2: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding attack to player by 2`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AttackPoints += 2;
+        c.sendEvent('Attack added 2 ', player);
+    });
+};
+
+const addAbility1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding ability to player by 1`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AbilityPoints += 1;
+        c.sendEvent('Ability added 1 ', player);
+    });
+};
+
+const addAbility2: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding ability to player by 2`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AbilityPoints += 2;
+        c.sendEvent('Ability added 2 ', player);
+    });
+};
 
 const lowerHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Lowering Player Health By 1`);
@@ -120,25 +166,94 @@ const lowerHealth1Discard1: EffectCallback = (userId: UserId, state: InternalSta
         }
 
         //Discarding
-        c.sendEvent('UE Discard1', userId);
+        c.sendEvent('UE Discard1', player);
     });
 };
 
-function addAttack1Ability1() {}
+const addAttack1Ability1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding ability and attack to player by 1`);
 
-function addHealth1Ability1() {}
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AbilityPoints += 1;
+        state.players[index].AttackPoints += 1;
+        c.sendEvent('AbilityAttack added 1 ', player);
+    });
+};
 
-function addAttack1Draw1() {}
+const addHealth1Ability1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding ability and health to player by 1`);
 
-function addAbility1Draw1() {}
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AbilityPoints += 1;
+        state.players[index].Health += 1;
+        c.sendEvent('AbilityAttack added 1 ', player);
+    });
+};
 
-function draw1() {}
+const addAttack1Draw1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding  attack to player by 1, Draw 1`);
 
-function draw2lose1() {}
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AttackPoints += 1;
+        c.sendEvent('Attack added 1', player);
 
-function removeLocation1() {}
+        //Draw command
+        c.sendEvent('UE Draw1', player);
+    });
+};
+
+const addAbility1Draw1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding ability to player by 1, Draw 1`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AttackPoints += 1;
+        c.sendEvent('Attack added 1', player);
+
+        //Draw command
+        c.sendEvent('UE Draw1', player);
+    });
+};
+
+const draw1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Draw 1`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        //Draw command
+        c.sendEvent('UE Draw1', player);
+    });
+};
+
+const draw2lose1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Draw 2 cards, discard 1`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        //Draw command
+        c.sendEvent('UE Draw2', player);
+        //Draw command
+        c.sendEvent('UE Discard1', player);
+    });
+};
+
+const removeLocation1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Removing Location Point`);
+    if (state.locationPile!.ActiveDamage > 0) state.locationPile!.ActiveDamage -= 1;
+    c.broadcastEvent('Location Point removed');
+};
 
 const addLocation1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding location point by 1`);
     state.locationPile!.ActiveDamage += 1;
     if (state.locationPile!.ActiveDamage >= state.locationPile!.Health) {
         //Location Lost

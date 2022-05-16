@@ -220,20 +220,15 @@ methods:
     selectPlayerCard:
         cardname: string
     discard:
-        card: AbilityCard
+        cardname: string
     drawCard:
+        cardname: string
     endTurn:
     startTurn:
     applyAttack:
-        card: MonsterCard
+        cardname: string
     buyAbilityCard:
-        card: AbilityCard
-    applyHealth:
-        user: UserId
-    applyChoice:
-        selection: int
-    applySelectedUser:
-        user: UserId
+        cardname: string
 
 auth:
     anonymous: {}

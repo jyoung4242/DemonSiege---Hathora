@@ -1,8 +1,8 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
-import { TdCardPool, abilityCardPool, playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, IApplyHealthRequest, IApplyChoiceRequest, IApplySelectedUserRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest } from '../api/types';
-import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects } from './lib/helper';
+import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest } from '../api/types';
+import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer } from './lib/helper';
 import { applyActiveEffect } from './lib/effects';
 
 export type InternalState = GameState;
@@ -212,44 +212,122 @@ export class Impl implements Methods<InternalState> {
             val: state.players[playerIndex].Hand[index],
         };
         applyActiveEffect(state, state.turn, cardObject, ctx);
-        state.activeMonsters[index].CardStatus = Cardstatus.FaceUpDisabled;
+        state.players[playerIndex].Hand[index].CardStatus = Cardstatus.FaceUpDisabled;
+
+        //check for additional ability cards that aren't disabled
+        if (state.players[playerIndex].Hand.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {
+            //all cards in hand are done
+
+            ctx.broadcastEvent('All Cards Played');
+            console.log(`No more cards in players hand`);
+        } else {
+            //more monster cards to process
+            state.roundSequence = RoundState.PlayerTurn;
+            ctx.broadcastEvent('Next Ability Card in Players Hand');
+            console.log(`Next Players Card`);
+        }
 
         return Response.ok();
     }
 
     discard(state: InternalState, userId: UserId, ctx: Context, request: IDiscardRequest): Response {
-        const index = state.players.findIndex(p => p.Id == userId);
-        const cardspot = state.players[index].Hand.findIndex(c => c.Title == request.card.Title);
-        state.players[index].Hand = state.players[index].Hand.slice(cardspot, cardspot + 1);
-        ctx.broadcastEvent(`USER: ${userId} Discarded ${request.card}`);
+        console.log('Discarding Card from Hand');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
 
-        //TBD - Check for discard status effects here
+        //find player index
+        const playerIndex = state.players.findIndex(player => player.Id == userId);
+        if (playerIndex < 0) return Response.error('invalid player submission');
+
+        const cardIndex = state.players[playerIndex].Hand.findIndex(c => c.Title == request.cardname);
+        discard(state.players[playerIndex].Hand, state.players[playerIndex].Discard, cardIndex);
+        ctx.broadcastEvent(`USER: ${userId} Discarded ${request.cardname}`);
+
+        //TODO - Check for discard status effects here
 
         return Response.ok();
     }
 
     drawCard(state: InternalState, userId: UserId, ctx: Context, request: IDrawCardRequest): Response {
-        return Response.error('Not implemented');
+        console.log('Drawing Card from Deck');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
+
+        //find player index
+        const playerIndex = state.players.findIndex(player => player.Id == userId);
+        if (playerIndex < 0) return Response.error('invalid player submission');
+
+        //confirm cards in deck
+        if (state.players[playerIndex].Deck.length == 0) {
+            //TODO, reshuffle and replace deck with discard pile
+        }
+
+        dealCards(state.players[playerIndex].Deck, state.players[playerIndex].Hand, 1);
+        ctx.sendEvent('new card dealt', userId);
+
+        return Response.ok();
     }
     endTurn(state: InternalState, userId: UserId, ctx: Context, request: IEndTurnRequest): Response {
-        return Response.error('Not implemented');
+        state.roundSequence = RoundState.End;
+        ctx.broadcastEvent('All Cards Played');
+        console.log(`No more cards in players hand`);
+        nextPlayer(state);
+        return Response.ok();
     }
 
     applyAttack(state: InternalState, userId: UserId, ctx: Context, request: IApplyAttackRequest): Response {
-        return Response.error('Not implemented');
+        console.log('Attacking Monster');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.roundSequence != RoundState.PlayerTurn) return Response.error('Not ready for this response yet');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
+
+        //find monstercard
+        const monsterIndex = state.activeMonsters.findIndex(monster => monster.Title == request.cardname);
+        if (monsterIndex < 0) return Response.error('invalid monster submission');
+
+        ctx.broadcastEvent('Attacking Monster');
+        state.activeMonsters[monsterIndex].Damage += 1;
+        if (state.activeMonsters[monsterIndex].Damage == state.activeMonsters[monsterIndex].Health) {
+            //do something, cuz monster done
+            ctx.broadcastEvent('Monster Defeated!');
+            /*TODO DEFEATED MONSTER CODE */
+        }
+
+        return Response.ok();
     }
+
     buyAbilityCard(state: InternalState, userId: UserId, ctx: Context, request: IBuyAbilityCardRequest): Response {
-        return Response.error('Not implemented');
+        console.log('Purchasing Ability Card');
+        if (userId != state.turn) return Response.error('Not your turn, please wait');
+        if (state.roundSequence != RoundState.PlayerTurn) return Response.error('Not ready for this response yet');
+        if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
+        //check for card data
+        if (!request.cardname.length) return Response.error('no card submitted');
+
+        //find player index
+        const playerIndex = state.players.findIndex(player => player.Id == userId);
+        if (playerIndex < 0) return Response.error('invalid player submission');
+
+        //find ability card in pool
+        const ABcardIndex = state.abilityPile.findIndex(card => card.Title == request.cardname);
+        if (ABcardIndex < 0) return Response.error('invalid ability card submission');
+
+        //check if player can afford cost of card
+        if (state.players[playerIndex].AbilityPoints < state.abilityPile[ABcardIndex].Cost) return Response.error('Card too expensive, choose another card');
+
+        //withdraw points from player, and move card to discard pile
+        const costOfCard = state.abilityPile[ABcardIndex].Cost;
+        state.players[playerIndex].AbilityPoints -= costOfCard;
+        discard(state.abilityPile, state.players[playerIndex].Discard, ABcardIndex);
+
+        return Response.ok();
     }
-    applyHealth(state: InternalState, userId: UserId, ctx: Context, request: IApplyHealthRequest): Response {
-        return Response.error('Not implemented');
-    }
-    applyChoice(state: InternalState, userId: UserId, ctx: Context, request: IApplyChoiceRequest): Response {
-        return Response.error('Not implemented');
-    }
-    applySelectedUser(state: InternalState, userId: UserId, ctx: Context, request: IApplySelectedUserRequest): Response {
-        return Response.error('Not implemented');
-    }
+
     getUserState(state: InternalState, userId: UserId): GameState {
         return state;
     }

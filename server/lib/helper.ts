@@ -40,6 +40,7 @@ export function checkPassivePlayerEffects(s: InternalState, c: Context) {
         };
         if (card.PassiveEffect) {
             applyPassiveEffect(s, s.turn!, cardobject, c);
+            if (!card.ActiveEffect) card.CardStatus = Cardstatus.FaceUpDisabled;
         }
     });
 }
@@ -54,4 +55,14 @@ export function dealCards<T>(source: Array<T>, destination: Array<T>, numCards: 
 export function discard<T>(source: Array<T>, destination: Array<T>, index: number): void {
     const myCard: T[] = source.splice(index, 1);
     destination.push(myCard[0]);
+}
+
+export function nextPlayer(state: InternalState) {
+    const numplayers = state.players.length;
+    //find index of current user
+    //find player index
+    let index = state.players.findIndex(p => p.Id == state.turn);
+    if (index === numplayers - 1) index = 0;
+    else index += 1;
+    state.turn = state.players[index].Id;
 }
