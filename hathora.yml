@@ -163,6 +163,10 @@ types:
         PassiveEffect: Effect?
         CardStatus: Cardstatus
 
+    PlayerDecks:
+        Deck: AbilityCard[]
+        Discard: AbilityCard[]
+
     UIEvents:
         type: string
         value: int
@@ -175,35 +179,22 @@ types:
         Id: UserId
         StatusEffects: StatusEffect[]
         PlayerState: PlayerStatus
-        NumCards: int
         Health: int
         AttackPoints: int
         AbilityPoints: int
         Hand: AbilityCard[]
-        Deck: AbilityCard[]
-        Discard: AbilityCard[]
         Role: Roles
         LevelBonus: Effect[]
-        TurnComplete: boolean
 
     GameState:
         gameLevel: int
-        locationSequence: int
         gameLog: string[]
-        eventLog: Events[]
         roundSequence: RoundState
         gameSequence: GameStates
-        abilityDeck: AbilityCard[]
         abilityPile: AbilityCard[]
-        monsterDeck: MonsterCard[]
         activeMonsters: MonsterCard[]
-        monsterDiscard: MonsterCard[]
-        locationDeck: LocationCard[]
         locationPile: LocationCard?
-        locationDiscard: LocationCard[]
-        towerDefenseDeck: TowerDefense[]
         towerDefensePile: TowerDefense[]
-        towerDefenseDiscard: TowerDefense[]
         turn: UserId?
         players: Player[]
 
@@ -227,7 +218,6 @@ methods:
     startTurn:
     userChoice:
         effect: string
-        choice: int
     applyAttack:
         cardname: string
     buyAbilityCard:

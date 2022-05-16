@@ -1,12 +1,35 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
 import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType } from '../api/types';
-import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer } from './lib/helper';
-import { applyActiveEffect, applyRewardEffect, lowerHealth1 } from './lib/effects';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType, AbilityCard, MonsterCard, LocationCard, Player } from '../api/types';
+import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer, gameLog, removeStatusEffect, resetDecks } from './lib/helper';
+import { addAbility1, addAttack1, addHealth1, applyActiveEffect, applyRewardEffect, draw1, lowerHealth1 } from './lib/effects';
 
-export type InternalState = GameState;
-//console.log(`Init TdCardPool:`, typeof TdCardPool, TdCardPool);
+export type InternalState = {
+    //the top section is serverside only state
+    abilityDeck: AbilityCard[];
+    monsterDeck: MonsterCard[];
+    towerDefenseDeck: TowerDefense[];
+    locationDeck: LocationCard[];
+    monsterDiscard: MonsterCard[];
+    locationDiscard: LocationCard[];
+    towerDefenseDiscard: TowerDefense[];
+    playersHidden: {
+        Deck: AbilityCard[];
+        Discard: AbilityCard[];
+    }[];
+    //the following is client state
+    gameSequence: GameStates;
+    roundSequence: RoundState;
+    gameLevel: number;
+    gameLog: string[];
+    players: Player[];
+    abilityPile: AbilityCard[];
+    activeMonsters: MonsterCard[];
+    locationPile?: LocationCard;
+    towerDefensePile: TowerDefense[];
+    turn?: UserId;
+};
 
 export class Impl implements Methods<InternalState> {
     initialize(ctx: Context, request: IInitializeRequest): InternalState {
@@ -14,10 +37,8 @@ export class Impl implements Methods<InternalState> {
         playerOrder.splice(0, playerOrder.length);
         return {
             gameLevel: 1,
-            locationSequence: 0,
             gameLog: ['Starting Game Instance'],
-            eventLog: [],
-            roundSequence: 0,
+            roundSequence: RoundState.Idle,
             gameSequence: GameStates.Idle,
             abilityDeck: [],
             abilityPile: [],
@@ -32,10 +53,12 @@ export class Impl implements Methods<InternalState> {
             towerDefenseDiscard: [],
             turn: undefined,
             players: [],
+            playersHidden: [],
         };
     }
 
     joinGame(state: InternalState, userId: UserId, ctx: Context, request: IJoinGameRequest): Response {
+        gameLog(userId, state, 'Joined Game');
         //Guard conditions
         if (state.players.length >= 4) return Response.error('Maximum Players Allowed');
         if (state.players.find(player => player.Id === userId) !== undefined) return Response.error('Already joined');
@@ -48,6 +71,7 @@ export class Impl implements Methods<InternalState> {
 
     selectRole(state: InternalState, userId: UserId, ctx: Context, request: ISelectRoleRequest): Response {
         const stsObject: ErrorMessage = setPlayerRole(userId, state, request.role);
+        gameLog(userId, state, `selected rold: ${request.role}`);
         if (stsObject.status < 0) return Response.error(stsObject.message);
         else return Response.ok();
     }
@@ -58,12 +82,15 @@ export class Impl implements Methods<InternalState> {
      */
     addAI(state: InternalState, userId: UserId, ctx: Context, request: IAddAIRequest): Response {
         return Response.error('Not implemented');
+        //TODO - develop AI model
     }
 
     startGame(state: InternalState, userId: UserId, ctx: Context, request: IStartGameRequest): Response {
         //Guard condition
+        gameLog(userId, state, `started game`);
         if (state.gameSequence != GameStates.ReadyForRound) Response.error('Not ready to start round');
 
+        resetDecks(state);
         loadPlayersStartingDecks(state, ctx);
         setupAbilityDeck(state, ctx);
         setupMonsterDeck(state, ctx);
@@ -75,6 +102,7 @@ export class Impl implements Methods<InternalState> {
     }
 
     startTurn(state: InternalState, userId: UserId, ctx: Context, request: IStartTurnRequest): Response {
+        gameLog(userId, state, `started turn`);
         if (state.gameSequence != GameStates.ReadyForRound) return Response.error('Not Ready to start round');
         if (userId != state.turn) return Response.error('Not Your turn!');
         state.gameSequence = GameStates.InProgress;
@@ -99,8 +127,9 @@ export class Impl implements Methods<InternalState> {
         return Response.ok();
     }
 
-    selectTowerDefense(state: GameState, userId: string, ctx: Context, request: ISelectTowerDefenseRequest): Response {
+    selectTowerDefense(state: InternalState, userId: string, ctx: Context, request: ISelectTowerDefenseRequest): Response {
         console.log('TD method from client');
+
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.roundSequence != RoundState.TowerDefense) return Response.error('Not ready for this response yet');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
@@ -122,7 +151,7 @@ export class Impl implements Methods<InternalState> {
         state.towerDefensePile[index].CardStatus = Cardstatus.FaceDown;
         discard(state.towerDefensePile, state.towerDefenseDiscard, index);
         ctx.broadcastEvent(`discard TD card: ${index}`);
-
+        gameLog(userId, state, `TD card played: ${request.cardname}`);
         // check if other TD cards to play
         if (state.towerDefensePile.length) {
             //play next td card
@@ -148,8 +177,9 @@ export class Impl implements Methods<InternalState> {
         return Response.ok();
     }
 
-    selectMonsterCard(state: GameState, userId: string, ctx: Context, request: ISelectMonsterCardRequest): Response {
+    selectMonsterCard(state: InternalState, userId: string, ctx: Context, request: ISelectMonsterCardRequest): Response {
         console.log('Monster Card method from client');
+
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.roundSequence != RoundState.MonsterCard) return Response.error('Not ready for this response yet');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
@@ -164,6 +194,7 @@ export class Impl implements Methods<InternalState> {
         if (!state.activeMonsters[index].ActiveEffect) return Response.error('Invalid Card Played');
 
         //cards matchup
+        ctx.broadcastEvent(`discard Monster card: ${index}`);
         ctx.sendEvent('Monster Card Effect being applied', state.turn);
         // found card, so implement effect
         let cardObject: Cards = {
@@ -172,7 +203,7 @@ export class Impl implements Methods<InternalState> {
         };
         applyActiveEffect(state, state.turn, cardObject, ctx);
         state.activeMonsters[index].CardStatus = Cardstatus.FaceUpDisabled;
-
+        gameLog(userId, state, `Monster card played: ${request.cardname}`);
         //check for additional monster cards that aren't disabled
         if (state.activeMonsters.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {
             //all monster cards done
@@ -188,8 +219,9 @@ export class Impl implements Methods<InternalState> {
 
         return Response.ok();
     }
-    selectPlayerCard(state: GameState, userId: string, ctx: Context, request: ISelectPlayerCardRequest): Response {
-        console.log('Monster Card method from client');
+    selectPlayerCard(state: InternalState, userId: string, ctx: Context, request: ISelectPlayerCardRequest): Response {
+        console.log('Ability Card method from client');
+
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.roundSequence != RoundState.PlayerTurn) return Response.error('Not ready for this response yet');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
@@ -213,7 +245,7 @@ export class Impl implements Methods<InternalState> {
         };
         applyActiveEffect(state, state.turn, cardObject, ctx);
         state.players[playerIndex].Hand[index].CardStatus = Cardstatus.FaceUpDisabled;
-
+        gameLog(userId, state, `Player card played: ${request.cardname}`);
         //check for additional ability cards that aren't disabled
         if (state.players[playerIndex].Hand.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {
             //all cards in hand are done
@@ -232,6 +264,7 @@ export class Impl implements Methods<InternalState> {
 
     discard(state: InternalState, userId: UserId, ctx: Context, request: IDiscardRequest): Response {
         console.log('Discarding Card from Hand');
+
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
 
@@ -240,9 +273,9 @@ export class Impl implements Methods<InternalState> {
         if (playerIndex < 0) return Response.error('invalid player submission');
 
         const cardIndex = state.players[playerIndex].Hand.findIndex(c => c.Title == request.cardname);
-        discard(state.players[playerIndex].Hand, state.players[playerIndex].Discard, cardIndex);
+        discard(state.players[playerIndex].Hand, state.playersHidden[playerIndex].Discard, cardIndex);
         ctx.broadcastEvent(`USER: ${userId} Discarded ${request.cardname}`);
-
+        gameLog(userId, state, `Player card discarded: ${request.cardname}`);
         //Passive Effect
         if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.DiscardCurse)) {
             lowerHealth1(userId, state, ctx, targetType.ActiveHero);
@@ -264,20 +297,30 @@ export class Impl implements Methods<InternalState> {
         if (playerIndex < 0) return Response.error('invalid player submission');
 
         //confirm cards in deck
-        if (state.players[playerIndex].Deck.length == 0) {
+        if (state.playersHidden[playerIndex].Deck.length == 0) {
             //shuffle up discard pile and redeal to player deck
-            const sizeOfDiscard = state.players[playerIndex].Discard.length;
-            dealCards(state.players[playerIndex].Discard, state.players[playerIndex].Deck, sizeOfDiscard);
-            state.players[playerIndex].Deck = ctx.chance.shuffle(state.players[playerIndex].Deck);
+            const sizeOfDiscard = state.playersHidden[playerIndex].Discard.length;
+            dealCards(state.playersHidden[playerIndex].Discard, state.playersHidden[playerIndex].Deck, sizeOfDiscard);
+            state.playersHidden[playerIndex].Deck = ctx.chance.shuffle(state.playersHidden[playerIndex].Deck);
         }
 
-        dealCards(state.players[playerIndex].Deck, state.players[playerIndex].Hand, 1);
+        dealCards(state.playersHidden[playerIndex].Deck, state.players[playerIndex].Hand, 1);
+        gameLog(userId, state, `Player drew card: ${request.cardname}`);
         ctx.sendEvent('new card dealt', userId);
 
         return Response.ok();
     }
 
     endTurn(state: InternalState, userId: UserId, ctx: Context, request: IEndTurnRequest): Response {
+        //find player index//
+        const playerIndex = state.players.findIndex(player => player.Id == userId);
+        if (playerIndex < 0) return Response.error('invalid player submission');
+        if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.Stunned)) {
+            //player stunned
+            state.players[playerIndex].Health = 10;
+            removeStatusEffect(userId, state, StatusEffect.Stunned);
+        }
+        gameLog(userId, state, `Player turn ended`);
         state.roundSequence = RoundState.End;
         ctx.broadcastEvent('All Cards Played');
         console.log(`No more cards in players hand`);
@@ -285,13 +328,31 @@ export class Impl implements Methods<InternalState> {
         return Response.ok();
     }
 
-    userChoice(state: GameState, userId: string, ctx: Context, request: IUserChoiceRequest): Response {
-        //TODO
+    userChoice(state: InternalState, userId: string, ctx: Context, request: IUserChoiceRequest): Response {
+        const effect = request.effect;
+        gameLog(userId, state, `Player user choice made: ${request.effect}`);
+        switch (effect) {
+            case 'Attack1':
+                addAttack1(userId, state, ctx, targetType.ActiveHero);
+                break;
+            case 'Health1':
+                addHealth1(userId, state, ctx, targetType.ActiveHero);
+                break;
+            case 'Ability1':
+                addAbility1(userId, state, ctx, targetType.ActiveHero);
+                break;
+            case 'Draw1':
+                draw1(userId, state, ctx, targetType.ActiveHero);
+                break;
+            default:
+                break;
+        }
         return Response.ok();
     }
 
     applyAttack(state: InternalState, userId: UserId, ctx: Context, request: IApplyAttackRequest): Response {
         console.log('Attacking Monster');
+
         if (userId != state.turn) return Response.error('Not your turn, please wait');
         if (state.roundSequence != RoundState.PlayerTurn) return Response.error('Not ready for this response yet');
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
@@ -304,6 +365,7 @@ export class Impl implements Methods<InternalState> {
 
         ctx.broadcastEvent('Attacking Monster');
         state.activeMonsters[monsterIndex].Damage += 1;
+        gameLog(userId, state, `Player attacked monster: ${request.cardname}`);
         if (state.activeMonsters[monsterIndex].Damage == state.activeMonsters[monsterIndex].Health) {
             ctx.broadcastEvent('Monster Defeated!');
 
@@ -311,12 +373,17 @@ export class Impl implements Methods<InternalState> {
             applyRewardEffect(state, userId, state.activeMonsters[monsterIndex], ctx);
             //discard monster
             discard(state.activeMonsters, state.monsterDiscard, monsterIndex);
+            gameLog(userId, state, `Player defeated monster: ${request.cardname}`);
             //draw another monster if available
             if (state.monsterDeck.length) dealCards(state.monsterDeck, state.activeMonsters, 1);
             else {
+                gameLog(userId, state, `Round completed`);
                 state.gameSequence = GameStates.Completed;
                 state.roundSequence = RoundState.Idle;
                 ctx.broadcastEvent('ROUND COMPLETE - SUCCESS');
+
+                if (state.gameLevel < 8) state.gameLevel += 1;
+                gameLog(userId, state, `Ready for next round`);
                 return Response.ok();
             }
             //if no more cards, lower game rounds, round complete
@@ -353,13 +420,15 @@ export class Impl implements Methods<InternalState> {
         //withdraw points from player, and move card to discard pile
         const costOfCard = state.abilityPile[ABcardIndex].Cost;
         state.players[playerIndex].AbilityPoints -= costOfCard;
-        discard(state.abilityPile, state.players[playerIndex].Discard, ABcardIndex);
-
+        discard(state.abilityPile, state.playersHidden[playerIndex].Discard, ABcardIndex);
+        gameLog(userId, state, `Player card acquired: ${request.cardname}`);
+        dealCards(state.abilityDeck, state.abilityPile, 1);
         return Response.ok();
     }
 
-    getUserState(state: InternalState, userId: UserId): GameState {
-        //TODO - plan out player state
+    getUserState(state: GameState, userId: UserId): GameState {
         return state;
     }
 }
+
+//TODO - setup clearing of StatusEffects

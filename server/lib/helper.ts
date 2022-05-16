@@ -1,4 +1,4 @@
-import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect, effectType, Cards, Player } from '../../api/types';
+import { Cardstatus, UserId, AbilityCard, MonsterCard, TowerDefense, LocationCard, Effect, effectType, Cards, Player, StatusEffect } from '../../api/types';
 import { Context } from '../.hathora/methods';
 import { InternalState } from '../impl';
 import { applyPassiveEffect } from './effects';
@@ -66,3 +66,40 @@ export function nextPlayer(state: InternalState) {
     else index += 1;
     state.turn = state.players[index].Id;
 }
+
+export const gameLog = (userId: UserId, state: InternalState, message: string) => {
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    state.gameLog.push(`${today.toUTCString} - ${userId} Logged:${message}`);
+};
+
+export const removeStatusEffect = (userId: UserId, state: InternalState, status: StatusEffect) => {
+    const playerIndex = state.players.findIndex(player => player.Id == userId);
+    const statusIndex = state.players[playerIndex].StatusEffects.findIndex(stat => stat == status);
+    if (statusIndex >= 0) state.players[playerIndex].StatusEffects.splice(playerIndex, 1);
+};
+
+export const resetDecks = (state: InternalState) => {
+    state.abilityDeck = [];
+    state.abilityPile = [];
+    state.monsterDeck = [];
+    state.activeMonsters = [];
+    state.locationDeck = [];
+    state.locationDiscard = [];
+    state.locationPile = undefined;
+    state.players.forEach(player => {
+        player.Hand = [];
+        player.AbilityPoints = 0;
+        player.Health = 10;
+        player.AttackPoints = 0;
+        player.StatusEffects = [];
+    });
+    state.playersHidden.forEach(player => {
+        player.Deck = [];
+        player.Discard = [];
+    });
+    state.monsterDiscard = [];
+    state.towerDefenseDeck = [];
+    state.towerDefenseDiscard = [];
+    state.towerDefensePile = [];
+};

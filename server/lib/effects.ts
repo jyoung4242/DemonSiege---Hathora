@@ -1,6 +1,7 @@
-import { UserId, targetType, Player, Cards, TowerDefense, AbilityCard, MonsterCard, LocationCard, StatusEffect } from '../../api/types';
+import { UserId, targetType, Player, Cards, TowerDefense, AbilityCard, MonsterCard, LocationCard, StatusEffect, GameState, GameStates, RoundState } from '../../api/types';
 import { Context } from '../.hathora/methods';
 import { InternalState } from '../impl';
+import { gameLog } from './helper';
 
 type EffectCallback = (u: UserId, state: InternalState, c: Context, t: targetType) => void;
 type Callbacks = typeof callbacks;
@@ -64,7 +65,7 @@ function arrayOfTargets(p: UserId, u: Array<Player>, t: targetType, c: Context, 
  * instantly changes something in the game when called
  */
 
-const addAttack1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+export const addAttack1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Adding attack to player by 1`);
 
     let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
@@ -75,7 +76,7 @@ const addAttack1: EffectCallback = (userId: UserId, state: InternalState, c: Con
     });
 };
 
-const addHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+export const addHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Adding health to player by 1`);
 
     let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
@@ -104,7 +105,7 @@ const addAttack2: EffectCallback = (userId: UserId, state: InternalState, c: Con
     });
 };
 
-const addAbility1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+export const addAbility1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Adding ability to player by 1`);
 
     let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
@@ -253,7 +254,7 @@ const addAbility1Draw1: EffectCallback = (userId: UserId, state: InternalState, 
     });
 };
 
-const draw1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+export const draw1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Draw 1`);
     const playerIndex = state.players.findIndex(player => player.Id == userId);
     //Passive Effect
@@ -306,11 +307,14 @@ const addLocation1: EffectCallback = (userId: UserId, state: InternalState, c: C
     if (state.locationPile!.ActiveDamage >= state.locationPile!.Health) {
         //Location Lost
         c.broadcastEvent('Location Lost');
+        gameLog(userId, state, `Location Lost: ${state.locationPile!.Title}`);
         state.locationDiscard.push(state.locationPile!);
         if (state.locationDeck.length) state.locationPile = state.locationDeck.pop();
         else {
-            //game over - you lost
             c.broadcastEvent('GAME OVER-out of locations');
+            gameLog(userId, state, `GAME OVER`);
+            state.gameSequence = GameStates.Completed;
+            state.roundSequence = RoundState.End;
         }
     }
 };
@@ -383,18 +387,7 @@ export const stunned = (userId: UserId, state: InternalState, c: Context) => {
     c.sendEvent('Player Stunned', userId);
     state.players[index].AbilityPoints = 0;
     state.players[index].AttackPoints = 0;
-    state.locationPile!.ActiveDamage += 1;
-
-    if (state.locationPile!.ActiveDamage >= state.locationPile!.Health) {
-        //Location Lost
-        c.broadcastEvent('Location Lost');
-        state.locationDiscard.push(state.locationPile!);
-        if (state.locationDeck.length) state.locationPile = state.locationDeck.pop();
-        else {
-            //game over - you lost
-            c.broadcastEvent('GAME OVER-out of locations');
-        }
-    }
+    addLocation1(userId, state, c, targetType.ActiveHero);
 };
 
 const callbacks = {
