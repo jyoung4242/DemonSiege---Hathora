@@ -1,9 +1,9 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
 import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest } from '../api/types';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType } from '../api/types';
 import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer } from './lib/helper';
-import { applyActiveEffect } from './lib/effects';
+import { applyActiveEffect, applyRewardEffect, lowerHealth1 } from './lib/effects';
 
 export type InternalState = GameState;
 //console.log(`Init TdCardPool:`, typeof TdCardPool, TdCardPool);
@@ -243,7 +243,10 @@ export class Impl implements Methods<InternalState> {
         discard(state.players[playerIndex].Hand, state.players[playerIndex].Discard, cardIndex);
         ctx.broadcastEvent(`USER: ${userId} Discarded ${request.cardname}`);
 
-        //TODO - Check for discard status effects here
+        //Passive Effect
+        if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.DiscardCurse)) {
+            lowerHealth1(userId, state, ctx, targetType.ActiveHero);
+        }
 
         return Response.ok();
     }
@@ -256,13 +259,16 @@ export class Impl implements Methods<InternalState> {
         //check for card data
         if (!request.cardname.length) return Response.error('no card submitted');
 
-        //find player index
+        //find player index//
         const playerIndex = state.players.findIndex(player => player.Id == userId);
         if (playerIndex < 0) return Response.error('invalid player submission');
 
         //confirm cards in deck
         if (state.players[playerIndex].Deck.length == 0) {
-            //TODO, reshuffle and replace deck with discard pile
+            //shuffle up discard pile and redeal to player deck
+            const sizeOfDiscard = state.players[playerIndex].Discard.length;
+            dealCards(state.players[playerIndex].Discard, state.players[playerIndex].Deck, sizeOfDiscard);
+            state.players[playerIndex].Deck = ctx.chance.shuffle(state.players[playerIndex].Deck);
         }
 
         dealCards(state.players[playerIndex].Deck, state.players[playerIndex].Hand, 1);
@@ -270,11 +276,17 @@ export class Impl implements Methods<InternalState> {
 
         return Response.ok();
     }
+
     endTurn(state: InternalState, userId: UserId, ctx: Context, request: IEndTurnRequest): Response {
         state.roundSequence = RoundState.End;
         ctx.broadcastEvent('All Cards Played');
         console.log(`No more cards in players hand`);
         nextPlayer(state);
+        return Response.ok();
+    }
+
+    userChoice(state: GameState, userId: string, ctx: Context, request: IUserChoiceRequest): Response {
+        //TODO
         return Response.ok();
     }
 
@@ -293,9 +305,27 @@ export class Impl implements Methods<InternalState> {
         ctx.broadcastEvent('Attacking Monster');
         state.activeMonsters[monsterIndex].Damage += 1;
         if (state.activeMonsters[monsterIndex].Damage == state.activeMonsters[monsterIndex].Health) {
-            //do something, cuz monster done
             ctx.broadcastEvent('Monster Defeated!');
-            /*TODO DEFEATED MONSTER CODE */
+
+            //apply reward - remember, Demon ends game with Victory or Round completion
+            applyRewardEffect(state, userId, state.activeMonsters[monsterIndex], ctx);
+            //discard monster
+            discard(state.activeMonsters, state.monsterDiscard, monsterIndex);
+            //draw another monster if available
+            if (state.monsterDeck.length) dealCards(state.monsterDeck, state.activeMonsters, 1);
+            else {
+                state.gameSequence = GameStates.Completed;
+                state.roundSequence = RoundState.Idle;
+                ctx.broadcastEvent('ROUND COMPLETE - SUCCESS');
+                return Response.ok();
+            }
+            //if no more cards, lower game rounds, round complete
+
+            const playerIndex = state.players.findIndex(player => player.Id == userId);
+            //test for STatus effect
+            if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.MonsterDefeatPerk)) {
+                ctx.sendEvent('UE Draw 1', userId);
+            }
         }
 
         return Response.ok();
@@ -329,6 +359,7 @@ export class Impl implements Methods<InternalState> {
     }
 
     getUserState(state: InternalState, userId: UserId): GameState {
+        //TODO - plan out player state
         return state;
     }
 }

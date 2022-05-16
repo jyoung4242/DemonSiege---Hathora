@@ -1,4 +1,4 @@
-import { Cardstatus, MonsterCard, targetType, effectType } from '../../api/types';
+import { MonsterCard, targetType } from '../../api/types';
 let MonsterCardPool: MonsterCard[];
 
 export default MonsterCardPool = [

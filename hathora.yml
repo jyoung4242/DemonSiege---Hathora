@@ -225,6 +225,9 @@ methods:
         cardname: string
     endTurn:
     startTurn:
+    userChoice:
+        effect: string
+        choice: int
     applyAttack:
         cardname: string
     buyAbilityCard:
