@@ -34,16 +34,12 @@ export function joinNewPlayertoGame(u: UserId, s: InternalState): ErrorMessage {
     let newPlayer: Player = {
         PlayerState: PlayerStatus.RoleSelection,
         Id: u,
-        NumCards: 0,
         Health: 10,
         AttackPoints: 0,
         AbilityPoints: 0,
         Hand: [],
-        Deck: [],
-        Discard: [],
         Role: Roles.Barbarian,
         LevelBonus: [],
-        TurnComplete: false,
         StatusEffects: [],
     };
 
@@ -71,11 +67,11 @@ function allPlayersRoleSelected(s: InternalState): boolean {
 
 export function loadPlayersStartingDecks(s: InternalState, c: Context) {
     //load all players deck with starting deck based on Roles, and shuffle deck
-    s.players.forEach(player => {
-        player.Deck = [...mappedStartingDeck[player.Role]];
-        player.Deck = c.chance.shuffle(player.Deck);
+    s.players.forEach((player, index) => {
+        s.playersHidden[index].Deck = [...mappedStartingDeck[player.Role]];
+        s.playersHidden[index].Deck = c.chance.shuffle(s.playersHidden[index].Deck);
         //draw 5 cards for each player into hand
-        dealCards(player.Deck, player.Hand, 5);
+        dealCards(s.playersHidden[index].Deck, s.players[index].Hand, 5);
         //cards face up
         player.Hand.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
     });
