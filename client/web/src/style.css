@@ -1,0 +1,17 @@
+/*style.css*/
+.Header {
+    background-color: rgb(73, 73, 73);
+}
+
+.LoginPageheader {
+    color: white;
+    font-family: 'Helvetica';
+}
+
+.loginButton {
+    width: 100px;
+    height: 50px;
+    margin-top: 15px;
+    color: white;
+    background-color: rgb(10, 56, 71);
+}
