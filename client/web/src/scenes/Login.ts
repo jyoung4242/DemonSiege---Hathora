@@ -1,27 +1,18 @@
-import { AnonymousUserData } from '../../../../api/base';
-import { GameState } from '../../../../api/types';
-import { HathoraClient, HathoraConnection, UpdateArgs } from '../../../.hathora/client';
-
-type ElementAttributes = {
-    InnerText?: string;
-    className?: string;
-    event?: string;
-    eventCB?: EventListenerOrEventListenerObject;
-};
+import { ElementAttributes } from '..';
 
 export class Login {
-    clientRef: HathoraClient;
-    user: AnonymousUserData;
+    lgCB: EventListener;
+    elements: HTMLElement[];
 
-    constructor(client: HathoraClient) {
-        this.clientRef = client;
-        console.log(`client reference: `, this.clientRef);
+    constructor(logincallback: EventListener) {
+        this.lgCB = logincallback;
+        this.elements = [];
     }
 
     mount(element: HTMLElement) {
         const myDiv = this.createElement('div', element, { className: 'Header' });
         this.createElement('h1', myDiv, { InnerText: 'Login Page', className: 'LoginPageheader' });
-        this.createElement('button', element, { InnerText: 'Login', className: 'loginButton', event: 'click', eventCB: this.login });
+        this.createElement('button', element, { InnerText: 'Login', className: 'loginButton', event: 'click', eventCB: this.lgCB });
     }
 
     createElement(type: string, parent: HTMLElement, attributes: ElementAttributes): HTMLElement {
@@ -33,22 +24,14 @@ export class Login {
         }
 
         parent.appendChild(myElement);
+        this.elements.push(myElement);
         return myElement;
     }
 
-    async login() {
-        if (this.clientRef == undefined) {
-            console.log(`lost client reference`);
-            return;
+    leaving(element: HTMLElement) {
+        //unmount all ui elements
+        for (var i = this.elements.length - 1; i >= 0; i--) {
+            this.elements[i].parentNode.removeChild(this.elements[i]);
         }
-        if (sessionStorage.getItem('token') === null) {
-            console.log(`client reference: `, this.clientRef);
-            //sessionStorage.setItem('token', await this.clientRef.loginAnonymous());
-        }
-        const token = sessionStorage.getItem('token')!;
-        this.user = HathoraClient.getUserFromToken(token);
-        console.log(this.user);
     }
-
-    leaving(element: HTMLElement) {}
 }

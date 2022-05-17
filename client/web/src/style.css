@@ -1,9 +1,13 @@
 /*style.css*/
 .Header {
     background-color: rgb(73, 73, 73);
+    margin: 10px;
 }
 
 .LoginPageheader {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 50px;
     color: white;
     font-family: 'Helvetica';
 }
@@ -11,7 +15,7 @@
 .loginButton {
     width: 100px;
     height: 50px;
-    margin-top: 15px;
+    margin: 15px;
     color: white;
     background-color: rgb(10, 56, 71);
 }

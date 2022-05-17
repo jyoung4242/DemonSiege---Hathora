@@ -1,9 +1,7 @@
 import { HathoraClient } from '../../../.hathora/client';
 
 export class Game {
-    constructor(client: HathoraClient) {
-        let clientRef = client;
-    }
+    constructor() {}
 
     mount(element: HTMLElement) {}
 
