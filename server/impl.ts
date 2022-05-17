@@ -3,7 +3,7 @@ import { Response } from '../api/base';
 import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
 import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType, AbilityCard, MonsterCard, LocationCard, Player } from '../api/types';
 import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer, gameLog, removeStatusEffect, resetDecks } from './lib/helper';
-import { addAbility1, addAttack1, addHealth1, applyActiveEffect, applyRewardEffect, draw1, lowerHealth1 } from './lib/effects';
+import { addAbility1, addAttack1, addHealth1, applyActiveEffect, applyRewardEffect, draw1, getSEfromCard, lowerHealth1 } from './lib/effects';
 
 export type InternalState = {
     //the top section is serverside only state
@@ -315,11 +315,8 @@ export class Impl implements Methods<InternalState> {
         //find player index//
         const playerIndex = state.players.findIndex(player => player.Id == userId);
         if (playerIndex < 0) return Response.error('invalid player submission');
-        if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.Stunned)) {
-            //player stunned
-            state.players[playerIndex].Health = 10;
-            removeStatusEffect(userId, state, StatusEffect.Stunned);
-        }
+        //remove ALL status effects
+        state.players[playerIndex].StatusEffects = [];
         gameLog(userId, state, `Player turn ended`);
         state.roundSequence = RoundState.End;
         ctx.broadcastEvent('All Cards Played');
@@ -371,6 +368,13 @@ export class Impl implements Methods<InternalState> {
 
             //apply reward - remember, Demon ends game with Victory or Round completion
             applyRewardEffect(state, userId, state.activeMonsters[monsterIndex], ctx);
+            //if monster had passive status effects, remove those now
+            if (state.activeMonsters[monsterIndex].PassiveEffect) {
+                //figure out what SE is tied to card
+                const myStatusEffect = getSEfromCard(state.activeMonsters[monsterIndex].PassiveEffect!.cb);
+                //remove SE
+                removeStatusEffect(userId, state, myStatusEffect);
+            }
             //discard monster
             discard(state.activeMonsters, state.monsterDiscard, monsterIndex);
             gameLog(userId, state, `Player defeated monster: ${request.cardname}`);
@@ -430,5 +434,3 @@ export class Impl implements Methods<InternalState> {
         return state;
     }
 }
-
-//TODO - setup clearing of StatusEffects

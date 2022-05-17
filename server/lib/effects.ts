@@ -32,6 +32,21 @@ export function applyRewardEffect(state: InternalState, userId: UserId, card: Mo
     executeCallback(card.Rewards.cb as CallbackName, userId, state, c, target);
 }
 
+export function getSEfromCard(callback: string): StatusEffect {
+    switch (callback) {
+        case 'noDraw':
+            return StatusEffect.NoDraw;
+        case 'whenDiscardLoseHealth1':
+            return StatusEffect.DiscardCurse;
+        case 'whenLocationAddedLoseHealth2':
+            return StatusEffect.LocationCursed;
+        case 'passiveWhenMonsterDefeatedDraw1':
+            return StatusEffect.MonsterDefeatPerk;
+        default:
+            return StatusEffect.Stunned;
+    }
+}
+
 function arrayOfTargets(p: UserId, u: Array<Player>, t: targetType, c: Context, userdata?: any): Array<UserId> {
     let tempArray: Array<UserId> = [];
     let returnArray: Array<UserId> = [];

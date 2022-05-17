@@ -43,7 +43,14 @@ export function joinNewPlayertoGame(u: UserId, s: InternalState): ErrorMessage {
         StatusEffects: [],
     };
 
+    let newPlayerHidden = {
+        Deck: [],
+        Discard: [],
+    };
+
     s.players.push(newPlayer);
+    s.playersHidden.push(newPlayerHidden);
+
     playerOrder.push(u);
     return { status: 0, message: 'All good' };
 }
