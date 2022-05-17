@@ -2,13 +2,18 @@
     "compilerOptions": {
         "outDir": "./build/",
         "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "es6",
+        "noImplicitAny": false,
+        "module": "esnext",
         "target": "es2020",
         "jsx": "react",
         "allowJs": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     }
 }

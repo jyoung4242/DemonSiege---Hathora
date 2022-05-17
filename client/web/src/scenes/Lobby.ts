@@ -9,9 +9,13 @@ type UserInformation = {
 export class Lobby {
     elements: HTMLElement[];
     userInfo: UserInformation;
+    createNGM: EventListener;
+    joinEGM: EventListener;
 
-    constructor() {
+    constructor(cb1: EventListener, cb2: EventListener) {
         this.elements = [];
+        this.createNGM = cb1;
+        this.joinEGM = cb2;
     }
 
     setUserInfo = (u: UserInformation) => {
@@ -27,11 +31,11 @@ export class Lobby {
         this.createElement('h3', subDiv, { InnerText: `ID: ${this.userInfo.id}`, className: 'LoginPageheader' });
         this.createElement('h3', subDiv, { InnerText: `Type: ${this.userInfo.type}`, className: 'LoginPageheader' });
 
-        this.createElement('button', element, { InnerText: 'Create New Game', className: 'loginButton' });
+        this.createElement('button', element, { InnerText: 'Create New Game', className: 'loginButton', event: 'click', eventCB: this.createNGM });
 
         const innerDiv = this.createElement('div', element, {});
         this.createElement('input', innerDiv, {});
-        this.createElement('button', innerDiv, { InnerText: 'Join Existing Game', className: 'loginButton' });
+        this.createElement('button', innerDiv, { InnerText: 'Join Existing Game', className: 'loginButton', event: 'click', eventCB: this.joinEGM });
     }
 
     createElement(type: string, parent: HTMLElement, attributes: ElementAttributes): HTMLElement {

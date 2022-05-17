@@ -1,8 +1,10 @@
 import { ElementAttributes } from '..';
+import { UI, UIView } from '../ui';
 
 export class Login {
     lgCB: EventListener;
     elements: HTMLElement[];
+    ui: UIView;
 
     constructor(logincallback: EventListener) {
         this.lgCB = logincallback;
@@ -10,28 +12,19 @@ export class Login {
     }
 
     mount(element: HTMLElement) {
-        const myDiv = this.createElement('div', element, { className: 'Header' });
-        this.createElement('h1', myDiv, { InnerText: 'Login Page', className: 'LoginPageheader' });
-        this.createElement('button', element, { InnerText: 'Login', className: 'loginButton', event: 'click', eventCB: this.lgCB });
-    }
-
-    createElement(type: string, parent: HTMLElement, attributes: ElementAttributes): HTMLElement {
-        const myElement = document.createElement(type);
-        myElement.innerHTML = attributes.InnerText ? attributes.InnerText : '';
-        if (attributes.className) myElement.classList.add(attributes.className);
-        if (attributes.event && attributes.eventCB) {
-            myElement.addEventListener(attributes.event, attributes.eventCB);
-        }
-
-        parent.appendChild(myElement);
-        this.elements.push(myElement);
-        return myElement;
+        const template = `
+      <div class="Header">
+        <h1 class="LoginPageHeader">Login Page</h1>
+      </div>
+      <button id="btnLogin" class="loginButton">Login</button>
+      
+      `;
+        this.ui = UI.create(element, template, {});
+        //this.ui.element.querySelector('#btnLogin').addEventListener('click', this.lgCB);
     }
 
     leaving(element: HTMLElement) {
-        //unmount all ui elements
-        for (var i = this.elements.length - 1; i >= 0; i--) {
-            this.elements[i].parentNode.removeChild(this.elements[i]);
-        }
+        this.ui.destroy();
+        this.ui = null;
     }
 }

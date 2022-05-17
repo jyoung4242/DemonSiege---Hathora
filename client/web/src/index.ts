@@ -20,23 +20,31 @@ enum GS {
     game,
 }
 
+let token: string;
+
 let login = async (e: Event) => {
     let myUser: AnonymousUserData;
     if (sessionStorage.getItem('token') === null) {
         sessionStorage.setItem('token', await client.loginAnonymous());
     }
-    const token = sessionStorage.getItem('token')!;
+    token = sessionStorage.getItem('token')!;
     user = HathoraClient.getUserFromToken(token);
     console.log(`User Data: `, user);
     reRender(myGameState, GS.lobby);
 };
+
+let createNewGame = async (e: Event) => {
+    //client.connect();
+};
+
+let joinCurrentGame = async (e: Event) => {};
 
 const body = document.getElementById('myApp');
 const client = new HathoraClient();
 export let user: AnonymousUserData;
 
 const loginscreen = new Login(login);
-const lobby = new Lobby();
+const lobby = new Lobby(createNewGame, joinCurrentGame);
 const game = new Game();
 let myGameState: GS = GS.null;
 
