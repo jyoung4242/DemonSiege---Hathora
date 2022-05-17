@@ -1,5 +1,9 @@
+import { HathoraClient } from '../../../.hathora/client';
+
 export class Lobby {
-    constructor() {}
+    constructor(client: HathoraClient) {
+        let clientRef = client;
+    }
 
     mount(element: HTMLElement) {}
 

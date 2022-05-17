@@ -1,3 +1,4 @@
+import { AnonymousUserData } from '../../../../api/base';
 import { GameState } from '../../../../api/types';
 import { HathoraClient, HathoraConnection, UpdateArgs } from '../../../.hathora/client';
 
@@ -9,7 +10,13 @@ type ElementAttributes = {
 };
 
 export class Login {
-    constructor() {}
+    clientRef: HathoraClient;
+    user: AnonymousUserData;
+
+    constructor(client: HathoraClient) {
+        this.clientRef = client;
+        console.log(`client reference: `, this.clientRef);
+    }
 
     mount(element: HTMLElement) {
         const myDiv = this.createElement('div', element, { className: 'Header' });
@@ -29,8 +36,18 @@ export class Login {
         return myElement;
     }
 
-    login() {
-        console.log(`Here`);
+    async login() {
+        if (this.clientRef == undefined) {
+            console.log(`lost client reference`);
+            return;
+        }
+        if (sessionStorage.getItem('token') === null) {
+            console.log(`client reference: `, this.clientRef);
+            //sessionStorage.setItem('token', await this.clientRef.loginAnonymous());
+        }
+        const token = sessionStorage.getItem('token')!;
+        this.user = HathoraClient.getUserFromToken(token);
+        console.log(this.user);
     }
 
     leaving(element: HTMLElement) {}

@@ -13,13 +13,12 @@ enum GS {
 }
 
 const body = document.getElementById('myApp');
-
-const loginscreen = new Login();
-const lobby = new Lobby();
-const game = new Game();
-let myGameState: GS = GS.null;
-
 const client = new HathoraClient();
+
+const loginscreen = new Login(client);
+const lobby = new Lobby(client);
+const game = new Game(client);
+let myGameState: GS = GS.null;
 
 const reRender = (state: GS, gs: GS) => {
     if (state == gs) return;

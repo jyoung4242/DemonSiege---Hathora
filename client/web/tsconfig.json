@@ -1,12 +1,14 @@
-{  
- "compilerOptions": { 
-   "outDir": "./build/",
-   "sourceMap": true, 
-   "noImplicitAny": true,
-   "module": "es6",
-   "target": "es5",
-   "jsx": "react",
-   "allowJs": true,
-   "moduleResolution": "node"
-   }
- }
+{
+    "compilerOptions": {
+        "outDir": "./build/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es2020",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}
