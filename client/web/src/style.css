@@ -4,10 +4,26 @@
     margin: 10px;
 }
 
+.playerHeader {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(73, 73, 73);
+    margin: 1px;
+}
+
 .LoginPageheader {
     display: inline;
     margin-left: 10px;
     margin-right: 50px;
+    color: white;
+    font-family: 'Helvetica';
+}
+
+.playerHeaderContent {
+    font-size: 1.1vw;
+    display: inline;
+    margin-left: 1px;
+    margin-right: 5px;
     color: white;
     font-family: 'Helvetica';
 }
@@ -18,4 +34,61 @@
     margin: 15px;
     color: white;
     background-color: rgb(10, 56, 71);
+}
+
+.card {
+    width: 7vw;
+    aspect-ratio: 2/3;
+    border: 2px solid rgb(10, 56, 71);
+}
+
+.playerdiscard {
+    position: absolute;
+    bottom: 10px;
+    left: 5%;
+}
+
+.playerdeck {
+    position: absolute;
+    bottom: 10px;
+    right: 5%;
+}
+
+.playersArea {
+    left: 50%;
+    transform: translate(-50%, 90%);
+    position: fixed;
+    bottom: 5px;
+    width: 33vw;
+    aspect-ratio: 21/10;
+    border: 2px solid rgb(10, 56, 71);
+    animation: slideout 0.5s ease-in-out;
+}
+
+.playersArea:hover {
+    left: 50%;
+    transform: translate(-50%);
+    position: fixed;
+    bottom: 5px;
+    width: 33vw;
+    aspect-ratio: 21/10;
+    border: 2px solid rgb(10, 56, 71);
+    animation: slidein 0.5s ease-in-out;
+}
+
+@keyframes slidein {
+    from {
+        transform: translate(-50%, 90%);
+    }
+    to {
+        transform: translate(-50%, 0);
+    }
+}
+@keyframes slideout {
+    from {
+        transform: translate(-50%, 0);
+    }
+    to {
+        transform: translate(-50%, 90%);
+    }
 }

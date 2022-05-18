@@ -11,11 +11,13 @@ export class Lobby {
     userInfo: UserInformation;
     createNGM: EventListener;
     joinEGM: EventListener;
+    inputchanged: EventListener;
     ui: UIView;
 
-    constructor(cb1: EventListener, cb2: EventListener) {
+    constructor(cb1: EventListener, cb2: EventListener, cb3: EventListener) {
         this.createNGM = cb1;
         this.joinEGM = cb2;
+        this.inputchanged = cb3;
     }
 
     setUserInfo = (u: UserInformation) => {
@@ -37,7 +39,7 @@ export class Lobby {
           
           <div>
             <input id="joinGameInput"/>
-            <button id='btnJoinGame' class="loginButton">Join Existing Game</button>
+            <button id='btnJoinGame' class="loginButton" disabled>Join Existing Game</button>
           </div>
       </div>
       `;
@@ -46,6 +48,7 @@ export class Lobby {
         UI.update();
         this.ui.element.querySelector('#btnCreateGame').addEventListener('click', this.createNGM);
         this.ui.element.querySelector('#btnJoinGame').addEventListener('click', this.joinEGM);
+        this.ui.element.querySelector('#joinGameInput').addEventListener('change', this.inputchanged);
     }
 
     leaving(element: HTMLElement) {
