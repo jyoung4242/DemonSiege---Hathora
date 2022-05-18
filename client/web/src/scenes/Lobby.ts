@@ -1,4 +1,5 @@
 import { ElementAttributes } from '..';
+import { UI, UIView } from '../ui';
 
 type UserInformation = {
     name: string;
@@ -7,13 +8,12 @@ type UserInformation = {
 };
 
 export class Lobby {
-    elements: HTMLElement[];
     userInfo: UserInformation;
     createNGM: EventListener;
     joinEGM: EventListener;
+    ui: UIView;
 
     constructor(cb1: EventListener, cb2: EventListener) {
-        this.elements = [];
         this.createNGM = cb1;
         this.joinEGM = cb2;
     }
@@ -23,33 +23,33 @@ export class Lobby {
     };
 
     mount(element: HTMLElement) {
-        const myDiv = this.createElement('div', element, { className: 'Header' });
-        this.createElement('h1', myDiv, { InnerText: 'Welcome to the Lobby', className: 'LoginPageheader' });
+        const template = `
+        <div>
+          <div class="Header">
+            <h1 class="LoginPageheader">Welcome to the Lobby</h1>
+          </div>
+          <div class="Header">
+            <h3 class="LoginPageheader">Username: \${name}</h3>
+            <h3 class="LoginPageheader">ID: \${id}</h3>
+            <h3 class="LoginPageheader">Type: \${type}</h3>
+          </div>
+          <button id='btnCreateGame' class="loginButton">Create New Game</button>
+          
+          <div>
+            <input id="joinGameInput"/>
+            <button id='btnJoinGame' class="loginButton">Join Existing Game</button>
+          </div>
+      </div>
+      `;
 
-        const subDiv = this.createElement('div', element, { className: 'Header' });
-        this.createElement('h3', subDiv, { InnerText: `Username ${this.userInfo.name}`, className: 'LoginPageheader' });
-        this.createElement('h3', subDiv, { InnerText: `ID: ${this.userInfo.id}`, className: 'LoginPageheader' });
-        this.createElement('h3', subDiv, { InnerText: `Type: ${this.userInfo.type}`, className: 'LoginPageheader' });
-
-        this.createElement('button', element, { InnerText: 'Create New Game', className: 'loginButton', event: 'click', eventCB: this.createNGM });
-
-        const innerDiv = this.createElement('div', element, {});
-        this.createElement('input', innerDiv, {});
-        this.createElement('button', innerDiv, { InnerText: 'Join Existing Game', className: 'loginButton', event: 'click', eventCB: this.joinEGM });
+        this.ui = UI.create(element, template, this.userInfo);
+        UI.update();
+        this.ui.element.querySelector('#btnCreateGame').addEventListener('click', this.createNGM);
+        this.ui.element.querySelector('#btnJoinGame').addEventListener('click', this.joinEGM);
     }
 
-    createElement(type: string, parent: HTMLElement, attributes: ElementAttributes): HTMLElement {
-        const myElement = document.createElement(type);
-        myElement.innerHTML = attributes.InnerText ? attributes.InnerText : '';
-        if (attributes.className) myElement.classList.add(attributes.className);
-        if (attributes.event && attributes.eventCB) {
-            myElement.addEventListener(attributes.event, attributes.eventCB);
-        }
-
-        parent.appendChild(myElement);
-        this.elements.push(myElement);
-        return myElement;
+    leaving(element: HTMLElement) {
+        this.ui.destroy();
+        this.ui = null;
     }
-
-    leaving(element: HTMLElement) {}
 }

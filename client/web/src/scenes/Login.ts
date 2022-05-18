@@ -13,14 +13,15 @@ export class Login {
 
     mount(element: HTMLElement) {
         const template = `
-      <div class="Header">
-        <h1 class="LoginPageHeader">Login Page</h1>
-      </div>
-      <button id="btnLogin" class="loginButton">Login</button>
-      
+        <div>
+          <div class="Header">
+            <h1 class="LoginPageheader">Login Page</h1>
+          </div>
+          <button id="btnLogin" class="loginButton">Login</button>
+        </div>
       `;
         this.ui = UI.create(element, template, {});
-        //this.ui.element.querySelector('#btnLogin').addEventListener('click', this.lgCB);
+        this.ui.element.querySelector('#btnLogin').addEventListener('click', this.lgCB);
     }
 
     leaving(element: HTMLElement) {
