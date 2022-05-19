@@ -1,7 +1,7 @@
 import { Methods, Context } from './.hathora/methods';
 import { Response } from '../api/base';
-import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder } from './lib/init';
-import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType, AbilityCard, MonsterCard, LocationCard, Player } from '../api/types';
+import { playerOrder, joinNewPlayertoGame, setPlayerRole, loadPlayersStartingDecks, setupAbilityDeck, setupMonsterDeck, setupLocationDeck, setupTDDeck, setupPlayerOrder, setPlayerName } from './lib/init';
+import { RoundState, GameStates, GameState, UserId, IInitializeRequest, IJoinGameRequest, ISelectRoleRequest, IAddAIRequest, IStartGameRequest, IDrawCardRequest, IDiscardRequest, IEndTurnRequest, IStartTurnRequest, IApplyAttackRequest, IBuyAbilityCardRequest, Cardstatus, ErrorMessage, ISelectTowerDefenseRequest, ISelectMonsterCardRequest, TowerDefense, Cards, ISelectPlayerCardRequest, IUserChoiceRequest, StatusEffect, targetType, AbilityCard, MonsterCard, LocationCard, Player, INameCharacterRequest } from '../api/types';
 import { dealCards, discard, checkPassiveTDEffects, checkPassiveMonsterEffects, checkPassivePlayerEffects, nextPlayer, gameLog, removeStatusEffect, resetDecks } from './lib/helper';
 import { addAbility1, addAttack1, addHealth1, applyActiveEffect, applyRewardEffect, draw1, getSEfromCard, lowerHealth1 } from './lib/effects';
 
@@ -66,12 +66,22 @@ export class Impl implements Methods<InternalState> {
         state.gameSequence = GameStates.PlayersJoining;
         const stsObject: ErrorMessage = joinNewPlayertoGame(userId, state);
         if (stsObject.status < 0) return Response.error(stsObject.message);
-        else return Response.ok();
+        else {
+            ctx.broadcastEvent('Player Joined');
+            return Response.ok();
+        }
     }
 
     selectRole(state: InternalState, userId: UserId, ctx: Context, request: ISelectRoleRequest): Response {
         const stsObject: ErrorMessage = setPlayerRole(userId, state, request.role);
         gameLog(userId, state, `selected rold: ${request.role}`);
+        if (stsObject.status < 0) return Response.error(stsObject.message);
+        else return Response.ok();
+    }
+
+    nameCharacter(state: InternalState, userId: string, ctx: Context, request: INameCharacterRequest): Response {
+        const stsObject: ErrorMessage = setPlayerName(userId, state, request.name);
+        gameLog(userId, state, `character named: ${request.name}`);
         if (stsObject.status < 0) return Response.error(stsObject.message);
         else return Response.ok();
     }

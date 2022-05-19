@@ -92,13 +92,6 @@ types:
         - AllDrawFromDiscard
         - ImmuneUntilLast
 
-    #AllHereos: string
-    #ActiveHero: string
-    #OtherHereos: string
-    #ChooseOther: string
-    #Passive: string
-    #Active: string
-
     ErrorMessage:
         status: int
         message: string
@@ -177,6 +170,8 @@ types:
 
     Player:
         Id: UserId
+        username?: string
+        characterName?: string
         StatusEffects: StatusEffect[]
         PlayerState: PlayerStatus
         Health: int
@@ -202,6 +197,8 @@ methods:
     joinGame:
     selectRole:
         role: Roles
+    nameCharacter:
+        name: string
     addAI:
     startGame:
     selectTowerDefense:

@@ -33,6 +33,8 @@ export let monsterCardDiscardPoolArray: Array<MonsterCard> = [];
 export function joinNewPlayertoGame(u: UserId, s: InternalState): ErrorMessage {
     let newPlayer: Player = {
         PlayerState: PlayerStatus.RoleSelection,
+        username: '',
+        characterName: u,
         Id: u,
         Health: 10,
         AttackPoints: 0,
@@ -65,6 +67,15 @@ export function setPlayerRole(u: UserId, s: InternalState, r: Roles): ErrorMessa
 
     if (allPlayersRoleSelected(s)) s.gameSequence = GameStates.ReadyForRound;
 
+    return { status: 0, message: 'All good' };
+}
+
+export function setPlayerName(u: UserId, s: InternalState, n: string): ErrorMessage {
+    const playerIndex = s.players.findIndex(i => i.Id == u);
+    if (playerIndex == -1) return { status: -1, message: 'User Not Found' };
+    if (s.players[playerIndex].PlayerState != PlayerStatus.RoleSelection) return { status: -2, message: 'Player not able to set role currently' };
+
+    s.players[playerIndex].characterName = n;
     return { status: 0, message: 'All good' };
 }
 

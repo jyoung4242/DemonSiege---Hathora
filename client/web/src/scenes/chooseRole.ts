@@ -1,24 +1,16 @@
-import { ElementAttributes } from '..';
+import { ClientState, ElementAttributes } from '..';
 import { GameStates } from '../../../../api/types';
 import { UI, UIView } from '../ui';
 
-type UserInformation = {
-    name: string;
-    id: string;
-    type: string;
-    game: string;
-    status: string;
-};
-
 export class Role {
-    userInfo: UserInformation;
+    userInfo: ClientState;
     ui: UIView;
     cbRoleChoice: EventListener;
     constructor(roleCB: EventListener) {
         this.cbRoleChoice = roleCB;
     }
 
-    setUserInfo = (u: UserInformation) => {
+    setUserInfo = (u: ClientState) => {
         this.userInfo = u;
     };
 
@@ -38,6 +30,11 @@ export class Role {
           <div class="Header">
             <h5 class="LoginPageheader">Game ID: \${game}</h5>
             <h5 class="LoginPageheader">GameStatus: \${status}</h5>
+          </div>
+          
+          <div class="Header">
+            <h5 class="LoginPageheader">Name your character: </h5>
+            <input id="characterName" value=\${name} />
           </div>
           
           <div>
