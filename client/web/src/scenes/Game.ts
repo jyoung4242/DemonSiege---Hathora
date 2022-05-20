@@ -5,9 +5,14 @@ export class Game {
     userInfo: ClientState;
     ui: UIView;
     cbLoadDiv: Function;
+    test: EventListener;
+    anotherTest: EventListener;
+    mcard: EventListener;
+    fcard: EventListener;
 
-    constructor(cb1: Function) {
+    constructor(cb1: Function, cb2: EventListener) {
         this.cbLoadDiv = cb1;
+        this.test = cb2;
     }
 
     setUserInfo = (pInfo: ClientState) => {
@@ -34,11 +39,12 @@ export class Game {
             <div class="Header">
               <h5 class="LoginPageheader">Game ID: \${game}</h5>
               <h5 class="LoginPageheader">GameStatus: \${status}</h5>
-              <button>Start Game</button>
-              <button>Start Turn</button>
+              <button id="btnStartGame">Start Game</button>
+              <button id="btnStartTurn">Zoom Card</button>
+              
             </div>
             
-            <div class="playersArea">
+            <div id="playerHand" class="playersArea">
               <div class="playerHeader">
                 <div class="playerHeaderContent"> Players Hand </div>
                 <div class="playerHeaderContent">Name: \${name}</div>
@@ -117,6 +123,9 @@ export class Game {
 
         this.ui = UI.create(element, template, this.userInfo);
         UI.update();
+        this.ui.element.querySelector('#btnStartGame').addEventListener('click', this.test);
+        //this.ui.element.querySelector('#btnStartTurn').addEventListener('click', this.anotherTest);
+
         this.cbLoadDiv();
     }
 

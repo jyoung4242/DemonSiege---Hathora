@@ -3,9 +3,10 @@ import { Login } from './scenes/Login';
 import { Lobby } from './scenes/Lobby';
 import { Game } from './scenes/Game';
 import { Role } from './scenes/chooseRole';
-import { GameStates, Roles } from '../../../api/types';
+import { Cardstatus, GameStates, Roles } from '../../../api/types';
 import { HathoraClient, HathoraConnection, UpdateArgs } from '../../.hathora/client';
 import { AnonymousUserData } from '../../../api/base';
+import Card from './lib/card';
 
 export type ElementAttributes = {
     InnerText?: string;
@@ -65,9 +66,7 @@ let myConnection: HathoraConnection;
 let gameID: string;
 let gameStatus: GameStates;
 let myRole: Roles;
-let otherRole1: Roles;
-let otherRole2: Roles;
-let otherRole3: Roles;
+let testCard: Card;
 
 let playerInfo: ClientState = {
     name: '',
@@ -179,6 +178,47 @@ let manageInput = (e: Event) => {
     else btnJoin.disabled = true;
 };
 
+let playCard = (e: Event) => {
+    console.log(`card played`);
+    const args = {
+        name: 'Sword',
+        size: {
+            width: 125,
+            aspectRatio: 1 / 1.5,
+        },
+        startingPosition: {
+            x: 200,
+            y: 200,
+            theta: 0,
+        },
+        orientation: Cardstatus.FaceUp,
+        parent: 'myApp',
+    };
+    testCard = Card.create(args);
+
+    //run little demoscript here
+
+    setTimeout(() => {
+        testCard.move({ x: 700, y: 400 });
+        setTimeout(() => {
+            testCard.show();
+            testCard.flip();
+            setTimeout(() => {
+                testCard.zoom(1.25);
+                setTimeout(() => {
+                    testCard.zoom(1);
+                    setTimeout(() => {
+                        testCard.flip();
+                        setTimeout(() => {
+                            testCard.move({ x: 200, y: 300 });
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    }, 1000);
+};
+
 let createNewGame = async (e: Event) => {
     if (location.pathname.length > 1) {
         reRender(myGameState, GS.role);
@@ -240,7 +280,7 @@ let roleSelected = (e: Event) => {
 
 const loginscreen = new Login(login);
 const lobby = new Lobby(createNewGame, joinCurrentGame, manageInput);
-const game = new Game(divLoaded);
+const game = new Game(divLoaded, playCard);
 const role = new Role(roleSelected);
 let myGameState: GS = GS.null;
 
