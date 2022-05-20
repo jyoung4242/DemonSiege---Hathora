@@ -1,4 +1,8 @@
 import { Cardstatus } from '../../../../api/types';
+import baseimage from '../assets/card base.png';
+import cardborder from '../assets/newcardborder.png';
+import cardback from '../assets/cardback.png';
+import cardcost from '../assets/cardbasecost.png';
 
 type Vector3 = {
     x: number;
@@ -14,14 +18,14 @@ type CardSize = {
 type Vector2 = Omit<Vector3, 'theta'>;
 
 type baseCardArgs = {
-    startingPosition: Vector3;
-    size: CardSize;
+    position: Vector3;
+    cardsize: CardSize;
     orientation: Cardstatus;
     name: string;
     parent?: string;
 };
 
-export default class Card {
+export class Card {
     position: Vector3;
     size: CardSize;
     orientation: Cardstatus;
@@ -34,31 +38,33 @@ export default class Card {
     contentDiv: HTMLElement;
     zoomed: number;
 
-    constructor(name: string, size: CardSize, position: Vector3, orientation: Cardstatus, parent?: string) {
+    constructor(name: string, size: CardSize, position: Vector3, orientation: Cardstatus, parent: string = 'myApp') {
         this.position = position;
         this.size = size;
         this.name = name;
         this.orientation = orientation;
         this.parent = parent;
 
-        if (parent) this.parentElement = document.getElementById(this.parent);
-        else this.parentElement = document.getElementById('myApp');
+        this.parentElement = document.getElementById(this.parent);
 
         this.cardDiv = document.createElement('div');
+        this.cardDiv.id = this.name;
         this.cardDiv.classList.add('card');
         this.cardDiv.style.width = `${this.size.width}px`;
         this.cardDiv.style.aspectRatio = `${this.size.aspectRatio}`;
         this.cardDiv.style.position = 'fixed';
-        this.cardDiv.style.top = `0px`;
-        this.cardDiv.style.left = `0px`;
-        this.cardDiv.style.visibility = 'hidden';
+        this.cardDiv.style.opacity = '1';
+        this.zoomed = 1;
 
         this.contentDiv = document.createElement('div');
         this.front = document.createElement('div');
         this.back = document.createElement('div');
 
+        this.contentDiv.id = `${this.name}_Content`;
         this.front.innerHTML = this.name;
         this.back.innerHTML = 'Back of Card';
+        this.front.id = `${this.name}_front`;
+        this.back.id = `${this.name}_back`;
         this.front.classList.add('front');
         this.back.classList.add('back');
         this.contentDiv.classList.add('content');
@@ -67,29 +73,31 @@ export default class Card {
         this.contentDiv.appendChild(this.back);
         this.cardDiv.appendChild(this.contentDiv);
         this.parentElement.appendChild(this.cardDiv);
-
+        this.updateCardTransform(0);
         return this;
     }
 
-    move(newPosition: Vector2) {
+    move(x: number, y: number) {
         console.log(`Move`);
-        this.position.x = newPosition.x;
-        this.position.y = newPosition.y;
-        this.updateCardTransform(600);
+        this.position.x = x;
+        this.position.y = y;
+        this.updateCardTransform();
     }
 
     show() {
-        this.cardDiv.style.visibility = 'visible';
+        this.cardDiv.style.transitionDuration = '0ms';
+        this.cardDiv.style.opacity = `1`;
     }
 
     hide() {
-        this.cardDiv.style.visibility = 'hidden';
+        this.cardDiv.style.transitionDuration = '0ms';
+        this.cardDiv.style.opacity = `0`;
     }
 
-    rotate(newAngle: number) {
+    rotate(deltaAngle: number) {
         console.log(`spin`);
-        this.position.theta = newAngle;
-        this.updateCardTransform(200);
+        this.position.theta += deltaAngle;
+        this.updateContentTransform(200);
     }
 
     zoom(factor: number) {
@@ -103,18 +111,23 @@ export default class Card {
         } else {
             this.orientation = Cardstatus.FaceUp;
         }
-        this.contentDiv.style.transitionDuration = `450ms`;
-        if (this.orientation == Cardstatus.FaceDown) this.contentDiv.style.transform = `rotateY(180deg)`;
-        else this.contentDiv.style.transform = `rotateY(0deg)`;
+        this.updateContentTransform();
     }
 
     protected updateCardTransform(speed: number = 500) {
         this.cardDiv.style.transitionDuration = `${speed}ms`;
-        this.cardDiv.style.transform = `rotate(${this.position.theta}deg) translate(${this.position.x}px,${this.position.y}px) scale(${this.zoomed},${this.zoomed})`;
+        this.cardDiv.style.transform = `translate(${this.position.x}px,${this.position.y}px) scale(${this.zoomed},${this.zoomed})`;
+    }
+
+    protected updateContentTransform(speed: number = 500) {
+        this.contentDiv.style.transitionDuration = `${speed}ms`;
+        if (this.orientation == Cardstatus.FaceDown) this.contentDiv.style.transform = `rotateY(180deg) rotate(${this.position.theta}deg)`;
+        else this.contentDiv.style.transform = `rotateY(0deg) rotate(${this.position.theta}deg)`;
     }
 
     static create(params: baseCardArgs) {
-        return new Card(params.name, params.size, params.startingPosition, params.orientation, params.parent);
+        console.log(`Here`);
+        return new Card(params.name, params.cardsize, params.position, params.orientation, params.parent);
     }
 
     destroy() {}
@@ -129,5 +142,47 @@ export default class Card {
             height: this.size.width * (1 / this.size.aspectRatio),
             aspectRatio: this.size.aspectRatio.toFixed(3),
         };
+    }
+}
+
+export type ABcard = {
+    name: string;
+    cardsize: CardSize;
+    orientation: Cardstatus;
+    position: Vector3;
+    title: string;
+    description: string;
+    catagory: string;
+    cost: number;
+    image: string;
+    level: number;
+    parent?: string;
+};
+
+export class AbilityCard extends Card {
+    title: string;
+    description: string;
+    catagory: string;
+    cost: number;
+    image: string;
+    level: number;
+
+    constructor(abcard: ABcard) {
+        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        this.title = abcard.title;
+        this.description = abcard.description;
+        this.catagory = abcard.catagory;
+        this.cost = abcard.cost;
+        this.image = abcard.image;
+        this.parent = abcard.parent;
+        //inject ability card data into DOM elements
+        const front_image = document.getElementById(`${this.name}_front`);
+        front_image.style.backgroundImage = `url(${baseimage}), url(${cardborder}), url(${cardcost})`;
+        return this;
+    }
+
+    create(params: ABcard) {
+        console.log(`or here`);
+        return new AbilityCard(params);
     }
 }
