@@ -6,7 +6,10 @@ import { Role } from './scenes/chooseRole';
 import { Cardstatus, GameStates, Roles } from '../../../api/types';
 import { HathoraClient, HathoraConnection, UpdateArgs } from '../../.hathora/client';
 import { AnonymousUserData } from '../../../api/base';
-import Card from './lib/card';
+import { AbilityCard, ABcard } from './lib/card';
+
+//images
+import sword from './assets/sword.png';
 
 export type ElementAttributes = {
     InnerText?: string;
@@ -66,7 +69,8 @@ let myConnection: HathoraConnection;
 let gameID: string;
 let gameStatus: GameStates;
 let myRole: Roles;
-let testCard: Card;
+
+let testCard: AbilityCard;
 
 let playerInfo: ClientState = {
     name: '',
@@ -179,43 +183,35 @@ let manageInput = (e: Event) => {
 };
 
 let playCard = (e: Event) => {
-    console.log(`card played`);
-    const args = {
+    const args: ABcard = {
         name: 'Sword',
-        size: {
+        cardsize: {
             width: 125,
             aspectRatio: 1 / 1.5,
         },
-        startingPosition: {
+        position: {
             x: 200,
             y: 200,
             theta: 0,
         },
         orientation: Cardstatus.FaceUp,
         parent: 'myApp',
+        title: 'Barbarian Sword',
+        description: '+1 Attack',
+        catagory: 'WEAPON',
+        cost: 1,
+        image: `${sword}`,
+        level: 1,
     };
-    testCard = Card.create(args);
+    testCard = AbilityCard.create(args as ABcard);
 
     //run little demoscript here
+    let actions = [card => card.move(700, 100), card => card.move(250, 200), card => card.flip(), card => card.flip(), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.zoom(1.5), card => card.zoom(1)];
 
-    setTimeout(() => {
-        testCard.move({ x: 700, y: 400 });
-        setTimeout(() => {
-            testCard.show();
-            testCard.flip();
-            setTimeout(() => {
-                testCard.zoom(1.25);
-                setTimeout(() => {
-                    testCard.zoom(1);
-                    setTimeout(() => {
-                        testCard.flip();
-                        setTimeout(() => {
-                            testCard.move({ x: 200, y: 300 });
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 1000);
-        }, 1000);
+    const interval = setInterval(() => {
+        const action = actions.shift();
+        action(testCard);
+        actions.push(action);
     }, 1000);
 };
 
