@@ -1,0 +1,125 @@
+{ 
+    "starter_hood":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "choose": "health 1, ability 1"
+    },
+    "title": "Cowl",
+    "image": "roguecowl.png",
+    "description": "Choose: Health +1 -or- Ability +1"
+  } , 
+    "starter_armor":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Light Armor",
+    "image": "roguearmor.png",
+    "description": "Health +1"
+  } , 
+    "starter_backstab":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "attack": 1,
+        "draw": "one"
+    },
+    "title": "Rogue Backstab",
+    "image": "roguebackstab.png",
+    "description": "Attack +1, draw one card"
+  } , 
+    "starter_boots":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "ability": 1
+    },
+    "title": "Boots",
+    "image": "rogueboots.png",
+    "description": "Ability +1"
+  } ,
+    "starter_crossbow":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Hand Crossbow",
+    "image": "roguecrossbow.png",
+    "description": "Attack +1"
+  },  
+    "starter_knife":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Knife",
+    "image": "rogueknife.png",
+    "description": "Attack +1"
+  }, 
+    "starter_pickpocket":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "health": 1,
+        "ability": 1
+    },
+    "title": "Pickpocket",
+    "image": "roguepickpocket.png",
+    "description": "Health +1, Ability +1"
+  }, 
+    "starter_sneak":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "ability": 1
+     },
+    "title": "Rogue Sneak",
+    "image": "roguesneak.png",
+    "description": "Ability +1"
+  }, 
+    "starter_smoke":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "ability": 1,
+        "attack": 1
+    },
+    "title": "Smoke Bomb",
+    "image": "roguesmoke.png",
+    "description": "Ability +1, Attack +1"
+  }, 
+    "starter_tools":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "choose": "ability 1, draw one"
+    },
+    "title": "Lockpicking Tools",
+    "image": "roguetools.png",
+    "description": "Choose: Ability +1 -or- Draw one card"
+  }
+}

@@ -1,0 +1,124 @@
+{ 
+    "starter_robes":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "choose": "health 1, ability 1"
+    },
+    "title": "Robes",
+    "image": "wizardrobes.png",
+    "description": "Choose: Health +1 -or- Ability +1"
+  } , 
+    "starter_wand":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Wand",
+    "image": "wizardwand.png",
+    "description": "Attack +1"
+  } , 
+    "starter_spellbook":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "ability": 2
+    },
+    "title": "Spellboook",
+    "image": "barbariansheild.png",
+    "description": "Ability +2"
+  } , 
+    "starter_staff":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "choose": "attack 1, ability 1"
+    },
+    "title": "Staff",
+    "image": "wizardstaff.png",
+    "description": "Choose: Attack +1 -or- Ability +1"
+  } ,
+    "starter_pet":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "friend",
+    "cost": 0,
+    "scripts": {
+        "attack": 1,
+        "ability": 1
+    },
+    "title": "Psuedodragon",
+    "image": "barbariansteed.png",
+    "description": "Attack +1,Ability +1"
+  },  
+    "starter_firespell":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Hand of Fire",
+    "image": "attackspell.png",
+    "description": "Attack +1"
+  }, 
+    "starter_minorheal":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Minor Healing",
+    "image": "healingspell.png",
+    "description": "Health +1"
+  }, 
+    "starter_meditate":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "ability": 1,
+        "draw": "one"
+    },
+    "title": "Wizard Meditation",
+    "image": "supportspell.png",
+    "description": "Ability +1, draw one card"
+  }, 
+    "starter_focus":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "ability": 1
+    },
+    "title": "Wizard Focus",
+    "image": "supportspell.png",
+    "description": "Ability +1"
+  }, 
+    "starter_magicarrow":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "choose": "attack 1, ability 1"
+    },
+    "title": "Magic Arrow",
+    "image": "attackspell.png",
+    "description": "Choose: Attack +1 -or- Ability +1"
+  }
+}

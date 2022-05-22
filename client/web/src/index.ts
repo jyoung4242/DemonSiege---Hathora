@@ -1,4 +1,5 @@
 import './style.css';
+//import './import-png.d.ts';
 import { Login } from './scenes/Login';
 import { Lobby } from './scenes/Lobby';
 import { Game } from './scenes/Game';
@@ -6,10 +7,15 @@ import { Role } from './scenes/chooseRole';
 import { Cardstatus, GameStates, Roles } from '../../../api/types';
 import { HathoraClient, HathoraConnection, UpdateArgs } from '../../.hathora/client';
 import { AnonymousUserData } from '../../../api/base';
-import { AbilityCard, ABcard } from './lib/card';
-
-//images
-import sword from './assets/sword.png';
+import { AbilityCard, ABcard, ABcardData, MonsterCard, MCdata, MonsterCardData, LocationCard, LOCcardData, LOCcard, TDcard, TDCard, TDcardData } from './lib/card';
+import { abilityCardDataLv1, retrieveCardData } from './lib/abilitycardsLV1';
+import { retrieveMCCardData } from './lib/monstercards';
+import { retrieveLocCardData } from './lib/locationCards';
+import { retrieveTDCardData } from './lib/towerdefense';
+import { retrieveStarterBarbarianCardData } from './lib/starter_b';
+import { retrieveStarterWizardCardData } from './lib/starter_w';
+import { retrieveStarterPaladinCardData } from './lib/starter_p';
+import { retrieveStarteRogueCardData } from './lib/starter_r';
 
 export type ElementAttributes = {
     InnerText?: string;
@@ -69,8 +75,6 @@ let myConnection: HathoraConnection;
 let gameID: string;
 let gameStatus: GameStates;
 let myRole: Roles;
-
-let testCard: AbilityCard;
 
 let playerInfo: ClientState = {
     name: '',
@@ -181,38 +185,180 @@ let manageInput = (e: Event) => {
     if (inputtext.length) btnJoin.disabled = false;
     else btnJoin.disabled = true;
 };
+let testCard: AbilityCard[] = [];
+let mCard: MonsterCard[] = [];
+let locCard: LocationCard[] = [];
+let TDcardbuf: TDCard[] = [];
 
 let playCard = (e: Event) => {
-    const args: ABcard = {
-        name: 'Sword',
-        cardsize: {
-            width: 125,
-            aspectRatio: 1 / 1.5,
-        },
-        position: {
-            x: 200,
-            y: 200,
-            theta: 0,
-        },
-        orientation: Cardstatus.FaceUp,
-        parent: 'myApp',
-        title: 'Barbarian Sword',
-        description: '+1 Attack',
-        catagory: 'WEAPON',
-        cost: 1,
-        image: `${sword}`,
-        level: 1,
-    };
-    testCard = AbilityCard.create(args as ABcard);
+    if (testCard.length) {
+        testCard.forEach(card => {
+            card.destroy();
+        });
+        testCard = [];
+    }
 
-    //run little demoscript here
+    if (mCard.length) {
+        mCard.forEach(card => {
+            card.destroy();
+        });
+        mCard = [];
+    }
+
+    if (locCard.length) {
+        locCard.forEach(card => {
+            card.destroy();
+        });
+        locCard = [];
+    }
+
+    if (TDcardbuf.length) {
+        TDcardbuf.forEach(card => {
+            card.destroy();
+        });
+        TDcardbuf = [];
+    }
+
+    const cardnames = ['Dagger', 'Sling', 'Broadsword', 'Mana Potion', 'Bracelet', 'Jewel', 'Awakening', 'Daydream', 'Torrent', 'Torment', 'AcidHail', 'Solitude', 'HolyTempest', 'Eviction', 'Imitationrituals', 'Duraina', 'Jacquelyn'];
+    const mcardnames = ['Goblin', 'Kobalt', 'Skeleton'];
+    const loccardnames = ['Cellar', 'Dungeon', 'Crypt'];
+    const tdCardNames = ['Tripwire1', 'Net1', 'Pit1', 'Quicksand1'];
+    const bstarternames = ['Starter Sword', 'Starter Axe', 'Starter Shield', 'Starter Dagger', 'Starter Medkit', 'Starter Horse', 'Starter Steward', 'Starter Rage', 'Starter Focus', 'Starter BowArrow'];
+    const wstarternames = ['Starter Robes', 'Starter Wand', 'Starter Spellbook', 'Starter Staff', 'Starter Pet', 'Starter Firespell', 'Starter Minor Heal', 'Starter Meditation', 'Starter Wizard Focus', 'Starter Magic Arrow'];
+    const pstarternames = ['Starter Chant', 'Starter Concentration', 'Starter Defend', 'Starter Hammer', 'Starter Helmet', 'Starter Mace', 'Starter Prayer', 'Starter Redemption', 'Starter Paladin Shield', 'Starter Talisman'];
+    const rstarternames = ['Starter Hood', 'Starter Armor', 'Starter Backstab', 'Starter Boots', 'Starter Crossbow', 'Starter Knife', 'Starter Pickpocket', 'Starter Sneak', 'Starter Smoke', 'Starter Tools'];
+    //const cardchosen = cardnames[Math.floor(Math.random() * cardnames.length)];
+    const tempHand = [];
+
+    for (let index = 0; index < 10; index++) {
+        let inx = Math.floor(Math.random() * rstarternames.length);
+        tempHand.push(rstarternames[inx]);
+        rstarternames.splice(inx, 1);
+    }
+    let cardData: ABcardData;
+
+    tempHand.forEach((card, index) => {
+        console.log(`card: `, card);
+        cardData = retrieveStarteRogueCardData(card);
+        console.log(`carddata: `, cardData);
+        const args: ABcard = {
+            name: cardData.name,
+            cardsize: {
+                width: 125,
+                aspectRatio: 0.7142857142857143,
+            },
+            position: {
+                x: Math.random() * 1400,
+                y: Math.random() * 600,
+                theta: 0,
+            },
+            orientation: cardData.orientation,
+            parent: 'myApp',
+            title: cardData.title,
+            description: cardData.description,
+            catagory: cardData.catagory,
+            cost: cardData.cost,
+            image: cardData.image,
+            level: cardData.level,
+        };
+        console.log(`testCard: `, testCard);
+
+        testCard.push(AbilityCard.create(args));
+    });
+
+    // draw monster cards now
+    let mcarddata: MonsterCardData;
+    mcardnames.forEach(card => {
+        mcarddata = retrieveMCCardData(card);
+        const args: MCdata = {
+            name: mcarddata.name,
+            cardsize: {
+                width: 250,
+                aspectRatio: 4 / 3,
+            },
+            position: {
+                x: Math.random() * 900,
+                y: Math.random() * 500,
+                theta: 0,
+            },
+            orientation: mcarddata.orientation,
+            parent: 'myApp',
+            title: mcarddata.title,
+            description: mcarddata.description,
+            image: mcarddata.image,
+            level: mcarddata.level,
+            reward: mcarddata.reward,
+            health: mcarddata.health,
+        };
+        //mCard.push(MonsterCard.create(args));
+    });
+
+    // draw location cards now
+    let lcarddata: LOCcardData;
+    loccardnames.forEach(card => {
+        lcarddata = retrieveLocCardData(card);
+        const args: LOCcard = {
+            name: lcarddata.name,
+            cardsize: {
+                width: 250,
+                aspectRatio: 4 / 3,
+            },
+            position: {
+                x: Math.random() * 900,
+                y: Math.random() * 500,
+                theta: 0,
+            },
+            orientation: lcarddata.orientation,
+            parent: 'myApp',
+            title: lcarddata.title,
+            description: lcarddata.description,
+            image: lcarddata.image,
+            level: lcarddata.level,
+            health: lcarddata.health,
+            TD: lcarddata.TD,
+            sequence: lcarddata.sequence,
+        };
+        //locCard.push(LocationCard.create(args));
+    });
+
+    // draw TD cards now
+    let tcarddata: TDcardData;
+    tdCardNames.forEach(card => {
+        tcarddata = retrieveTDCardData(card);
+        const args: TDcard = {
+            name: tcarddata.name,
+            cardsize: {
+                width: 250,
+                aspectRatio: 1 / 1,
+            },
+            position: {
+                x: Math.random() * 900,
+                y: Math.random() * 500,
+                theta: 0,
+            },
+            orientation: tcarddata.orientation,
+            parent: 'myApp',
+            title: tcarddata.title,
+            description: tcarddata.description,
+            image: tcarddata.image,
+            level: tcarddata.level,
+        };
+        //TDcardbuf.push(TDCard.create(args));
+    });
+
+    /* //run little demoscript here
     let actions = [card => card.move(700, 100), card => card.move(250, 200), card => card.flip(), card => card.flip(), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.zoom(1.5), card => card.zoom(1)];
 
     const interval = setInterval(() => {
         const action = actions.shift();
-        action(testCard);
-        actions.push(action);
-    }, 1000);
+        testCard.forEach((card, index) => {
+            action(card);
+            if (actions.length == 0) {
+                clearInterval(interval);
+                card.destroy();
+            }
+        });
+    }, 1000); */
 };
 
 let createNewGame = async (e: Event) => {

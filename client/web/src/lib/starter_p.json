@@ -1,0 +1,122 @@
+{ 
+    "starter_chant":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "choose": "health 1, ability 1"
+    },
+    "title": "Holy Chant",
+    "image": "paladinchant.png",
+    "description": "Choose: Health +1 -or- Ability +1"
+  } , 
+    "starter_concentration":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "ability": 1
+    },
+    "title": "Concentration Aura",
+    "image": "paladinconcentration.png",
+    "description": "Ability +1"
+  } , 
+    "starter_defend":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "custom": "ability +1, for one player"
+    },
+    "title": "Celestial Defense",
+    "image": "paladindefend.png",
+    "description": "Ability +1 for any one player"
+  } , 
+    "starter_hammer":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Hammer of the Church",
+    "image": "paladinhammer.png",
+    "description": "Attack +1"
+  } ,
+    "starter_helmet":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Righteous Helm",
+    "image": "paladinhelmet.png",
+    "description": "Health +1"
+  },  
+    "starter_mace":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "choose": "attack 1, draw one"
+    },
+    "title": "Mace of the Gods",
+    "image": "paladinmace.png",
+    "description": "Choose: Attack +1 -or- draw one card"
+  }, 
+    "starter_prayer":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Devine Prayer",
+    "image": "paladinprayer.png",
+    "description": "Health +1"
+  }, 
+    "starter_redemption":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "custom": "health +1, for one player"
+     },
+    "title": "Holy Redeption",
+    "image": "paladinredeption.png",
+    "description": "Health +1 for any one player"
+  }, 
+    "starter_sheild":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "choose": "ability 1, health +1"
+    },
+    "title": "Shield of the Devine",
+    "image": "paladinshield.png",
+    "description": "Choose: Ability +1 -or- Health +1"
+  }, 
+    "starter_talisman":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "draw": "draw2lose1"
+    },
+    "title": "Brooch of the Almighty",
+    "image": "paladintalisman.png",
+    "description": "Draw two cards, discard any one"
+  }
+}

@@ -1,8 +1,16 @@
 import { Cardstatus } from '../../../../api/types';
-import baseimage from '../assets/card base.png';
-import cardborder from '../assets/newcardborder.png';
-import cardback from '../assets/cardback.png';
-import cardcost from '../assets/cardbasecost.png';
+import baseimage from '../assets/card assets/card base.png';
+import cardborder from '../assets/card assets/newcardborder.png';
+import cardback from '../assets/card assets/newcardback.png';
+import cardcost from '../assets/card assets/cardbasecost.png';
+import monsterLanding from '../assets/card assets/monster landing spot.png';
+import monsterback from '../assets/card assets/monster card.png';
+import monsterborder from '../assets/card assets/newmonsterborder.png';
+import locationborder from '../assets/card assets/newlocationborder.png';
+import locationback from '../assets/card assets/locationcardnew.png';
+import TDborder from '../assets/card assets/towerdefensefrontborder.png';
+import TDback from '../assets/card assets/towerdefense.png';
+import Token from '../assets/card assets/tokenspot.png';
 
 type Vector3 = {
     x: number;
@@ -23,6 +31,105 @@ type baseCardArgs = {
     orientation: Cardstatus;
     name: string;
     parent?: string;
+};
+
+export type ABcard = {
+    name: string;
+    cardsize: CardSize;
+    orientation: Cardstatus;
+    position: Vector3;
+    title: string;
+    description: string;
+    catagory: string;
+    cost: number;
+    image: string;
+    level: number;
+    parent?: string;
+};
+
+export type TDcard = {
+    name: string;
+    cardsize: CardSize;
+    orientation: Cardstatus;
+    position: Vector3;
+    title: string;
+    description: string;
+    image: string;
+    level: number;
+    parent?: string;
+};
+
+export type TDcardData = {
+    name: string;
+    title: string;
+    description: string;
+    level: number;
+    orientation: Cardstatus;
+    image: string;
+};
+
+export type ABcardData = {
+    name: string;
+    title: string;
+    description: string;
+    catagory: string;
+    level: number;
+    cost: number;
+    orientation: Cardstatus;
+    image: string;
+};
+
+export type LOCcard = {
+    name: string;
+    cardsize: CardSize;
+    orientation: Cardstatus;
+    position: Vector3;
+    title: string;
+    description: string;
+    image: string;
+    level: number;
+    parent?: string;
+    TD: number;
+    sequence: number;
+    health: number;
+};
+
+export type LOCcardData = {
+    name: string;
+    title: string;
+    description: string;
+    level: number;
+    sequence: number;
+    orientation: Cardstatus;
+    image: string;
+    TD: number;
+    health: number;
+};
+
+export type MonsterCardData = {
+    name: string;
+    title: string;
+    description: string;
+    level: number;
+    orientation: Cardstatus;
+    image: string;
+    reward: string;
+    parent?: string;
+    health: number;
+};
+
+export type MCdata = {
+    name: string;
+    cardsize: CardSize;
+    orientation: Cardstatus;
+    position: Vector3;
+    title: string;
+    description: string;
+    image: string;
+    level: number;
+    parent?: string;
+    reward: string;
+    health: number;
 };
 
 export class Card {
@@ -61,8 +168,6 @@ export class Card {
         this.back = document.createElement('div');
 
         this.contentDiv.id = `${this.name}_Content`;
-        this.front.innerHTML = this.name;
-        this.back.innerHTML = 'Back of Card';
         this.front.id = `${this.name}_front`;
         this.back.id = `${this.name}_back`;
         this.front.classList.add('front');
@@ -78,7 +183,6 @@ export class Card {
     }
 
     move(x: number, y: number) {
-        console.log(`Move`);
         this.position.x = x;
         this.position.y = y;
         this.updateCardTransform();
@@ -95,7 +199,6 @@ export class Card {
     }
 
     rotate(deltaAngle: number) {
-        console.log(`spin`);
         this.position.theta += deltaAngle;
         this.updateContentTransform(200);
     }
@@ -126,11 +229,13 @@ export class Card {
     }
 
     static create(params: baseCardArgs) {
-        console.log(`Here`);
         return new Card(params.name, params.cardsize, params.position, params.orientation, params.parent);
     }
 
-    destroy() {}
+    destroy() {
+        const myParent = this.cardDiv.parentNode;
+        myParent.removeChild(this.cardDiv);
+    }
 
     getPosition(): Vector3 {
         return this.position;
@@ -144,20 +249,6 @@ export class Card {
         };
     }
 }
-
-export type ABcard = {
-    name: string;
-    cardsize: CardSize;
-    orientation: Cardstatus;
-    position: Vector3;
-    title: string;
-    description: string;
-    catagory: string;
-    cost: number;
-    image: string;
-    level: number;
-    parent?: string;
-};
 
 export class AbilityCard extends Card {
     title: string;
@@ -175,14 +266,358 @@ export class AbilityCard extends Card {
         this.cost = abcard.cost;
         this.image = abcard.image;
         this.parent = abcard.parent;
+        this.level = abcard.level;
         //inject ability card data into DOM elements
-        const front_image = document.getElementById(`${this.name}_front`);
-        front_image.style.backgroundImage = `url(${baseimage}), url(${cardborder}), url(${cardcost})`;
+        const myCard = document.getElementById(`${this.name}`);
+        myCard.style.fontFamily = 'demonsiege';
+        const front_side = document.getElementById(`${this.name}_front`);
+        front_side.style.backgroundSize = 'contain';
+        if (this.cost > 0) front_side.style.backgroundImage = `url(${cardcost}), url(${cardborder}),url(${this.image}), url(${baseimage})`;
+        else front_side.style.backgroundImage = `url(${cardborder}), url(${this.image}),url(${baseimage})`;
+
+        //title and level
+        const titlediv = document.createElement('div');
+        const titlespan = document.createElement('span');
+        const levelspan = document.createElement('span');
+        titlediv.classList.add('ABcardTitle');
+        titlespan.innerHTML = `${this.title}`;
+        levelspan.innerHTML = `Lvl: ${this.level}`;
+        titlediv.appendChild(titlespan);
+        titlediv.appendChild(levelspan);
+        front_side.appendChild(titlediv);
+        this.reduceTitleFont(titlespan, levelspan);
+
+        //card cost
+        if (this.cost > 0) {
+            const costDiv = document.createElement('div');
+            costDiv.classList.add('ABcardCost');
+            costDiv.innerHTML = `${this.cost}`;
+            front_side.appendChild(costDiv);
+        }
+
+        //card type
+        const typeDiv = document.createElement('div');
+        typeDiv.classList.add('ABcardType');
+
+        typeDiv.innerHTML = `${this.catagory}`;
+        typeDiv.style.backgroundColor = `white`;
+        front_side.appendChild(typeDiv);
+
+        //description
+        const descriptionDiv = document.createElement('div');
+        descriptionDiv.classList.add('ABcardDesc');
+        descriptionDiv.style.fontSize = `12px`;
+        descriptionDiv.innerHTML = this.description;
+        front_side.appendChild(descriptionDiv);
+
+        const back_side = document.getElementById(`${this.name}_back`);
+        back_side.style.backgroundSize = 'contain';
+        back_side.style.backgroundImage = `url(${cardback})`;
+
         return this;
     }
 
-    create(params: ABcard) {
-        console.log(`or here`);
+    static create(params: ABcard) {
         return new AbilityCard(params);
+    }
+
+    reduceTitleFont(titlespan: HTMLElement, levelspan: HTMLElement) {
+        const titlecharcount = titlespan.innerHTML.length;
+        if (titlecharcount >= 0 && titlecharcount < 19) {
+            titlespan.style.fontSize = `10px`;
+            levelspan.style.fontSize = `10px`;
+        } else if (titlecharcount >= 19 && titlecharcount < 25) {
+            titlespan.style.fontSize = `7px`;
+            levelspan.style.fontSize = `7px`;
+        } else if (titlecharcount >= 25 && titlecharcount < 30) {
+            titlespan.style.fontSize = `5px`;
+            levelspan.style.fontSize = `5px`;
+        } else if (titlecharcount >= 30) {
+            titlespan.style.fontSize = `4px`;
+            levelspan.style.fontSize = `4px`;
+        }
+        const levelcount = levelspan.innerHTML.length;
+        console.log(`levle count, ${levelcount}`);
+    }
+}
+
+export class MonsterCard extends Card {
+    title: string;
+    description: string;
+    health: number;
+    activeDamage: number;
+    image: string;
+    level: number;
+    reward: string;
+
+    constructor(abcard: MCdata) {
+        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        this.title = abcard.title;
+        this.description = abcard.description;
+        this.image = abcard.image;
+        this.parent = abcard.parent;
+        this.level = abcard.level;
+        this.reward = abcard.reward;
+        this.health = abcard.health;
+
+        //inject ability card data into DOM elements
+        const myCard = document.getElementById(`${this.name}`);
+        myCard.style.fontFamily = 'demonsiege';
+        const front_side = document.getElementById(`${this.name}_front`);
+        front_side.style.backgroundSize = 'contain';
+        front_side.style.backgroundImage = `url(${monsterborder}), url(${this.image})`;
+
+        //title and level
+        const titlediv = document.createElement('div');
+        const titlespan = document.createElement('span');
+        const levelspan = document.createElement('span');
+        titlediv.classList.add('MCcardTitle');
+        titlespan.innerHTML = `${this.title}`;
+        levelspan.innerHTML = `Lvl: ${this.level}`;
+        titlediv.appendChild(titlespan);
+        titlediv.appendChild(levelspan);
+        front_side.appendChild(titlediv);
+        this.reduceTitleFont(titlespan, levelspan);
+
+        //card health
+
+        const healthDiv = document.createElement('div');
+        healthDiv.classList.add('MCcardHealth');
+        healthDiv.innerHTML = `${this.health}`;
+        front_side.appendChild(healthDiv);
+
+        //description
+        const descriptionDiv = document.createElement('div');
+        descriptionDiv.classList.add('MCcardDesc');
+        descriptionDiv.style.fontSize = `12px`;
+        descriptionDiv.innerHTML = this.description;
+        front_side.appendChild(descriptionDiv);
+
+        //reward
+        const rewardDiv = document.createElement('div');
+        rewardDiv.classList.add('MCcardReward');
+        rewardDiv.style.fontSize = `12px`;
+        rewardDiv.innerHTML = this.reward;
+        front_side.appendChild(rewardDiv);
+
+        const back_side = document.getElementById(`${this.name}_back`);
+        back_side.style.backgroundSize = 'contain';
+        back_side.style.backgroundImage = `url(${monsterback})`;
+
+        return this;
+    }
+
+    static create(params: MCdata) {
+        return new MonsterCard(params);
+    }
+
+    reduceTitleFont(titlespan: HTMLElement, levelspan: HTMLElement) {
+        const titlecharcount = titlespan.innerHTML.length;
+        if (titlecharcount >= 5 && titlecharcount < 19) {
+            titlespan.style.fontSize = `10px`;
+            levelspan.style.fontSize = `10px`;
+        } else if (titlecharcount >= 19 && titlecharcount < 25) {
+            titlespan.style.fontSize = `7px`;
+            levelspan.style.fontSize = `7px`;
+        } else if (titlecharcount >= 25 && titlecharcount < 30) {
+            titlespan.style.fontSize = `5px`;
+            levelspan.style.fontSize = `5px`;
+        } else if (titlecharcount >= 30) {
+            titlespan.style.fontSize = `4px`;
+            levelspan.style.fontSize = `4px`;
+        }
+        const levelcount = levelspan.innerHTML.length;
+        console.log(`levle count, ${levelcount}`);
+    }
+}
+
+export class LocationCard extends Card {
+    title: string;
+    description: string;
+    health: number;
+    activeDamage: number;
+    image: string;
+    level: number;
+    sequence: number;
+    TD: number;
+
+    constructor(abcard: LOCcard) {
+        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        this.title = abcard.title;
+        this.description = abcard.description;
+        this.image = abcard.image;
+        this.parent = abcard.parent;
+        this.level = abcard.level;
+        this.health = abcard.health;
+        this.sequence = abcard.sequence;
+        this.TD = abcard.TD;
+
+        //inject ability card data into DOM elements
+        const myCard = document.getElementById(`${this.name}`);
+        myCard.style.fontFamily = 'demonsiege';
+        const front_side = document.getElementById(`${this.name}_front`);
+        front_side.style.backgroundSize = 'contain';
+        front_side.style.backgroundImage = `url(${locationborder}), url(${this.image})`;
+
+        //title and level and sequence
+        const titlediv = document.createElement('div');
+        const titlespan = document.createElement('span');
+        const levelspan = document.createElement('span');
+        const sequenceSpan = document.createElement('span');
+        titlediv.classList.add('LOCcardTitle');
+        titlespan.innerHTML = `${this.title}`;
+        levelspan.innerHTML = `Lvl: ${this.level}`;
+        sequenceSpan.innerHTML = `Location: ${this.sequence}/3`;
+        titlediv.appendChild(titlespan);
+        titlediv.appendChild(sequenceSpan);
+        titlediv.appendChild(levelspan);
+        front_side.appendChild(titlediv);
+        this.reduceTitleFont(titlespan, levelspan, sequenceSpan);
+
+        //card health
+        const healthDiv = document.createElement('div');
+        healthDiv.classList.add('LOCcardDHealth');
+        for (let index = 0; index < this.health; index++) {
+            const tokenDiv = document.createElement('div');
+            if (index % 2) tokenDiv.classList.add('LOCcardDHealthToken1');
+            else tokenDiv.classList.add('LOCcardDHealthToken2');
+            tokenDiv.style.backgroundImage = `url(${Token})`;
+            tokenDiv.style.backgroundRepeat = 'no-repeat';
+            if (this.health < 8) {
+                tokenDiv.style.marginLeft = `1%`;
+                tokenDiv.style.marginRight = `1%`;
+            } else {
+                tokenDiv.style.marginLeft = `.3%`;
+                tokenDiv.style.marginRight = `.3%`;
+            }
+            healthDiv.appendChild(tokenDiv);
+        }
+        front_side.appendChild(healthDiv);
+
+        //description
+        const descriptionDiv = document.createElement('div');
+        const TDdiv = document.createElement('div');
+
+        TDdiv.classList.add('LOCcardDescTD');
+        TDdiv.style.fontSize = `12px`;
+        TDdiv.innerHTML = `Each Turn reveals ${this.TD} Tower Defense Cards`;
+        descriptionDiv.appendChild(TDdiv);
+        descriptionDiv.classList.add('LOCcardDesc');
+
+        let innerDescriptionDiv: HTMLElement;
+        if (this.description.length) {
+            innerDescriptionDiv = document.createElement('div');
+            innerDescriptionDiv.classList.add('LOCcardDescDesc');
+            innerDescriptionDiv.innerHTML = this.description;
+            innerDescriptionDiv.style.fontSize = `12px`;
+            descriptionDiv.appendChild(innerDescriptionDiv);
+        }
+        front_side.appendChild(descriptionDiv);
+
+        const back_side = document.getElementById(`${this.name}_back`);
+        back_side.style.backgroundSize = 'contain';
+        back_side.style.backgroundImage = `url(${locationback})`;
+
+        return this;
+    }
+
+    static create(params: LOCcard) {
+        return new LocationCard(params);
+    }
+
+    reduceTitleFont(titlespan: HTMLElement, levelspan: HTMLElement, sequenceelement: HTMLElement) {
+        const titlecharcount = titlespan.innerHTML.length;
+        if (titlecharcount >= 5 && titlecharcount < 19) {
+            titlespan.style.fontSize = `10px`;
+            levelspan.style.fontSize = `10px`;
+            sequenceelement.style.fontSize = `10px`;
+        } else if (titlecharcount >= 19 && titlecharcount < 25) {
+            titlespan.style.fontSize = `7px`;
+            levelspan.style.fontSize = `7px`;
+            sequenceelement.style.fontSize = `7px`;
+        } else if (titlecharcount >= 25 && titlecharcount < 30) {
+            titlespan.style.fontSize = `5px`;
+            levelspan.style.fontSize = `5px`;
+            sequenceelement.style.fontSize = `5px`;
+        } else if (titlecharcount >= 30) {
+            titlespan.style.fontSize = `4px`;
+            levelspan.style.fontSize = `4px`;
+            sequenceelement.style.fontSize = `4px`;
+        }
+        const levelcount = levelspan.innerHTML.length;
+        console.log(`levle count, ${levelcount}`);
+    }
+}
+
+export class TDCard extends Card {
+    title: string;
+    description: string;
+    image: string;
+    level: number;
+
+    constructor(abcard: TDcard) {
+        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        this.title = abcard.title;
+        this.description = abcard.description;
+        this.image = abcard.image;
+        this.parent = abcard.parent;
+        this.level = abcard.level;
+
+        //inject ability card data into DOM elements
+        const myCard = document.getElementById(`${this.name}`);
+        myCard.style.fontFamily = 'demonsiege';
+        const front_side = document.getElementById(`${this.name}_front`);
+        front_side.style.backgroundSize = 'contain';
+        front_side.style.backgroundImage = `url(${TDborder}), url(${this.image})`;
+
+        //title and level and sequence
+        const titlediv = document.createElement('div');
+        const titlespan = document.createElement('span');
+        const levelspan = document.createElement('span');
+        titlediv.classList.add('TDcardTitle');
+        titlespan.innerHTML = `${this.title}`;
+        levelspan.innerHTML = `Lvl: ${this.level}`;
+
+        titlediv.appendChild(titlespan);
+        titlediv.appendChild(levelspan);
+        front_side.appendChild(titlediv);
+        this.reduceTitleFont(titlespan, levelspan);
+
+        //description
+        const descriptionDiv = document.createElement('div');
+        descriptionDiv.classList.add('TDdescription');
+        descriptionDiv.innerHTML = this.description;
+        descriptionDiv.style.fontSize = `1.4vw`;
+        front_side.appendChild(descriptionDiv);
+
+        //back of card
+        const back_side = document.getElementById(`${this.name}_back`);
+        back_side.style.backgroundSize = 'contain';
+        back_side.style.backgroundImage = `url(${TDback})`;
+
+        return this;
+    }
+
+    static create(params: TDcard) {
+        return new TDCard(params);
+    }
+
+    reduceTitleFont(titlespan: HTMLElement, levelspan: HTMLElement) {
+        const titlecharcount = titlespan.innerHTML.length;
+        if (titlecharcount >= 5 && titlecharcount < 19) {
+            titlespan.style.fontSize = `14px`;
+            levelspan.style.fontSize = `14px`;
+        } else if (titlecharcount >= 19 && titlecharcount < 25) {
+            titlespan.style.fontSize = `10px`;
+            levelspan.style.fontSize = `10px`;
+        } else if (titlecharcount >= 25 && titlecharcount < 30) {
+            titlespan.style.fontSize = `8px`;
+            levelspan.style.fontSize = `8px`;
+        } else if (titlecharcount >= 30) {
+            titlespan.style.fontSize = `6px`;
+            levelspan.style.fontSize = `6px`;
+        }
+        const levelcount = levelspan.innerHTML.length;
+        console.log(`levle count, ${levelcount}`);
     }
 }

@@ -1,0 +1,123 @@
+{ 
+    "starter_sword":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Sword",
+    "image": "barbariansword.png",
+    "description": "Attack +1"
+  } , 
+    "starter_axe":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "attack": 1
+    },
+    "title": "Axe",
+    "image": "barbarianaxe.png",
+    "description": "Attack +1"
+  } , 
+    "starter_shield":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Shield",
+    "image": "barbariansheild.png",
+    "description": "Health +1"
+  } , 
+    "starter_dagger":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "choose": "attack 1, ability 1"
+    },
+    "title": "Dagger",
+    "image": "barbariandagger.png",
+    "description": "Choose: Attack +1 -or- Ability +1"
+  } , 
+    "starter_medkit":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "item",
+    "cost": 0,
+    "scripts": {
+        "health": 1
+    },
+    "title": "Med Kit",
+    "image": "barbarianmedkit.png",
+    "description": "Health +1"
+  }, 
+    "starter_horse":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "friend",
+    "cost": 0,
+    "scripts": {
+        "ability": 2
+    },
+    "title": "Steed",
+    "image": "barbariansteed.png",
+    "description": "Ability +2"
+  }, 
+    "starter_steward":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "friend",
+    "cost": 0,
+    "scripts": {
+        "choose": "health 1, ability 1"
+    },
+    "title": "Steward",
+    "image": "barbariansteward.png",
+    "description": "Choose: Health +1 -or- Ability +1"
+  }, 
+    "starter_rage":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "draw": "one",
+        "attack":1
+    },
+    "title": "Barbarian Rage",
+    "image": "attackspell.png",
+    "description": "Attack +1, draw one card"
+  }, 
+    "starter_focus":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "spell",
+    "cost": 0,
+    "scripts": {
+        "ability": 1
+    },
+    "title": "Barbarian Focus",
+    "image": "supportspell.png",
+    "description": "Ability +1"
+  }, 
+    "starter_bowarrow":{
+    "type": "ability",
+    "level": 1,
+    "catagory": "weapon",
+    "cost": 0,
+    "scripts": {
+        "choose": "attack 1, ability 1"
+    },
+    "title": "Bow and Arrows",
+    "image": "barbarianbow.png",
+    "description": "Choose: Attack +1 -or- Ability +1"
+  }
+}

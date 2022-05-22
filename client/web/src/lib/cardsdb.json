@@ -1,0 +1,1563 @@
+{
+    "spear": {
+        "type": "ability",
+        "titlefont": 16,
+        "level": 2,
+        "catagory": "weapon",
+        "cost": 3,
+        "scripts": {
+            "attack": 2
+        },
+        "title": "Spear of the Moonless ",
+        "image": "spear.png",
+        "description": "Attack +2"
+    },
+    "crossbow": {
+        "type": "ability",
+        "titlefont": 20,
+        "level": 5,
+        "catagory": "weapon",
+        "cost": 6,
+        "scripts": {
+            "attack": 2,
+            "draw": "monsterdefeated"
+        },
+        "title": "Reap and Sew",
+        "image": "crossbow.png",
+        "description": "Attack +2, if monster defeated, draw 1 card"
+    },
+    "dagger": {
+        "type": "ability",
+        "titlefont": 20,
+        "level": 1,
+        "catagory": "weapon",
+        "cost": 3,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Spirit Cleaver",
+        "image": "dagger.png",
+        "description": "Attack +1"
+    },
+    "gauntlets": {
+        "type": "ability",
+        "titlefont": 18,
+        "level": 6,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "ability": 1,
+            "draw": "one"
+        },
+        "title": "Arcanist Gauntlets",
+        "image": "gauntlets.png",
+        "description": "Ability +1, draw 1 card"
+    },
+    "greataxe": {
+        "type": "ability",
+        "level": 3,
+        "titlefont": 14,
+        "catagory": "weapon",
+        "cost": 5,
+        "scripts": {
+            "ability": 1,
+            "attack": 2
+        },
+        "title": "Realmswarden Greataxe",
+        "image": "greataxe.png",
+        "description": "Ability +1, Attack +2"
+    },
+    "hat": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "item",
+        "cost": 8,
+        "scripts": {
+            "ability": 2,
+            "health": 2,
+            "draw": "draw2lose1"
+        },
+        "title": "Carrion Shroud",
+        "image": "hat.png",
+        "description": "Ability +2, Health +2, Draw 2 cards and discard 1"
+    },
+    "helmet": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "item",
+        "cost": 3,
+        "scripts": {
+            "draw": "draw2lose1,if spell, ability+2"
+        },
+        "title": "Helm of the Platinum Dragon",
+        "image": "helmet.png",
+        "description": "Draw 2 cards and discard 1, if spell discarded, Ability +2"
+    },
+    "staff": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "draw": "one",
+            "ability": 1
+        },
+        "title": "Nimbus, First Staff of the Thunderbirds",
+        "image": "staff.png",
+        "description": "Draw 1 card, Ability +1"
+    },
+
+    "rucksack": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "draw": "one",
+            "ability": 2
+        },
+        "title": "Webgrip Rucksack",
+        "image": "rucksack.png",
+        "description": "Draw 1 card, Ability +1"
+    },
+
+    "cauldron": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "item",
+        "cost": 3,
+        "scripts": {
+            "ability": 2
+        },
+        "title": "Tub of Churning",
+        "image": "cauldron.png",
+        "description": "Ability +2"
+    },
+
+    "warpick": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "weapon",
+        "cost": 4,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Magma War Pick",
+        "image": "warpick.png",
+        "description": "Attack +1"
+    },
+    "bow": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "weapon",
+        "cost": 4,
+        "scripts": {
+            "attack": 2,
+            "ability": 1
+        },
+        "title": "Spellfire Bow",
+        "image": "bow.png",
+        "description": "Attack +2, Ability +1"
+    },
+    "claymore": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "weapon",
+        "cost": 6,
+        "scripts": {
+            "attack": 1,
+            "health": 1
+        },
+        "title": "Love's Embrace",
+        "image": "claymore.png",
+        "description": "Attack +1, Health +1"
+    },
+    "broadsword": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "weapon",
+        "cost": 3,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Spellsword",
+        "image": "broadsword.png",
+        "description": "Attack +1"
+    },
+    "rapier": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "weapon",
+        "cost": 3,
+        "scripts": {
+            "custom": "+1 attack all, 1 round"
+        },
+        "title": "Cinnabar Rapier",
+        "image": "rapier.png",
+        "description": "Attack +1 for all players, one round"
+    },
+    "cutlass": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "weapon",
+        "cost": 6,
+        "scripts": {
+            "attack": 1,
+            "ability": 1
+        },
+        "title": "Starmetal Sliver",
+        "image": "cutlass.png",
+        "description": "Attack +1, Ability +1"
+    },
+    "flail": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "weapon",
+        "cost": 4,
+        "scripts": {
+            "draw": "one",
+            "location": -1
+        },
+        "title": "Thunderous Flail",
+        "image": "flail.png",
+        "description": "Draw 1 card, remove 1 influence point from location"
+    },
+    "wand": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "weapon",
+        "cost": 7,
+        "scripts": {
+            "attack": 2,
+            "die": 2
+        },
+        "title": "Direstone Runic Wand",
+        "image": "wand.png",
+        "description": "Attack +2, Roll dice twice"
+    },
+    "sling": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "weapon",
+        "cost": 3,
+        "scripts": {
+            "attack": 1,
+            "ability": 1
+        },
+        "title": "Chromacloth",
+        "image": "sling.png",
+        "description": "Attack +1, Ability+1"
+    },
+    "whip": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "weapon",
+        "cost": 5,
+        "scripts": {
+            "custom": "2 monsters, +1 damage"
+        },
+        "title": "Gelatinous Whip",
+        "image": "whip.png",
+        "description": "Attack +1 for any 2 monsters"
+    },
+    "nunchuks": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "weapon",
+        "cost": 6,
+        "scripts": {
+            "attack": 1,
+            "draw": "one",
+            "location": -1
+        },
+        "title": "Weaving Wasp Needles",
+        "image": "nunchuks.png",
+        "description": "Attack +1, draw 1 card, remove 1 influence point from location"
+    },
+    "shield": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "attack": 1,
+            "block": 1
+        },
+        "title": "Frostbitten Buckler",
+        "image": "shield.png",
+        "description": "Attack +1, block 1 monster ability for 1 round"
+    },
+    "armor": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "item",
+        "cost": 6,
+        "scripts": {
+            "health": 2,
+            "ability": 1,
+            "die": 2
+        },
+        "title": "Windswept Wyvernplate",
+        "image": "armor.png",
+        "description": "Health +2, Ability +1, Roll dice twice "
+    },
+    "bracers": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "item",
+        "cost": 6,
+        "scripts": {
+            "ability": 2,
+            "die": 1
+        },
+        "title": "Fourarm Bracers",
+        "image": "bracers.png",
+        "description": "Ability +2, Roll dice once "
+    },
+    "map": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "choose": "health 2, draw 1"
+        },
+        "title": "Scroll of Mapping",
+        "image": "map.png",
+        "description": "Choose: Health+2 -or- draw 1 card"
+    },
+    "satchel": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "ability": 1,
+            "draw": "draw2lose1"
+        },
+        "title": "Griffon Component Pack",
+        "image": "satchel.png",
+        "description": "Ability +1, draw 2 cards, discard 1"
+    },
+    "medkit": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "item",
+        "cost": 7,
+        "scripts": {
+            "health": 2,
+            "die": 1
+        },
+        "title": "Ambitious Medic's Box",
+        "image": "medkit.png",
+        "description": "Health +2, Roll die once"
+    },
+    "spellbook": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "ability": 2,
+            "location": -1
+        },
+        "title": "Tome of Lost Knowledge",
+        "image": "spellbook.png",
+        "description": "Ability +2, remove 1 influence point from location"
+    },
+    "amulet": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "item",
+        "cost": 7,
+        "scripts": {
+            "health": 3,
+            "die": 1
+        },
+        "title": "Death's Shadow",
+        "image": "amulet.png",
+        "description": "Health +3, Roll die once"
+    },
+    "manapotion": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "health": 1,
+            "ability": 1
+        },
+        "title": "Djinn and Tonic",
+        "image": "manapotion.png",
+        "description": "Health +1, Ability +1"
+    },
+    "canteen": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "choose": "health 2, ability 2"
+        },
+        "title": "Heavenly Chalice",
+        "image": "chalise.png",
+        "description": "Choose: Health +2 -or- Ability +2"
+    },
+    "bracelet": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "item",
+        "cost": 3,
+        "scripts": {
+            "ability": 1
+        },
+        "title": "Contingency Band",
+        "image": "bracelet.png",
+        "description": "Ability +1"
+    },
+    "ring": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "location": -1
+        },
+        "title": "Gateway Ring",
+        "image": "ring.png",
+        "description": "Remove 1 influence point from location"
+    },
+    "belt": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 7,
+        "scripts": {
+            "health": 2,
+            "ability": 2
+        },
+        "title": "Alchemist's Potion Belt",
+        "image": "belt.png",
+        "description": "Health +2, Ability +2"
+    },
+    "cape": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 4,
+        "scripts": {
+            "custom": "only1DamagePerMonsterOrTD"
+        },
+        "title": "Seer's Starlight Cloak",
+        "image": "cloak.png",
+        "description": "Can only receive 1 damage per round, per monster or tower defense card"
+    },
+    "chest": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "item",
+        "cost": 8,
+        "scripts": {
+            "ability": 1,
+            "die": 1,
+            "draw": "one"
+        },
+        "title": "Wanderer's Chest",
+        "image": "chest.png",
+        "description": "Ability +1, roll die once, and draw one card"
+    },
+    "elixer": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "item",
+        "cost": 6,
+        "scripts": {
+            "choose": "health 2, ability 2"
+        },
+        "title": "Aged Goodberry Wine",
+        "image": "elixer.png",
+        "description": "Choose: Health+2 -or- Ability +2"
+    },
+    "jewel": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "item",
+        "cost": 3,
+        "scripts": {
+            "ability": 1
+        },
+        "title": "Eye of the Bookwurm",
+        "image": "jewel.png",
+        "description": "Ability +1"
+    },
+    "poison": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "item",
+        "cost": 7,
+        "scripts": {
+            "custom": "+1 attack to all monsters",
+            "die": 1
+        },
+        "title": "Vigilant Phial",
+        "image": "manapotion.png",
+        "description": "Attack +1 for each monster, roll die once"
+    },
+    "key": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "item",
+        "cost": 5,
+        "scripts": {
+            "draw": "one",
+            "die": 1,
+            "location": -1
+        },
+        "title": "Archivist's Key",
+        "image": "key.png",
+        "description": "Attack +1 for each monster, roll die once"
+    },
+    "frostmissle": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "attack": 3
+        },
+        "title": "Frost Missiles",
+        "image": "attackspell.png",
+        "description": "Attack +3"
+    },
+    "flamebarrage": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "attack": 2
+        },
+        "title": "Flame Barrage",
+        "image": "attackspell.png",
+        "description": "Attack +2"
+    },
+    "solarblaze": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "attack": 2,
+            "draw": "one"
+        },
+        "title": "Solar Blaze",
+        "image": "attackspell.png",
+        "description": "Attack +2, draw 1 card"
+    },
+    "daydream": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 2,
+        "scripts": {
+            "ability": 1
+        },
+        "title": "Daydream",
+        "image": "supportspell.png",
+        "description": "Ability +1"
+    },
+    "disrupt": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 2,
+        "scripts": {
+            "attack": 1,
+            "draw": "one"
+        },
+        "title": "Disrupt",
+        "image": "attackspell.png",
+        "description": "Attack +1, draw 1 card"
+    },
+    "wave": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "spell",
+        "cost": 7,
+        "scripts": {
+            "health": 3,
+            "draw": "one"
+        },
+        "title": "Wave of Healing",
+        "image": "healingspell.png",
+        "description": "Health +3, draw 1 card"
+    },
+    "awakening": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "ability": 1
+        },
+        "title": "Blast of Awakening",
+        "image": "supportspell.png",
+        "description": "Ability +1"
+    },
+    "demoralize": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "location": -1
+        },
+        "title": "Demoralizing of Sanity",
+        "image": "supportspell.png",
+        "description": "Remove 1 influence point from location"
+    },
+    "serenity": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "health": 1,
+            "ability": 1
+        },
+        "title": "Serenity of Shadows",
+        "image": "healingspell.png",
+        "description": "Health +1, Ability +1"
+    },
+    "perversion": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "health": 2,
+            "ability": 1
+        },
+        "title": "Perversion of Light",
+        "image": "healingspell.png",
+        "description": "Health +2, Ability +1"
+    },
+    "torrent": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "attack": 1,
+            "draw": "one"
+        },
+        "title": "Fiery Torrent",
+        "image": "attackspell.png",
+        "description": "Attack +1, Draw 1 card"
+    },
+    "rapture": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "attack": 2,
+            "ability": 1
+        },
+        "title": "Elemental Rapture",
+        "image": "attackspell.png",
+        "description": "Attack +2, Ability +1"
+    },
+    "blaze": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "attack": 2
+        },
+        "title": "Nether Blaze",
+        "image": "attackspell.png",
+        "description": "Attack +2, Ability +1"
+    },
+    "torment": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 2,
+        "scripts": {
+            "draw": "draw1lose1"
+        },
+        "title": "Torment",
+        "image": "supportspell.png",
+        "description": "Draw 1 card, discard 1"
+    },
+    "meditation": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "ability": 3
+        },
+        "title": "Meditation",
+        "image": "supportspell.png",
+        "description": "Ability +3"
+    },
+    "charmtraps": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "choose": "Attack 2, draw2lose1"
+        },
+        "title": "Charm of Traps",
+        "image": "supportspell.png",
+        "description": "Choose: Attack +2 -or- Draw 2 cards, discard 1"
+    },
+    "contagion": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "attack": 1,
+            "location": -1
+        },
+        "title": "Seal of Contagion",
+        "image": "attackspell.png",
+        "description": "Attack +2, remove 1 influence point from location"
+    },
+    "evocationsound": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "ability": 1,
+            "deck": "one",
+            "location": -1
+        },
+        "title": "Evocation of Sound",
+        "image": "supportspell.png",
+        "description": "Ability +1, Draw 1 card, remove 1 influence point from location"
+    },
+    "savagry": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "choose": "health 2, ability 2",
+            "die": 1
+        },
+        "title": "Savagery of Chaos",
+        "image": "supportspell.png",
+        "description": "Roll die once, and choose: Health +2 -or- Ability +2"
+    },
+    "obliteration": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "health": 2,
+            "location": -1
+        },
+        "title": "Obliterationn of Light",
+        "image": "healingspell.png",
+        "description": "Health +2, remove 1 influence point from location "
+    },
+    "windbomb": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "spell",
+        "cost": 7,
+        "scripts": {
+            "attack": 2,
+            "ability": 2
+        },
+        "title": "Wind Bomb",
+        "image": "attackspell.png",
+        "description": "Attack +2, Ability +2 "
+    },
+    "magmavolley": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "spell",
+        "cost": 8,
+        "scripts": {
+            "attack": 2,
+            "ability": 1,
+            "draw": "one",
+            "die": 1
+        },
+        "title": "Magma Volley",
+        "image": "attackspell.png",
+        "description": "Attack +2, Ability +1, draw 1 card, roll die once "
+    },
+    "acidhail": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 2,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Acid Hail",
+        "image": "attackspell.png",
+        "description": "Attack +1"
+    },
+    "invocation": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "health": 1,
+            "ability": 1
+        },
+        "title": "Invocation",
+        "image": "healingspell.png",
+        "description": "Health +1, Ability +1"
+    },
+    "fireworks": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 7,
+        "scripts": {
+            "attack": 2,
+            "ability": 1,
+            "deck": "draw2lose1"
+        },
+        "title": "Fireworks",
+        "image": "attackspell.png",
+        "description": "Attack +2, Ability +1, Draw 2 cards, discard 1"
+    },
+    "giftcontagion": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "choose": "Attack 2, Health 2, Ability 2",
+            "discard": "Attack 2, Ability 2"
+        },
+        "title": "Gift of Contagion",
+        "image": "supportspell.png",
+        "description": "Choose: Attack +2 -or- Ability +2, if this card discarded Attack +2, Ability +2"
+    },
+    "hurricane": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "choose": "Attack 2, Health 2, Ability 2"
+        },
+        "title": "Calling of the Hurricane",
+        "image": "supportspell.png",
+        "description": "Choose: Attack +2 -or- Health +2 -or- Ability +2"
+    },
+    "scornintellect": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "spell",
+        "cost": 8,
+        "scripts": {
+            "ability": 1,
+            "location": -2,
+            "die": 1
+        },
+        "title": "Scorn Intellect",
+        "image": "supportspell.png",
+        "description": "Ability +1, remove 2 influence point from location, roll die once"
+    },
+    "victorymind": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "spell",
+        "cost": 9,
+        "scripts": {
+            "health": 2,
+            "ability": 1,
+            "location": -1,
+            "die": 2
+        },
+        "title": "Victory of the Mind",
+        "image": "supportspell.png",
+        "description": "Health +2, Ability +1, remove 1 influence point from location, roll die twice"
+    },
+    "angerhonor": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "attack": 2,
+            "die": 1
+        },
+        "title": "Anger of Honor",
+        "image": "attackspell.png",
+        "description": "Attack +2, roll die once"
+    },
+    "liferupture": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 7,
+        "scripts": {
+            "health": 3,
+            "die": 1
+        },
+        "title": "Life Rupture",
+        "image": "healingspell.png",
+        "description": "Health +3, roll die once"
+    },
+    "fieryrush": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 2,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Fiery Rush",
+        "image": "attackspell.png",
+        "description": "Attack +1"
+    },
+    "infernalray": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "attack": 2
+        },
+        "title": "Infernal Ray",
+        "image": "attackspell.png",
+        "description": "Attack +2"
+    },
+    "fullfillment": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 8,
+        "scripts": {
+            "draw": "draw2lose1",
+            "die": 1
+        },
+        "title": "Fullfillment",
+        "image": "attackspell.png",
+        "description": "Draw 2 cards, discard 1, roll die once"
+    },
+    "summon": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "attack": 2,
+            "health": 1
+        },
+        "title": "Summon Gaurdian",
+        "image": "attackspell.png",
+        "description": "Attack +2, Health +1"
+    },
+    "blastconfusion": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "spell",
+        "cost": 9,
+        "scripts": {
+            "health": 2,
+            "ability": 2,
+            "location": -1
+        },
+        "title": "Blast of Confusion",
+        "image": "supportspell.png",
+        "description": "Health +2, Ability +2, remove 1 influence point from location"
+    },
+    "eclipse": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "location": -1
+        },
+        "title": "Seal of the Total Eclipse",
+        "image": "supportspell.png",
+        "description": "Remove 1 influence point from location"
+    },
+    "solitudebolt": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "attack": 1
+        },
+        "title": "Solitude Bolt",
+        "image": "attackspell.png",
+        "description": "Attack +1"
+    },
+    "distortion": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "ability": 2,
+            "draw": "one"
+        },
+        "title": "Distortion Hymn",
+        "image": "supportspell.png",
+        "description": "Ability +2, draw 1 card"
+    },
+    "exploitationminds": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "spell",
+        "cost": 7,
+        "scripts": {
+            "attack": 1,
+            "ability": 1,
+            "die": 1,
+            "location": -1
+        },
+        "title": "Exploitation of Minds",
+        "image": "supportspell.png",
+        "description": "Attack +1, Ability +1, roll die once, remove 1 influence point from location"
+    },
+    "arcaneeruption": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "spell",
+        "cost": 8,
+        "scripts": {
+            "attack": 2,
+            "die": 1,
+            "draw": "one"
+        },
+        "title": "Arcane Fire Eruption",
+        "image": "supportspell.png",
+        "description": "Attack +2, roll die once, draw 1 card"
+    },
+    "holytempest": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 4,
+        "scripts": {
+            "choose": "health 1, ability 1"
+        },
+        "title": "Holy Tempest",
+        "image": "supportspell.png",
+        "description": "Choose: Health +1 -or- Ability +1"
+    },
+    "firesalvo": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "spell",
+        "cost": 8,
+        "scripts": {
+            "attack": 2,
+            "draw": "one",
+            "location": -1
+        },
+        "title": "Fire Salvo",
+        "image": "attackspell.png",
+        "description": "Attack +2, draw 1 card, remove 1 influence point from location"
+    },
+    "eviction": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "location": -1
+        },
+        "title": "Eviction",
+        "image": "attackspell.png",
+        "description": "Remove 1 influence point from location"
+    },
+    "penance": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "choose": "Attack 2, Health 2"
+        },
+        "title": "Penance",
+        "image": "attackspell.png",
+        "description": "Choose: Attack +2 -or- Health +2"
+    },
+    "hexhealing": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "spell",
+        "cost": 6,
+        "scripts": {
+            "health": 2,
+            "die": 1
+        },
+        "title": "Hex of Greater Healing",
+        "image": "healingspell.png",
+        "description": "Health +2, roll die once"
+    },
+    "blessingrage": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 9,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "ability": 1,
+            "die": 1
+        },
+        "title": "Blessing of Elemental Rage",
+        "image": "supportspell.png",
+        "description": "Attack +1, Health +1, Ability +1, roll die once"
+    },
+    "imitationrituals": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "choose": "Ability 1, Draw 1"
+        },
+        "title": "Imitation of Rituals",
+        "image": "supportspell.png",
+        "description": "Choose: Ability +1 -or- Draw 1 card"
+    },
+    "vitalitydecal": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "spell",
+        "cost": 5,
+        "scripts": {
+            "custom": "Attack +3, Health -1, Discard 1"
+        },
+        "title": "Decay of Vitality",
+        "image": "attackspell.png",
+        "description": "Attack +3, Health -1, discard 1 card"
+    },
+    "imbuementceremony": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "spell",
+        "cost": 3,
+        "scripts": {
+            "ability": 2,
+            "draw": "one"
+        },
+        "title": "Imbuement Ceremony",
+        "image": "attackspell.png",
+        "description": "Ability +2, draw 1 card"
+    },
+    "destrian": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "ability": 1,
+            "attack": 2
+        },
+        "title": "Destrian McKinnon",
+        "image": "malecarpenterhuman.png",
+        "description": "Attack +2, Ability +1"
+    },
+    "lalia": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "ability": 1,
+            "attack": 2
+        },
+        "title": "Lalia Cotton",
+        "image": "femaleknighthuman.png",
+        "description": "Attack +2, Ability +1"
+    },
+    "ryia": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "choose": "attack 2, health 2"
+        },
+        "title": "Ryia de Bolbec",
+        "image": "femalefisherhuman.png",
+        "description": "Choose: Attack +2 -or- Health +2"
+    },
+    "asher": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "draw": "draw3lose2",
+            "die": 1
+        },
+        "title": "Asher Cromwell",
+        "image": "malejugglerhuman.png",
+        "description": "Draw 3 cards, discard 2, roll die once"
+    },
+    "terryn": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 4,
+        "scripts": {
+            "health": 1,
+            "ability": 1
+        },
+        "title": "Terryn Boulderdown",
+        "image": "malemystichuman.png",
+        "description": "Health +1, Ability +1"
+    },
+    "lailadegrey": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "health": 1,
+            "ability": 1,
+            "die": 1
+        },
+        "title": "Laila de Grey",
+        "image": "femalebountyhuman.png",
+        "description": "Health +1, Ability +1, roll die once"
+    },
+    "carac": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "attack": 1,
+            "ability": 1,
+            "die": 1
+        },
+        "title": "Carac de Bolbec",
+        "image": "malejailorhuman.png",
+        "description": "Attack +1, Ability +1, roll die once"
+    },
+    "duraina": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "friend",
+        "cost": 4,
+        "scripts": {
+            "attack": 1,
+            "custom": "+1 health all"
+        },
+        "title": "Duraina Serpentwind",
+        "image": "femaletraderhuman.png",
+        "description": "Attack +1, +1 Health to all"
+    },
+    "mironwe": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "attack": 2,
+            "health": 1,
+            "location": -1
+        },
+        "title": "Mironwe Aldarina",
+        "image": "maleknighthalfelf.png",
+        "description": "Attack +2, Health +1, remove 1 influence point from location"
+    },
+    "elyel": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "friend",
+        "cost": 7,
+        "scripts": {
+            "draw": "draw3lose2",
+            "die": 1,
+            "location": -1
+        },
+        "title": "Elyel Tathviel",
+        "image": "maleknighthalfelf.png",
+        "description": "Draw 3 cards, discard 2, roll die once, remove 1 influence point from location"
+    },
+    "caresta": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "friend",
+        "cost": 8,
+        "scripts": {
+            "ability": 3,
+            "die": 1,
+            "location": -1
+        },
+        "title": "Caresta Galarina",
+        "image": "malefighterdrow.png",
+        "description": "Ability +3, roll die once, remove 1 influence point from location"
+    },
+    "doran": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "location": -2
+        },
+        "title": "Doran Hilless",
+        "image": "malewizardhuman.png",
+        "description": "Remove 2 influence point from location"
+    },
+    "beatrix": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "attack": 1,
+            "health": 2
+        },
+        "title": "Beatrix Keenseeker",
+        "image": "femalewizardhalforc.png",
+        "description": "Attack +1, Health +2"
+    },
+    "jacquelyn": {
+        "type": "ability",
+        "level": 1,
+        "catagory": "friend",
+        "cost": 2,
+        "scripts": {
+            "custom": "monster defeated, ability +1",
+            "attack": 1
+        },
+        "title": "Jacquelyn Cornwallis",
+        "image": "femalesailorhuman.png",
+        "description": "Attack +1, if monster defeated, Ability +1"
+    },
+    "adran": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "friend",
+        "cost": 4,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "die": 1
+        },
+        "title": "Adran Yaeldrin",
+        "image": "malerangerelf.png",
+        "description": "Attack +1, Health +1, roll die once"
+    },
+    "alice": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 3,
+        "scripts": {
+            "health": 1,
+            "draw": "one"
+        },
+        "title": "Alice Marlowe",
+        "image": "femalebardhuman.png",
+        "description": "Health +1, draw 1 card"
+    },
+    "oren": {
+        "type": "ability",
+        "level": 4,
+        "catagory": "friend",
+        "cost": 4,
+        "scripts": {
+            "ability": 2,
+            "custom": "played alley, health +2"
+        },
+        "title": "Oren Nimblefingers",
+        "image": "maleroguehalfling.png",
+        "description": "Ability +2, if played with another friend, Health +2"
+    },
+    "sora": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 3,
+        "scripts": {
+            "choose": "attack 2, ability 2"
+        },
+        "title": "Sora Raghthroknaa",
+        "image": "femalefighterdragonborn.png",
+        "description": "Choose: Attack +2 -or- Ability +2"
+    },
+    "hoglik": {
+        "type": "ability",
+        "level": 5,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "ability": 1,
+            "custom": "played item, attack +1"
+        },
+        "title": "Hoglik Kendall",
+        "image": "malefighterhalforc.png",
+        "description": "Ability +1, if played with item, Attack +1"
+    },
+    "robert": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "custom": "Ability +2 all"
+        },
+        "title": "Robert Dalton",
+        "image": "malepriesthuman.png",
+        "description": "Ability +2 to all players"
+    },
+    "roger": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "friend",
+        "cost": 7,
+        "scripts": {
+            "attack": 2,
+            "draw": "one",
+            "die": 1
+        },
+        "title": "Roger Cotton",
+        "image": "malemonkhuman.png",
+        "description": "Attack +2, draw 1 card, roll die once"
+    },
+    "miles": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "die": 1
+        },
+        "title": "Miles Rothenel",
+        "image": "malefighterhalfelf.png",
+        "description": "Attack +2, Health +1, roll die once"
+    },
+    "godfrey": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "friend",
+        "cost": 9,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "location": -1,
+            "die": 1
+        },
+        "title": "Godfrey Spaulding",
+        "image": "malesmithhuman.png",
+        "description": "Attack +1, Health +1, roll die once, remove 1 influence point from location"
+    },
+    "taklinn": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "friend",
+        "cost": 5,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "die": 1
+        },
+        "title": "Taklinn Durthane",
+        "image": "malefighterdwarf.png",
+        "description": "Attack +1, Health +1, roll die once"
+    },
+    "anverth": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "friend",
+        "cost": 2,
+        "scripts": {
+            "draw": "draw2lose1",
+            "discard": "draw one"
+        },
+        "title": "Anverth Humplebumple",
+        "image": "malewizardgnome.png",
+        "description": "Draw 2 cards, and discard 1, if discarded, draw another card"
+    },
+    "theirastra": {
+        "type": "ability",
+        "level": 3,
+        "catagory": "friend",
+        "cost": 4,
+        "scripts": {
+            "draw": "draw2lose1",
+            "discard": "Ability 2"
+        },
+        "title": "Theirastra Selevarun",
+        "image": "femalewizardelf.png",
+        "description": "Draw 2 cards, and discard 1, if discarded, Ability +2"
+    },
+    "elaim": {
+        "type": "ability",
+        "level": 7,
+        "catagory": "friend",
+        "cost": 8,
+        "scripts": {
+            "attack": 1,
+            "health": 1,
+            "ability": 1,
+            "die": 1
+        },
+        "title": "Elaim Frostbeard",
+        "image": "maleclericdwarf.png",
+        "description": "Attack +1, Health +1, Ability +1, roll die once"
+    },
+    "fallond": {
+        "type": "ability",
+        "level": 6,
+        "catagory": "friend",
+        "cost": 7,
+        "scripts": {
+            "choose": "Attack 2, ability 3, location -1"
+        },
+        "title": "Fallond Torunn",
+        "image": "maledruiddwarf.png",
+        "description": "Choose: Attack +2 -or- Ability +3 -or- remove 1 influence point from location "
+    },
+    "blossom": {
+        "type": "ability",
+        "level": 2,
+        "catagory": "friend",
+        "cost": 6,
+        "scripts": {
+            "custom": "Ability +2 all, All draw 1"
+        },
+        "title": "Blossom Jamjar",
+        "image": "femaleclerichalfing.png",
+        "description": "All players Ability +2, and draw 1 card"
+    },
+    "anselm": {
+        "type": "ability",
+        "level": 8,
+        "catagory": "friend",
+        "cost": 8,
+        "scripts": {
+            "attack": 2,
+            "draw": "one",
+            "location": -1,
+            "die": 1
+        },
+        "title": "Anselm Gresham",
+        "image": "malenoblehuman.png",
+        "description": "Attack +2, draw 1 card, remove 1 influence point from location, roll die once"
+    }
+}
