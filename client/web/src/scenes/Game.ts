@@ -32,16 +32,12 @@ export class Game {
               <h1 class="LoginPageheader">Enjoy your game!!!</h1>
             </div>
             <div class="Header">
-              
-              <h3 class="LoginPageheader">ID: \${id}</h3>
-              <h3 class="LoginPageheader">Type: \${type}</h3>
-            </div>
-            <div class="Header">
-              <h5 class="LoginPageheader">Game ID: \${game}</h5>
+              <h5 class="LoginPageheader">ID: \${id}</h5>
+              <h5 class="LoginPageheader">Game ID: \${gameID}</h5>
               <h5 class="LoginPageheader">GameStatus: \${status}</h5>
+              <h5 class="LoginPageheader">Game Level: \${gameLevel}</h5>
               <button id="btnStartGame">Start Game</button>
-              <button id="btnStartTurn">Zoom Card</button>
-              
+              <button id="btnStartTurn" disabled>Start Turn</button>
             </div>
             
             <div id="playerHand" class="playersArea">
@@ -50,7 +46,7 @@ export class Game {
                 <div class="playerHeaderContent">Name: \${name}</div>
                 <div class="playerHeaderContent">Role: \${role}</div>
               </div>
-              <div class = "playerHeader">
+              <div class="playerHeader">
                 <div class="playerHeaderContent">Health: </div>
                 <div class="playerHeaderContent">\${Health}</div>
                 <div class="playerHeaderContent">Attack: </div>
@@ -69,7 +65,7 @@ export class Game {
                 <div class="otherplayerHeaderContent">\${otherrole.0}</div>
 
               </div>
-              <div class = "otherplayerHeader">
+              <div class="otherplayerHeader">
                 <div class="otherplayerHeaderContent">H: </div>
                 <div class="otherplayerHeaderContent">\${otherHP.0}</div>
                 <div class="otherplayerHeaderContent">ATP: </div>
@@ -82,40 +78,51 @@ export class Game {
             </div>
 
             <div id="other2" class="otherplayer other2 hidden">
-            <div class="otherplayerHeader">
-            <div class="otherplayerHeaderContent">\${othername.1}</div>
-            <div class="otherplayerHeaderContent">\${otherrole.1}</div>
-
-          </div>
-          <div class = "otherplayerHeader">
-            <div class="otherplayerHeaderContent">H: </div>
-            <div class="otherplayerHeaderContent">\${otherHP.1}</div>
-            <div class="otherplayerHeaderContent">ATP: </div>
-            <div class="otherplayerHeaderContent">\${otherATP.1}</div>
-            <div class="otherplayerHeaderContent">ABP: </div>
-            <div class="otherplayerHeaderContent">\${otherABP.1}</div>
-          </div>
+              <div class="otherplayerHeader">
+                <div class="otherplayerHeaderContent">\${othername.1}</div>
+                <div class="otherplayerHeaderContent">\${otherrole.1}</div>
+              </div>
+              <div class="otherplayerHeader">
+                <div class="otherplayerHeaderContent">H: </div>
+                <div class="otherplayerHeaderContent">\${otherHP.1}</div>
+                <div class="otherplayerHeaderContent">ATP: </div>
+                <div class="otherplayerHeaderContent">\${otherATP.1}</div>
+                <div class="otherplayerHeaderContent">ABP: </div>
+                <div class="otherplayerHeaderContent">\${otherABP.1}</div>
+              </div>
               <div class='smallcard playerdeck'>Deck</div>
               <div class='smallcard playerdiscard'>Discard</div>
             </div>
 
             <div id="other3" class="otherplayer other3 hidden ">
+              <div class="otherplayerHeader">
+                <div class="otherplayerHeaderContent">\${othername.2}</div>
+                <div class="otherplayerHeaderContent">\${otherrole.2}</div>
+              </div>
             <div class="otherplayerHeader">
-            <div class="otherplayerHeaderContent">\${othername.2}</div>
-            <div class="otherplayerHeaderContent">\${otherrole.2}</div>
-
-          </div>
-          <div class = "otherplayerHeader">
-            <div class="otherplayerHeaderContent">H: </div>
-            <div class="otherplayerHeaderContent">\${otherHP.2}</div>
-            <div class="otherplayerHeaderContent">ATP: </div>
-            <div class="otherplayerHeaderContent">\${otherATP.2}</div>
-            <div class="otherplayerHeaderContent">ABP: </div>
-            <div class="otherplayerHeaderContent">\${otherABP.2}</div>
-          </div>
+              <div class="otherplayerHeaderContent">H: </div>
+              <div class="otherplayerHeaderContent">\${otherHP.2}</div>
+              <div class="otherplayerHeaderContent">ATP: </div>
+              <div class="otherplayerHeaderContent">\${otherATP.2}</div>
+              <div class="otherplayerHeaderContent">ABP: </div>
+              <div class="otherplayerHeaderContent">\${otherABP.2}</div>
+             </div>
               <div class='smallcard playerdeck'>Deck</div>
               <div class='smallcard playerdiscard'>Discard</div>
             </div>
+
+            <div id="cardPoolDrawer" class="ABcardDrawer">
+              <div id="cardPoolDeck" class='card  ABcardDeck'></div>
+              
+              <div class='card ABspot1'></div>
+              <div class='card ABspot2'></div>
+              <div class='card ABspot3'></div>
+              <div class='card ABspot4'></div>
+              <div class='card ABspot5'></div>
+              <div class='card ABspot6'></div>
+            </div>
+
+
         </div>
 
       </div>

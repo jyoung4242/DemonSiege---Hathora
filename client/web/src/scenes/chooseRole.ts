@@ -24,14 +24,10 @@ export class Role {
           <div class="Header">
             <h3 class="LoginPageheader">Username: \${name}</h3>
             <h3 class="LoginPageheader">ID: \${id}</h3>
-            <h3 class="LoginPageheader">Type: \${type}</h3>
+            <h3 class="LoginPageheader">Game ID: \${gameID}</h3>
+            <h3 class="LoginPageheader">GameStatus: \${status}</h3>
           </div>
-         
-          <div class="Header">
-            <h5 class="LoginPageheader">Game ID: \${game}</h5>
-            <h5 class="LoginPageheader">GameStatus: \${status}</h5>
-          </div>
-          
+                   
           <div class="Header">
             <h5 class="LoginPageheader">Name your character: </h5>
             <input id="characterName" value=\${name} />

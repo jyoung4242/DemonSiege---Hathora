@@ -16,6 +16,8 @@ import { retrieveStarterBarbarianCardData } from './lib/starter_b';
 import { retrieveStarterWizardCardData } from './lib/starter_w';
 import { retrieveStarterPaladinCardData } from './lib/starter_p';
 import { retrieveStarteRogueCardData } from './lib/starter_r';
+import { runCardPoolAnimation, toggleCardpoolDrawer } from './lib/helper';
+import { animate, stagger } from 'motion';
 
 export type ElementAttributes = {
     InnerText?: string;
@@ -25,10 +27,12 @@ export type ElementAttributes = {
 };
 
 export type ClientState = {
+    username: string;
     name: string;
     id: string;
     type?: string;
-    game?: string;
+    gameID?: string;
+    gameLevel: number;
     role?: string;
     status: string;
     Health: number;
@@ -77,10 +81,12 @@ let gameStatus: GameStates;
 let myRole: Roles;
 
 let playerInfo: ClientState = {
+    username: '',
     name: '',
     id: '',
     type: '',
-    game: ``,
+    gameID: ``,
+    gameLevel: 1,
     role: mappedRoles[myRole],
     status: mappedStatus[gameStatus],
     Health: 10,
@@ -94,15 +100,25 @@ let playerInfo: ClientState = {
     otherABP: [],
 };
 
+/*******************/
+//Card buffers - for the Game
+let cardPool: AbilityCard[] = [];
+let activeMonsters: MonsterCard[] = [];
+let towerDefensePile: TDCard[] = [];
+let activeLocation: LocationCard = undefined;
+/*******************/
+
 let updateState = (update: UpdateArgs) => {
     //do something with state here
     console.log(`State: `, update);
     gameStatus = update.state.gameSequence;
+    playerInfo.gameLevel = update.state.gameLevel;
     playerInfo.status = mappedStatus[gameStatus];
     if (update.state.players.length != 0) {
         const playerIndex = update.state.players.findIndex(player => player.Id == user.id);
         if (playerIndex >= 0) {
             playerInfo.id = update.state.players[playerIndex].Id;
+
             playerInfo.role = mappedRoles[update.state.players[playerIndex].Role];
             playerInfo.name = update.state.players[playerIndex].characterName;
             playerInfo.Health = update.state.players[playerIndex].Health;
@@ -145,7 +161,23 @@ function parseEvents(state: UpdateArgs) {
                         showOther(state.state.players.length - 1);
                     }
                 }
+                break;
+            case 'game starting':
+                (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
+                toggleCardpoolDrawer('open');
+                runCardPoolAnimation();
+                //setup start game animations
+                //server should be pushing state changes
+                //all clients should setup
+                //TODO load up player deck animation
+                //TODO load the ability card pool and drawer
+                //TODO load monster deck
+                //TODO load locations for the level
 
+                break;
+            case 'ReadyToStartTurn':
+                (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
+                break;
             default:
                 break;
         }
@@ -167,7 +199,6 @@ const divLoaded = () => {
 };
 
 let login = async (e: Event) => {
-    let myUser: AnonymousUserData;
     if (sessionStorage.getItem('token') === null) {
         sessionStorage.setItem('token', await client.loginAnonymous());
     }
@@ -185,180 +216,9 @@ let manageInput = (e: Event) => {
     if (inputtext.length) btnJoin.disabled = false;
     else btnJoin.disabled = true;
 };
-let testCard: AbilityCard[] = [];
-let mCard: MonsterCard[] = [];
-let locCard: LocationCard[] = [];
-let TDcardbuf: TDCard[] = [];
 
-let playCard = (e: Event) => {
-    if (testCard.length) {
-        testCard.forEach(card => {
-            card.destroy();
-        });
-        testCard = [];
-    }
-
-    if (mCard.length) {
-        mCard.forEach(card => {
-            card.destroy();
-        });
-        mCard = [];
-    }
-
-    if (locCard.length) {
-        locCard.forEach(card => {
-            card.destroy();
-        });
-        locCard = [];
-    }
-
-    if (TDcardbuf.length) {
-        TDcardbuf.forEach(card => {
-            card.destroy();
-        });
-        TDcardbuf = [];
-    }
-
-    const cardnames = ['Dagger', 'Sling', 'Broadsword', 'Mana Potion', 'Bracelet', 'Jewel', 'Awakening', 'Daydream', 'Torrent', 'Torment', 'AcidHail', 'Solitude', 'HolyTempest', 'Eviction', 'Imitationrituals', 'Duraina', 'Jacquelyn'];
-    const mcardnames = ['Goblin', 'Kobalt', 'Skeleton'];
-    const loccardnames = ['Cellar', 'Dungeon', 'Crypt'];
-    const tdCardNames = ['Tripwire1', 'Net1', 'Pit1', 'Quicksand1'];
-    const bstarternames = ['Starter Sword', 'Starter Axe', 'Starter Shield', 'Starter Dagger', 'Starter Medkit', 'Starter Horse', 'Starter Steward', 'Starter Rage', 'Starter Focus', 'Starter BowArrow'];
-    const wstarternames = ['Starter Robes', 'Starter Wand', 'Starter Spellbook', 'Starter Staff', 'Starter Pet', 'Starter Firespell', 'Starter Minor Heal', 'Starter Meditation', 'Starter Wizard Focus', 'Starter Magic Arrow'];
-    const pstarternames = ['Starter Chant', 'Starter Concentration', 'Starter Defend', 'Starter Hammer', 'Starter Helmet', 'Starter Mace', 'Starter Prayer', 'Starter Redemption', 'Starter Paladin Shield', 'Starter Talisman'];
-    const rstarternames = ['Starter Hood', 'Starter Armor', 'Starter Backstab', 'Starter Boots', 'Starter Crossbow', 'Starter Knife', 'Starter Pickpocket', 'Starter Sneak', 'Starter Smoke', 'Starter Tools'];
-    //const cardchosen = cardnames[Math.floor(Math.random() * cardnames.length)];
-    const tempHand = [];
-
-    for (let index = 0; index < 10; index++) {
-        let inx = Math.floor(Math.random() * rstarternames.length);
-        tempHand.push(rstarternames[inx]);
-        rstarternames.splice(inx, 1);
-    }
-    let cardData: ABcardData;
-
-    tempHand.forEach((card, index) => {
-        console.log(`card: `, card);
-        cardData = retrieveStarteRogueCardData(card);
-        console.log(`carddata: `, cardData);
-        const args: ABcard = {
-            name: cardData.name,
-            cardsize: {
-                width: 125,
-                aspectRatio: 0.7142857142857143,
-            },
-            position: {
-                x: Math.random() * 1400,
-                y: Math.random() * 600,
-                theta: 0,
-            },
-            orientation: cardData.orientation,
-            parent: 'myApp',
-            title: cardData.title,
-            description: cardData.description,
-            catagory: cardData.catagory,
-            cost: cardData.cost,
-            image: cardData.image,
-            level: cardData.level,
-        };
-        console.log(`testCard: `, testCard);
-
-        testCard.push(AbilityCard.create(args));
-    });
-
-    // draw monster cards now
-    let mcarddata: MonsterCardData;
-    mcardnames.forEach(card => {
-        mcarddata = retrieveMCCardData(card);
-        const args: MCdata = {
-            name: mcarddata.name,
-            cardsize: {
-                width: 250,
-                aspectRatio: 4 / 3,
-            },
-            position: {
-                x: Math.random() * 900,
-                y: Math.random() * 500,
-                theta: 0,
-            },
-            orientation: mcarddata.orientation,
-            parent: 'myApp',
-            title: mcarddata.title,
-            description: mcarddata.description,
-            image: mcarddata.image,
-            level: mcarddata.level,
-            reward: mcarddata.reward,
-            health: mcarddata.health,
-        };
-        //mCard.push(MonsterCard.create(args));
-    });
-
-    // draw location cards now
-    let lcarddata: LOCcardData;
-    loccardnames.forEach(card => {
-        lcarddata = retrieveLocCardData(card);
-        const args: LOCcard = {
-            name: lcarddata.name,
-            cardsize: {
-                width: 250,
-                aspectRatio: 4 / 3,
-            },
-            position: {
-                x: Math.random() * 900,
-                y: Math.random() * 500,
-                theta: 0,
-            },
-            orientation: lcarddata.orientation,
-            parent: 'myApp',
-            title: lcarddata.title,
-            description: lcarddata.description,
-            image: lcarddata.image,
-            level: lcarddata.level,
-            health: lcarddata.health,
-            TD: lcarddata.TD,
-            sequence: lcarddata.sequence,
-        };
-        //locCard.push(LocationCard.create(args));
-    });
-
-    // draw TD cards now
-    let tcarddata: TDcardData;
-    tdCardNames.forEach(card => {
-        tcarddata = retrieveTDCardData(card);
-        const args: TDcard = {
-            name: tcarddata.name,
-            cardsize: {
-                width: 250,
-                aspectRatio: 1 / 1,
-            },
-            position: {
-                x: Math.random() * 900,
-                y: Math.random() * 500,
-                theta: 0,
-            },
-            orientation: tcarddata.orientation,
-            parent: 'myApp',
-            title: tcarddata.title,
-            description: tcarddata.description,
-            image: tcarddata.image,
-            level: tcarddata.level,
-        };
-        //TDcardbuf.push(TDCard.create(args));
-    });
-
-    /* //run little demoscript here
-    let actions = [card => card.move(700, 100), card => card.move(250, 200), card => card.flip(), card => card.flip(), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.rotate(90), card => card.zoom(1.5), card => card.zoom(1)];
-
-    const interval = setInterval(() => {
-        const action = actions.shift();
-        testCard.forEach((card, index) => {
-            action(card);
-            if (actions.length == 0) {
-                clearInterval(interval);
-                card.destroy();
-            }
-        });
-    }, 1000); */
+let startGame = (e: Event) => {
+    myConnection.startGame({});
 };
 
 let createNewGame = async (e: Event) => {
@@ -369,7 +229,7 @@ let createNewGame = async (e: Event) => {
     } else {
         const stateId = await client.create(token, {});
         gameID = stateId;
-        playerInfo.game = gameID;
+        playerInfo.gameID = gameID;
         history.pushState({}, '', `/${stateId}`);
         reRender(myGameState, GS.role);
         myConnection = client.connect(token, stateId, updateState, console.error);
@@ -384,7 +244,7 @@ let joinCurrentGame = (e: Event) => {
 
     if (gameToJoin.value.length > 1) {
         gameID = gameToJoin.value;
-        playerInfo.game = gameID;
+        playerInfo.gameID = gameID;
         reRender(myGameState, GS.role);
         myConnection = client.connect(token, location.pathname.split('/').pop()!, updateState, console.error);
         myConnection.joinGame({});
@@ -422,7 +282,7 @@ let roleSelected = (e: Event) => {
 
 const loginscreen = new Login(login);
 const lobby = new Lobby(createNewGame, joinCurrentGame, manageInput);
-const game = new Game(divLoaded, playCard);
+const game = new Game(divLoaded, startGame);
 const role = new Role(roleSelected);
 let myGameState: GS = GS.null;
 

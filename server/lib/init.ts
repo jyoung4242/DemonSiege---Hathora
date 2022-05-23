@@ -65,7 +65,7 @@ export function setPlayerRole(u: UserId, s: InternalState, r: Roles): ErrorMessa
     s.players[playerIndex].Role = r;
     s.players[playerIndex].PlayerState = PlayerStatus.Connected;
 
-    if (allPlayersRoleSelected(s)) s.gameSequence = GameStates.ReadyForRound;
+    if (allPlayersRoleSelected(s)) s.gameSequence = GameStates.ReadyForStart;
 
     return { status: 0, message: 'All good' };
 }

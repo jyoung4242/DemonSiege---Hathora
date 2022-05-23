@@ -112,7 +112,7 @@ export const starterRogueCardData = [
         name: 'Starter Tools',
         title: 'Lockpicking Tools',
         description: 'Choose: Ability +1 -or- Draw one card',
-        catagory: 'SPELL',
+        catagory: 'ITEM',
         level: 1,
         cost: 0,
         orientation: Cardstatus.FaceDown,

@@ -33,7 +33,7 @@ export class Lobby {
           <div class="Header">
             <h3 class="LoginPageheader">Username: \${name}</h3>
             <h3 class="LoginPageheader">ID: \${id}</h3>
-            <h3 class="LoginPageheader">Type: \${type}</h3>
+            
           </div>
           <button id='btnCreateGame' class="loginButton">Create New Game</button>
           

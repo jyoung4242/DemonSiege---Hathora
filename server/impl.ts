@@ -98,8 +98,8 @@ export class Impl implements Methods<InternalState> {
     startGame(state: InternalState, userId: UserId, ctx: Context, request: IStartGameRequest): Response {
         //Guard condition
         gameLog(userId, state, `started game`);
-        if (state.gameSequence != GameStates.ReadyForRound) Response.error('Not ready to start round');
 
+        if (state.gameSequence != GameStates.ReadyForStart) Response.error('Not ready to start round');
         resetDecks(state);
         loadPlayersStartingDecks(state, ctx);
         setupAbilityDeck(state, ctx);
@@ -108,11 +108,14 @@ export class Impl implements Methods<InternalState> {
         setupTDDeck(state, ctx);
         setupPlayerOrder(state, ctx);
         state.gameSequence = GameStates.ReadyForRound;
+        ctx.broadcastEvent('game starting');
+        ctx.sendEvent('ReadyToStartTurn', state.turn!);
         return Response.ok();
     }
 
     startTurn(state: InternalState, userId: UserId, ctx: Context, request: IStartTurnRequest): Response {
         gameLog(userId, state, `started turn`);
+
         if (state.gameSequence != GameStates.ReadyForRound) return Response.error('Not Ready to start round');
         if (userId != state.turn) return Response.error('Not Your turn!');
         state.gameSequence = GameStates.InProgress;
