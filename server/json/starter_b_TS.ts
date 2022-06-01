@@ -3,7 +3,7 @@ let starterDeckBarbarian: AbilityCard[];
 
 export default starterDeckBarbarian = [
     {
-        Title: 'Starter Sword',
+        Title: 'Starter_Sword',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -15,7 +15,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Axe',
+        Title: 'Starter_Axe',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -27,7 +27,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Shield',
+        Title: 'Starter_Shield',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -39,7 +39,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Dagger',
+        Title: 'Starter_Dagger',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -51,7 +51,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Medkit',
+        Title: 'Starter_Medkit',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -63,7 +63,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Horse',
+        Title: 'Starter_Horse',
         Catagory: 'friend',
         Level: 1,
         Cost: 0,
@@ -75,7 +75,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Steward',
+        Title: 'Starter_Steward',
         Catagory: 'friend',
         Level: 1,
         Cost: 0,
@@ -87,7 +87,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Barbarian Rage',
+        Title: 'Starter_Rage',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -99,7 +99,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Barbarian Focus',
+        Title: 'Starter_Focus',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -111,7 +111,7 @@ export default starterDeckBarbarian = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Bow and Arrow',
+        Title: 'Starter_Bow_and_Arrow',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,

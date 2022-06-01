@@ -23,6 +23,7 @@
         "webpack-dev-server": "^4.9.0"
     },
     "dependencies": {
-        "motion": "^10.8.2"
+        "motion": "^10.8.2",
+        "peasy-ui": "^0.9.4"
     }
 }

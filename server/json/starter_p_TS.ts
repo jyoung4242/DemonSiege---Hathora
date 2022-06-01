@@ -3,7 +3,7 @@ let starterDeckPaladin: AbilityCard[];
 
 export default starterDeckPaladin = [
     {
-        Title: 'Starter Chant',
+        Title: 'Starter_Chant',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -15,7 +15,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Concentration',
+        Title: 'Starter_Concentration',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -27,7 +27,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Defense',
+        Title: 'Starter_Defense',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -39,7 +39,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Hammer',
+        Title: 'Starter_Hammer',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -51,7 +51,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Helmet',
+        Title: 'Starter_Helmet',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -63,7 +63,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Mace',
+        Title: 'Starter_Mace',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -75,7 +75,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Prayer',
+        Title: 'Starter_Prayer',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -87,7 +87,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Redemption',
+        Title: 'Starter_Redemption',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -99,7 +99,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Sheild',
+        Title: 'Starter_Paladin_Sheild',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -111,7 +111,7 @@ export default starterDeckPaladin = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Redemption',
+        Title: 'Starter_Talisman',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,

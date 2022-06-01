@@ -18,7 +18,7 @@ export function retrieveStarterBarbarianCardData(cardchosen: string): ABcardData
 
 export const starterBararianbCardData = [
     {
-        name: 'Starter Sword',
+        name: 'Starter_Sword',
         title: 'Sword',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -28,7 +28,7 @@ export const starterBararianbCardData = [
         image: sword,
     },
     {
-        name: 'Starter Axe',
+        name: 'Starter_Axe',
         title: 'Axe',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -38,7 +38,7 @@ export const starterBararianbCardData = [
         image: axe,
     },
     {
-        name: 'Starter Shield',
+        name: 'Starter_Shield',
         title: 'Shield',
         description: 'Health +1',
         catagory: 'ITEM',
@@ -48,7 +48,7 @@ export const starterBararianbCardData = [
         image: shield,
     },
     {
-        name: 'Starter Dagger',
+        name: 'Starter_Dagger',
         title: 'Dagger',
         description: 'Choose: Attack +1 -or- Ability +1',
         catagory: 'WEAPON',
@@ -58,7 +58,7 @@ export const starterBararianbCardData = [
         image: dagger,
     },
     {
-        name: 'Starter Medkit',
+        name: 'Starter_Medkit',
         title: 'Medkit',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'ITEM',
@@ -68,7 +68,7 @@ export const starterBararianbCardData = [
         image: medkit,
     },
     {
-        name: 'Starter Horse',
+        name: 'Starter_Horse',
         title: 'Steed',
         description: 'Ability +2',
         catagory: 'FRIEND',
@@ -78,7 +78,7 @@ export const starterBararianbCardData = [
         image: horse,
     },
     {
-        name: 'Starter Steward',
+        name: 'Starter_Steward',
         title: 'Steward',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'FRIEND',
@@ -88,7 +88,7 @@ export const starterBararianbCardData = [
         image: steward,
     },
     {
-        name: 'Starter Rage',
+        name: 'Starter_Rage',
         title: 'Barbarian Rage',
         description: 'Attack +1, draw one card',
         catagory: 'SPELL',
@@ -98,7 +98,7 @@ export const starterBararianbCardData = [
         image: rage,
     },
     {
-        name: 'Starter Focus',
+        name: 'Starter_Focus',
         title: 'Barbarian Focus',
         description: 'Ability +1',
         catagory: 'SPELL',
@@ -108,7 +108,7 @@ export const starterBararianbCardData = [
         image: focus,
     },
     {
-        name: 'Starter BowArrow',
+        name: 'Starter_Bow_and_Arrow',
         title: 'Bow and Arrows',
         description: 'Choose: Attack +1 -or- Ability +1',
         catagory: 'WEAPOM',

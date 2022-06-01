@@ -19,7 +19,7 @@ export function retrieveStarterPaladinCardData(cardchosen: string): ABcardData {
 
 export const starterPaladinCardData = [
     {
-        name: 'Starter Chant',
+        name: 'Starter_Chant',
         title: 'Holy Chant',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'SPELL',
@@ -29,7 +29,7 @@ export const starterPaladinCardData = [
         image: chant,
     },
     {
-        name: 'Starter Concentration',
+        name: 'Starter_Concentration',
         title: 'Concentrtion Auro',
         description: 'Ability +1',
         catagory: 'SPELL',
@@ -39,7 +39,7 @@ export const starterPaladinCardData = [
         image: concentration,
     },
     {
-        name: 'Starter Defend',
+        name: 'Starter_Defend',
         title: 'Celestial Defense',
         description: 'Ability +1, For any one player',
         catagory: 'SPELL',
@@ -49,7 +49,7 @@ export const starterPaladinCardData = [
         image: defend,
     },
     {
-        name: 'Starter Hammer',
+        name: 'Starter_Hammer',
         title: 'Hammer of the Church',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -59,7 +59,7 @@ export const starterPaladinCardData = [
         image: hammer,
     },
     {
-        name: 'Starter Helmet',
+        name: 'Starter_Helmet',
         title: 'Righteous Helm',
         description: 'Health +1',
         catagory: 'ITEM',
@@ -69,7 +69,7 @@ export const starterPaladinCardData = [
         image: helmet,
     },
     {
-        name: 'Starter Mace',
+        name: 'Starter_Mace',
         title: 'Mace of the Gods',
         description: 'Choose: Attack +1 -or- draw one card',
         catagory: 'WEAPON',
@@ -79,7 +79,7 @@ export const starterPaladinCardData = [
         image: mace,
     },
     {
-        name: 'Starter Prayer',
+        name: 'Starter_Prayer',
         title: 'Devine Prayer',
         description: 'Health +1',
         catagory: 'SPELL',
@@ -89,7 +89,7 @@ export const starterPaladinCardData = [
         image: prayer,
     },
     {
-        name: 'Starter Redemption',
+        name: 'Starter_Redemption',
         title: 'Holy Redeption',
         description: 'Health +1 for any one player',
         catagory: 'SPELL',
@@ -99,7 +99,7 @@ export const starterPaladinCardData = [
         image: redemption,
     },
     {
-        name: 'Starter Paladin Shield',
+        name: 'Starter_Paladin_Shield',
         title: 'Shield of the Devine',
         description: 'Choose: Ability +1 -or- Health +1',
         catagory: 'ITEM',
@@ -109,7 +109,7 @@ export const starterPaladinCardData = [
         image: shield,
     },
     {
-        name: 'Starter Talisman',
+        name: 'Starter_Talisman',
         title: 'Brooch of the Almighty',
         description: 'Draw two cards, discard any one',
         catagory: 'SPELL',

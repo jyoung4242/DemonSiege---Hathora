@@ -1,84 +1,24 @@
 import './style.css';
-//import './import-png.d.ts';
 import { Login } from './scenes/Login';
 import { Lobby } from './scenes/Lobby';
 import { Game } from './scenes/Game';
 import { Role } from './scenes/chooseRole';
-import { Cardstatus, GameStates, Roles } from '../../../api/types';
+import { GameStates, Roles } from '../../../api/types';
 import { HathoraClient, HathoraConnection, UpdateArgs } from '../../.hathora/client';
-import { AnonymousUserData } from '../../../api/base';
-import { AbilityCard, ABcard, ABcardData, MonsterCard, MCdata, MonsterCardData, LocationCard, LOCcardData, LOCcard, TDcard, TDCard, TDcardData } from './lib/card';
-import { abilityCardDataLv1, retrieveCardData } from './lib/abilitycardsLV1';
-import { retrieveMCCardData } from './lib/monstercards';
-import { retrieveLocCardData } from './lib/locationCards';
-import { retrieveTDCardData } from './lib/towerdefense';
-import { retrieveStarterBarbarianCardData } from './lib/starter_b';
-import { retrieveStarterWizardCardData } from './lib/starter_w';
-import { retrieveStarterPaladinCardData } from './lib/starter_p';
-import { retrieveStarteRogueCardData } from './lib/starter_r';
-import { runCardPoolAnimation, toggleCardpoolDrawer } from './lib/helper';
-import { animate, stagger } from 'motion';
-
-export type ElementAttributes = {
-    InnerText?: string;
-    className?: string;
-    event?: string;
-    eventCB?: EventListener;
-};
-
-export type ClientState = {
-    username: string;
-    name: string;
-    id: string;
-    type?: string;
-    gameID?: string;
-    gameLevel: number;
-    role?: string;
-    status: string;
-    Health: number;
-    AttackPoints: number;
-    AbilityPoints: number;
-    othername?: string[];
-    otherrole?: string[];
-    otherid?: string[];
-    otherHP?: number[];
-    otherATP?: number[];
-    otherABP?: number[];
-};
-
-const mappedRoles = {
-    [Roles.Barbarian]: 'Barbarian',
-    [Roles.Wizard]: 'Wizard',
-    [Roles.Paladin]: 'Paladin',
-    [Roles.Rogue]: 'Rogue',
-};
-
-const mappedStatus = {
-    [GameStates.Completed]: 'Completed',
-    [GameStates.Idle]: 'Idle',
-    [GameStates.InProgress]: 'In Progress',
-    [GameStates.PlayersJoining]: 'Players Joining',
-    [GameStates.ReadyForRound]: 'Ready for Round',
-    [GameStates.Setup]: 'Game Setup',
-};
-
-enum GS {
-    null,
-    login,
-    lobby,
-    role,
-    game,
-}
+import { AbilityCard, MonsterCard, LocationCard, TDCard } from './lib/card';
+import { dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, toggleCardpoolDrawer } from './lib/helper';
+import { loadAbilityCardDatabase } from './lib/allAbilityCards';
+import { ClientState, GS, mappedRoles, mappedStatus, user } from './types';
 
 const body = document.getElementById('myApp');
 const client = new HathoraClient();
-export let user: AnonymousUserData;
 
 let token: string;
 let myConnection: HathoraConnection;
 let gameID: string;
 let gameStatus: GameStates;
 let myRole: Roles;
+let myStartFlag: boolean = false;
 
 let playerInfo: ClientState = {
     username: '',
@@ -87,6 +27,7 @@ let playerInfo: ClientState = {
     type: '',
     gameID: ``,
     gameLevel: 1,
+    hand: [],
     role: mappedRoles[myRole],
     status: mappedStatus[gameStatus],
     Health: 10,
@@ -106,6 +47,7 @@ let cardPool: AbilityCard[] = [];
 let activeMonsters: MonsterCard[] = [];
 let towerDefensePile: TDCard[] = [];
 let activeLocation: LocationCard = undefined;
+export let playerHand: AbilityCard[] = [];
 /*******************/
 
 let updateState = (update: UpdateArgs) => {
@@ -118,7 +60,7 @@ let updateState = (update: UpdateArgs) => {
         const playerIndex = update.state.players.findIndex(player => player.Id == user.id);
         if (playerIndex >= 0) {
             playerInfo.id = update.state.players[playerIndex].Id;
-
+            playerInfo.hand = update.state.players[playerIndex].Hand;
             playerInfo.role = mappedRoles[update.state.players[playerIndex].Role];
             playerInfo.name = update.state.players[playerIndex].characterName;
             playerInfo.Health = update.state.players[playerIndex].Health;
@@ -165,18 +107,38 @@ function parseEvents(state: UpdateArgs) {
             case 'game starting':
                 (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
                 toggleCardpoolDrawer('open');
-                runCardPoolAnimation();
-                //setup start game animations
-                //server should be pushing state changes
-                //all clients should setup
-                //TODO load up player deck animation
-                //TODO load the ability card pool and drawer
-                //TODO load monster deck
-                //TODO load locations for the level
+                runCardPoolAnimation().then(() => {
+                    //next animation - Monster Deck
+                    document.getElementById('MonsterDiv').classList.add('fadeIn');
+                    document.getElementById('LocationsDiv').classList.add('fadeIn');
+                    document.getElementById('TDDiv').classList.add('fadeIn');
+                    setTimeout(() => {
+                        runPlayerHandAnimation();
+                        if (state.state.turn == playerInfo.id && myStartFlag) {
+                            (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
+                        }
+                    }, 750);
+                });
+
+                //TODO if other players, load their UI too
 
                 break;
             case 'ReadyToStartTurn':
-                (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
+                myStartFlag = true;
+                break;
+            case 'Enable TD':
+                //TODO Deal Players Hand
+                let elem = document.getElementsByClassName('playersArea');
+                elem[0].classList.add('openPlayersHand');
+                setTimeout(() => {
+                    //Get cards from state
+                    dealPlayerCardFromDeck(playerInfo.hand[0]);
+                }, 1000);
+                //TODO Deal the TD cards from STATE
+                break;
+            case 'SelectTD':
+                //TODO Enable TD to be clicked and selected and there's active effects
+                //TODO Maybe Pulse and/or Glow
                 break;
             default:
                 break;
@@ -198,17 +160,6 @@ const divLoaded = () => {
     });
 };
 
-let login = async (e: Event) => {
-    if (sessionStorage.getItem('token') === null) {
-        sessionStorage.setItem('token', await client.loginAnonymous());
-    }
-    token = sessionStorage.getItem('token')!;
-    user = HathoraClient.getUserFromToken(token);
-    playerInfo.type = user.type;
-    console.log(`User Data: `, user);
-    reRender(myGameState, GS.lobby);
-};
-
 let manageInput = (e: Event) => {
     let inputControl: HTMLInputElement = document.getElementById('joinGameInput') as HTMLInputElement;
     let inputtext: string = inputControl.value;
@@ -221,13 +172,21 @@ let startGame = (e: Event) => {
     myConnection.startGame({});
 };
 
+let startTurn = (e: Event) => {
+    myConnection.startTurn({});
+};
+
+let endTurn = (e: Event) => {
+    myConnection.endTurn({});
+};
+
 let createNewGame = async (e: Event) => {
     if (location.pathname.length > 1) {
         reRender(myGameState, GS.role);
         myConnection = client.connect(token, location.pathname.split('/').pop()!, updateState, console.error);
         myConnection.joinGame({});
     } else {
-        const stateId = await client.create(token, {});
+        const stateId = await client.create(playerInfo.token, {});
         gameID = stateId;
         playerInfo.gameID = gameID;
         history.pushState({}, '', `/${stateId}`);
@@ -280,25 +239,24 @@ let roleSelected = (e: Event) => {
     reRender(myGameState, GS.game);
 };
 
-const loginscreen = new Login(login);
-const lobby = new Lobby(createNewGame, joinCurrentGame, manageInput);
-const game = new Game(divLoaded, startGame);
+const loginscreen = new Login(client, playerInfo);
+const lobby = new Lobby(client, playerInfo);
+const game = new Game(divLoaded, startGame, startTurn, endTurn);
 const role = new Role(roleSelected);
 let myGameState: GS = GS.null;
 
-const reRender = (state: GS, gs: GS) => {
+export const reRender = (state: GS, gs: GS) => {
     if (state == gs) return;
     switch (gs) {
         case GS.lobby:
-            if (state == GS.login) loginscreen.leaving(body);
+            if (state == GS.login) loginscreen.leaving();
             else game.leaving(body);
             myGameState = GS.lobby;
-            lobby.setUserInfo({ name: user.name, id: user.id, type: user.type });
             lobby.mount(body);
 
             break;
         case GS.role:
-            if (state == GS.lobby) lobby.leaving(body);
+            if (state == GS.lobby) lobby.leaving();
             else if (state == GS.login) return; //invalid route
             else if (state == GS.game) return; //invalid route
             myGameState = GS.role;
@@ -306,7 +264,7 @@ const reRender = (state: GS, gs: GS) => {
             role.mount(body);
             break;
         case GS.login:
-            if (state == GS.lobby) lobby.leaving(body);
+            if (state == GS.lobby) lobby.leaving();
             else if (state == GS.null) {
                 myGameState = GS.login;
                 loginscreen.mount(body);
@@ -326,4 +284,5 @@ const reRender = (state: GS, gs: GS) => {
 };
 
 //initial
+loadAbilityCardDatabase();
 reRender(myGameState, GS.login);

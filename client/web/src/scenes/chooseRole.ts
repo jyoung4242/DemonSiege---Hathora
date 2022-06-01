@@ -1,4 +1,4 @@
-import { ClientState, ElementAttributes } from '..';
+import { ClientState } from '../types';
 import { GameStates } from '../../../../api/types';
 import { UI, UIView } from '../ui';
 
@@ -38,7 +38,6 @@ export class Role {
             <button id='btnWizard' class="loginButton">Wizard</button>
             <button id='btnPaladin' class="loginButton">Paladin</button>
             <button id='btnRogue' class="loginButton">Rogue</button>
-            
           </div>
       </div>
       `;

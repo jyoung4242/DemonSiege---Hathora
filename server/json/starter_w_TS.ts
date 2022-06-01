@@ -3,7 +3,7 @@ let starterDeckWizard: AbilityCard[];
 
 export default starterDeckWizard = [
     {
-        Title: 'Starter Robes',
+        Title: 'Starter_Robes',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -15,7 +15,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Wand',
+        Title: 'Starter_Wand',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -27,7 +27,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Spellbook',
+        Title: 'Starter_Spellbook',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -39,7 +39,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Staff',
+        Title: 'Starter_Staff',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -51,7 +51,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Pet',
+        Title: 'Starter_Pet',
         Catagory: 'friend',
         Level: 1,
         Cost: 0,
@@ -63,7 +63,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Firespell',
+        Title: 'Starter_Firespell',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -76,7 +76,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Minor Heal',
+        Title: 'Starter_Minor_Heal',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -88,7 +88,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Wizard Meditation',
+        Title: 'Starter_Meditation',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -100,7 +100,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Wizard Focus',
+        Title: 'Starter_Wizard_Focus',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -112,7 +112,7 @@ export default starterDeckWizard = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Magic Arrow',
+        Title: 'Starter_Magic_Arrow',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,

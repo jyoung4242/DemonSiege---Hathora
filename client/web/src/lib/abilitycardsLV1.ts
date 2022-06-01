@@ -48,7 +48,7 @@ export const abilityCardDataLv1 = [
         image: broadsword,
     },
     {
-        name: 'Mana Potion',
+        name: 'Mana_Potion',
         title: 'Djinn and Tonic',
         description: 'Health +1, Ability +1',
         catagory: 'ITEM',
@@ -118,7 +118,7 @@ export const abilityCardDataLv1 = [
         image: supportspell,
     },
     {
-        name: 'AcidHail',
+        name: 'Acid_Hail',
         title: 'Acid Hail',
         description: 'Attack +1',
         catagory: 'SPELL',
@@ -138,7 +138,7 @@ export const abilityCardDataLv1 = [
         image: attackspell,
     },
     {
-        name: 'HolyTempest',
+        name: 'Holy_Tempest',
         title: 'Holy Tempest',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'SPELL',
@@ -158,7 +158,7 @@ export const abilityCardDataLv1 = [
         image: attackspell,
     },
     {
-        name: 'Imitationrituals',
+        name: 'Imitation_Rituals',
         title: 'Imitation of Rituals',
         description: 'Choose: Ability +1 -or- Draw 1 card',
         catagory: 'SPELL',

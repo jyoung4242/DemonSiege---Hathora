@@ -12,14 +12,14 @@ import tools from '../assets/starter cards/rogue/roguetools.png';
 
 import { ABcardData } from '../lib/card';
 
-export function retrieveStarteRogueCardData(cardchosen: string): ABcardData {
+export function retrieveStarterRogueCardData(cardchosen: string): ABcardData {
     const foundArray = starterRogueCardData.filter(card => card.name == cardchosen);
     return foundArray[0];
 }
 
 export const starterRogueCardData = [
     {
-        name: 'Starter Hood',
+        name: 'Starter_Hood',
         title: 'Cowl',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'ITEM',
@@ -29,7 +29,7 @@ export const starterRogueCardData = [
         image: hood,
     },
     {
-        name: 'Starter Armor',
+        name: 'Starter_Armor',
         title: 'Light Armor',
         description: 'Health +1',
         catagory: 'ITEM',
@@ -39,7 +39,7 @@ export const starterRogueCardData = [
         image: armor,
     },
     {
-        name: 'Starter Backstab',
+        name: 'Starter_Backstab',
         title: 'Rogue Backstab',
         description: 'Attack +1, draw one card',
         catagory: 'SPELL',
@@ -49,7 +49,7 @@ export const starterRogueCardData = [
         image: backstab,
     },
     {
-        name: 'Starter Boots',
+        name: 'Starter_Boots',
         title: 'Boots',
         description: 'Ability +1',
         catagory: 'ITEM',
@@ -59,7 +59,7 @@ export const starterRogueCardData = [
         image: boots,
     },
     {
-        name: 'Starter Crossbow',
+        name: 'Starter_Crossbow',
         title: 'Hand Crossbow',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -69,7 +69,7 @@ export const starterRogueCardData = [
         image: crossbow,
     },
     {
-        name: 'Starter Knife',
+        name: 'Starter_Knife',
         title: 'Knife',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -79,7 +79,7 @@ export const starterRogueCardData = [
         image: knife,
     },
     {
-        name: 'Starter Pickpocket',
+        name: 'Starter_Pickpocket',
         title: 'Pickpocket',
         description: 'Health +1, Ability +1',
         catagory: 'SPELL',
@@ -89,7 +89,7 @@ export const starterRogueCardData = [
         image: pickpocket,
     },
     {
-        name: 'Starter Sneak',
+        name: 'Starter_Sneak',
         title: 'Rogue Sneak',
         description: 'Ability +1',
         catagory: 'SPELL',
@@ -99,7 +99,7 @@ export const starterRogueCardData = [
         image: sneak,
     },
     {
-        name: 'Starter Smoke',
+        name: 'Starter_Smoke',
         title: 'Smoke Bomb',
         description: 'Ability +1, Attack +1',
         catagory: 'SPELL',
@@ -109,7 +109,7 @@ export const starterRogueCardData = [
         image: smoke,
     },
     {
-        name: 'Starter Tools',
+        name: 'Starter_Tools',
         title: 'Lockpicking Tools',
         description: 'Choose: Ability +1 -or- Draw one card',
         catagory: 'ITEM',

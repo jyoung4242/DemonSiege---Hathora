@@ -91,6 +91,26 @@ export const addAttack1: EffectCallback = (userId: UserId, state: InternalState,
     });
 };
 
+export const addAttackHealth1ForAll: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Adding attack to player by 1`);
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].AttackPoints += 1;
+        c.sendEvent('Attack added 1 ', player);
+    });
+
+    listOfTargets = arrayOfTargets(userId, state.players, targetType.AllHeroes, c);
+    listOfTargets.forEach(player => {
+        const index = state.players.findIndex(p => p.Id == player);
+        state.players[index].Health += 1;
+        c.sendEvent('Attack added 1 ', player);
+    });
+};
+
+//TODO if players health maxed out, don't add to it
+
 export const addHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Adding health to player by 1`);
 
@@ -303,6 +323,24 @@ const draw2lose1: EffectCallback = (userId: UserId, state: InternalState, c: Con
     });
 };
 
+const draw1lose1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    console.log(`Draw 1 card, discard 1`);
+    const playerIndex = state.players.findIndex(player => player.Id == userId);
+    //Passive Effect
+    if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.NoDraw)) {
+        c.sendEvent('DRAW BLOCKED BY STATUS EFECT', userId);
+        return;
+    }
+
+    let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
+    listOfTargets.forEach(player => {
+        //Draw command
+        c.sendEvent('UE Draw1', player);
+        //Draw command
+        c.sendEvent('UE Discard1', player);
+    });
+};
+
 const removeLocation1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Removing Location Point`);
     if (state.locationPile!.ActiveDamage > 0) state.locationPile!.ActiveDamage -= 1;
@@ -396,6 +434,18 @@ const passiveWhenMonsterDefeatedDraw1: EffectCallback = (userId: UserId, state: 
     }
 };
 
+const passiveWhenMonsterDefeatedAbility1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
+    //adding no draw status effect to user
+    const index = state.players.findIndex(p => p.Id == userId);
+    //check for NoDraw status
+    const rsltStatus = state.players[index].StatusEffects.find(SE => SE == StatusEffect.MonsterDefeatPerk);
+    if (rsltStatus == undefined) {
+        state.players[index].StatusEffects.push(StatusEffect.MonsterDefeatPerk);
+        c.sendEvent('STATUS EFFECT - NO DRAW', userId);
+    }
+};
+//TODO go through status effect code and clean up c.sendEvents
+
 export const stunned = (userId: UserId, state: InternalState, c: Context) => {
     const index = state.players.findIndex(p => p.Id == userId);
     state.players[index].StatusEffects.push(StatusEffect.Stunned);
@@ -417,6 +467,7 @@ const callbacks = {
     chooseHealth1Ability1,
     chooseAbility1Draw1,
     draw2lose1,
+    draw1lose1,
     removeLocation1,
     draw1,
     addAbility1Draw1,
@@ -428,5 +479,7 @@ const callbacks = {
     addAttack2,
     addHealth1,
     addAttack1,
+    addAttackHealth1ForAll,
     passiveWhenMonsterDefeatedDraw1,
+    passiveWhenMonsterDefeatedAbility1,
 } as const;

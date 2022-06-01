@@ -3,7 +3,7 @@ let starterDeckRogue: AbilityCard[];
 
 export default starterDeckRogue = [
     {
-        Title: 'Starter Hood',
+        Title: 'Starter_Hood',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -15,7 +15,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Armor',
+        Title: 'Starter_Armor',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -27,7 +27,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Backstab',
+        Title: 'Starter_Backstab',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -40,7 +40,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'Starter Boots',
+        Title: 'Starter_Boots',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -52,7 +52,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter crossbow',
+        Title: 'Starter_Crossbow',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -64,7 +64,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter knife',
+        Title: 'Starter_Knife',
         Catagory: 'weapon',
         Level: 1,
         Cost: 0,
@@ -76,7 +76,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter pickpocket',
+        Title: 'Starter_Pickpocket',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -88,7 +88,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter sneak',
+        Title: 'Starter_Sneak',
         Catagory: 'spell',
         Level: 1,
         Cost: 0,
@@ -100,7 +100,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter smoke',
+        Title: 'Starter_Smoke',
         Catagory: 'item',
         Level: 1,
         Cost: 0,
@@ -112,7 +112,7 @@ export default starterDeckRogue = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'starter tools',
+        Title: 'Starter_Tools',
         Catagory: 'item',
         Level: 1,
         Cost: 0,

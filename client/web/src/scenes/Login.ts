@@ -1,14 +1,21 @@
-import { ElementAttributes } from '..';
-import { UI, UIView } from '../ui';
+import { ClientState, ElementAttributes, GS } from '../types';
+import { reRender } from '..';
+import { UI, UIView } from 'peasy-ui';
+import { HathoraClient } from '../../../.hathora/client';
 
 export class Login {
-    lgCB: EventListener;
-    elements: HTMLElement[];
     ui: UIView;
+    intervalID: NodeJS.Timer;
+    state: ClientState;
+    classClientReference: HathoraClient;
 
-    constructor(logincallback: EventListener) {
-        this.lgCB = logincallback;
-        this.elements = [];
+    model = {
+        loginUser: (event, model) => this.login(this.classClientReference),
+    };
+
+    constructor(client: HathoraClient, state: ClientState) {
+        this.state = state;
+        this.classClientReference = client;
     }
 
     mount(element: HTMLElement) {
@@ -17,15 +24,29 @@ export class Login {
           <div class="Header">
             <h1 class="LoginPageheader">Login Page</h1>
           </div>
-          <button id="btnLogin" class="loginButton">Login</button>
+          <button id="btnLogin" \${click @=> loginUser} class="loginButton">Login</button>
         </div>
       `;
-        this.ui = UI.create(element, template, {});
-        this.ui.element.querySelector('#btnLogin').addEventListener('click', this.lgCB);
+        this.ui = UI.create(element, template, this.model);
+
+        this.intervalID = setInterval(() => {
+            UI.update();
+        }, 1000 / 60);
     }
 
-    leaving(element: HTMLElement) {
+    login = async (client: HathoraClient) => {
+        if (sessionStorage.getItem('token') === null) {
+            sessionStorage.setItem('token', await client.loginAnonymous());
+        }
+        this.state.token = sessionStorage.getItem('token')!;
+        this.state.user = HathoraClient.getUserFromToken(this.state.token);
+        this.state.type = this.state.user.type;
+        reRender(GS.login, GS.lobby);
+    };
+
+    leaving() {
         this.ui.destroy();
         this.ui = null;
+        clearInterval(this.intervalID);
     }
 }

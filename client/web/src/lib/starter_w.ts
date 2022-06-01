@@ -17,7 +17,7 @@ export function retrieveStarterWizardCardData(cardchosen: string): ABcardData {
 
 export const starterWizardCardData = [
     {
-        name: 'Starter Robes',
+        name: 'Starter_Robes',
         title: 'Robes',
         description: 'Choose: Health +1 -or- Ability +1',
         catagory: 'ITEM',
@@ -27,7 +27,7 @@ export const starterWizardCardData = [
         image: robe,
     },
     {
-        name: 'Starter Wand',
+        name: 'Starter_Wand',
         title: 'Wand',
         description: 'Attack +1',
         catagory: 'WEAPON',
@@ -37,7 +37,7 @@ export const starterWizardCardData = [
         image: wand,
     },
     {
-        name: 'Starter Spellbook',
+        name: 'Starter_Spellbook',
         title: 'Spellboook',
         description: 'Ability +2',
         catagory: 'ITEM',
@@ -47,7 +47,7 @@ export const starterWizardCardData = [
         image: book,
     },
     {
-        name: 'Starter Staff',
+        name: 'Starter_Staff',
         title: 'Staff',
         description: 'Choose: Attack +1 -or- Ability +1',
         catagory: 'WEAPON',
@@ -57,7 +57,7 @@ export const starterWizardCardData = [
         image: staff,
     },
     {
-        name: 'Starter Pet',
+        name: 'Starter_Pet',
         title: 'Psuedodragon',
         description: 'Attack +1,Ability +1',
         catagory: 'FRIEND',
@@ -67,7 +67,7 @@ export const starterWizardCardData = [
         image: pet,
     },
     {
-        name: 'Starter Firespell',
+        name: 'Starter_Firespell',
         title: 'Hand of Fire',
         description: 'Attack +1',
         catagory: 'SPELL',
@@ -77,7 +77,7 @@ export const starterWizardCardData = [
         image: aspell,
     },
     {
-        name: 'Starter Minor Heal',
+        name: 'Starter_Minor_Heal',
         title: 'Minor healing',
         description: 'Health +1',
         catagory: 'SPELL',
@@ -87,7 +87,7 @@ export const starterWizardCardData = [
         image: hspell,
     },
     {
-        name: 'Starter Meditation',
+        name: 'Starter_Meditation',
         title: 'Wizard Meditation',
         description: 'Ability +1, Draw 1 card',
         catagory: 'SPELL',
@@ -97,7 +97,7 @@ export const starterWizardCardData = [
         image: sspell,
     },
     {
-        name: 'Starter Wizard Focus',
+        name: 'Starter_Wizard_Focus',
         title: 'Wizard Focus',
         description: 'Ability +1',
         catagory: 'SPELL',
@@ -107,7 +107,7 @@ export const starterWizardCardData = [
         image: sspell,
     },
     {
-        name: 'Starter Magic Arrow',
+        name: 'Starter_Magic_Arrow',
         title: 'Magic Arrow',
         description: 'Choose: Attack +1 -or- Ability +1',
         catagory: 'SPELL',

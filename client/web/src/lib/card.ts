@@ -145,21 +145,22 @@ export class Card {
     contentDiv: HTMLElement;
     zoomed: number;
 
-    constructor(name: string, size: CardSize, position: Vector3, orientation: Cardstatus, parent: string = 'myApp') {
+    constructor(name: string, size: CardSize, position: Vector3, orientation: Cardstatus, parent: string) {
         this.position = position;
         this.size = size;
         this.name = name;
         this.orientation = orientation;
-        this.parent = parent;
+        console.log(`parent:`, parent);
+        this.parent = parent ?? 'myApp';
 
         this.parentElement = document.getElementById(this.parent);
-
+        console.log(`parent: `, this.parentElement);
         this.cardDiv = document.createElement('div');
         this.cardDiv.id = this.name;
         this.cardDiv.classList.add('card');
         this.cardDiv.style.width = `${this.size.width}px`;
         this.cardDiv.style.aspectRatio = `${this.size.aspectRatio}`;
-        this.cardDiv.style.position = 'fixed';
+        this.cardDiv.style.position = 'absolute';
         this.cardDiv.style.opacity = '1';
         this.zoomed = 1;
 
@@ -172,6 +173,7 @@ export class Card {
         this.back.id = `${this.name}_back`;
         this.front.classList.add('front');
         this.back.classList.add('back');
+        if (this.orientation == Cardstatus.FaceUp) this.back.classList.add('hidden');
         this.contentDiv.classList.add('content');
 
         this.contentDiv.appendChild(this.front);
@@ -259,7 +261,8 @@ export class AbilityCard extends Card {
     level: number;
 
     constructor(abcard: ABcard) {
-        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        console.log(abcard.parent);
+        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
         this.catagory = abcard.catagory;
@@ -274,6 +277,8 @@ export class AbilityCard extends Card {
         front_side.style.backgroundSize = 'contain';
         if (this.cost > 0) front_side.style.backgroundImage = `url(${cardcost}), url(${cardborder}),url(${this.image}), url(${baseimage})`;
         else front_side.style.backgroundImage = `url(${cardborder}), url(${this.image}),url(${baseimage})`;
+        front_side.style.backgroundSize = 'cover';
+        front_side.style.backgroundRepeat = 'no-repeat';
 
         //title and level
         const titlediv = document.createElement('div');
@@ -311,9 +316,9 @@ export class AbilityCard extends Card {
         front_side.appendChild(descriptionDiv);
 
         const back_side = document.getElementById(`${this.name}_back`);
-        back_side.style.backgroundSize = 'contain';
+        back_side.style.backgroundSize = 'cover';
         back_side.style.backgroundImage = `url(${cardback})`;
-
+        back_side.style.backgroundRepeat = 'no-repeat';
         return this;
     }
 

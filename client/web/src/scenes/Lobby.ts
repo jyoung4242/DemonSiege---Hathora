@@ -1,5 +1,6 @@
-import { ElementAttributes } from '..';
-import { UI, UIView } from '../ui';
+import { UI, UIView } from 'peasy-ui';
+import { HathoraClient } from '../../../.hathora/client';
+import { ClientState } from '../types';
 
 type UserInformation = {
     name: string;
@@ -13,16 +14,24 @@ export class Lobby {
     joinEGM: EventListener;
     inputchanged: EventListener;
     ui: UIView;
+    intervalID: NodeJS.Timer;
 
-    constructor(cb1: EventListener, cb2: EventListener, cb3: EventListener) {
-        this.createNGM = cb1;
-        this.joinEGM = cb2;
-        this.inputchanged = cb3;
-    }
-
-    setUserInfo = (u: UserInformation) => {
-        this.userInfo = u;
+    model = {
+        name: '',
+        id: '',
+        newGame: () => {
+            console.log(`Here`);
+        },
+        joinGame: () => {
+            console.log(`Join Here`);
+        },
+        input: '',
     };
+
+    constructor(client: HathoraClient, state: ClientState) {
+        this.model.name = state.name;
+        this.model.id = state.id;
+    }
 
     mount(element: HTMLElement) {
         const template = `
@@ -35,24 +44,24 @@ export class Lobby {
             <h3 class="LoginPageheader">ID: \${id}</h3>
             
           </div>
-          <button id='btnCreateGame' class="loginButton">Create New Game</button>
+          <button id='btnCreateGame' \${click @=> newGame} class="loginButton">Create New Game</button>
           
           <div>
             <input id="joinGameInput"/>
-            <button id='btnJoinGame' class="loginButton" disabled>Join Existing Game</button>
+            <button id='btnJoinGame' \${click @=> joinGame} class="loginButton" disabled>Join Existing Game</button>
           </div>
       </div>
       `;
+        this.ui = UI.create(element, template, this.model);
 
-        this.ui = UI.create(element, template, this.userInfo);
-        UI.update();
-        this.ui.element.querySelector('#btnCreateGame').addEventListener('click', this.createNGM);
-        this.ui.element.querySelector('#btnJoinGame').addEventListener('click', this.joinEGM);
-        this.ui.element.querySelector('#joinGameInput').addEventListener('change', this.inputchanged);
+        this.intervalID = setInterval(() => {
+            UI.update();
+        }, 1000 / 60);
     }
 
-    leaving(element: HTMLElement) {
+    leaving() {
         this.ui.destroy();
         this.ui = null;
+        clearInterval(this.intervalID);
     }
 }

@@ -121,7 +121,7 @@ export class Impl implements Methods<InternalState> {
         state.gameSequence = GameStates.InProgress;
         state.roundSequence = RoundState.TowerDefense;
 
-        //draw right amount of cards from TD Deck into the active Monsters array by location Card: TD property
+        //draw right amount of cards from TD Deck into the TD array by location Card: TD property
         const loopIndex = state.locationPile?.TD || 1;
         dealCards(state.towerDefenseDeck, state.towerDefensePile, loopIndex);
         state.towerDefensePile.forEach(card => (card.CardStatus = Cardstatus.FaceUp));
@@ -388,6 +388,9 @@ export class Impl implements Methods<InternalState> {
                 //remove SE
                 removeStatusEffect(userId, state, myStatusEffect);
             }
+
+            //TODO - if monster defeated perks check
+
             //discard monster
             discard(state.activeMonsters, state.monsterDiscard, monsterIndex);
             gameLog(userId, state, `Player defeated monster: ${request.cardname}`);
