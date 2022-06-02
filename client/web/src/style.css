@@ -125,7 +125,7 @@
 .smallcard {
     width: 4vw;
     /* aspect-ratio: 2/3; */
-    border: 1px solid rgb(10, 56, 71);
+    border: 1px solid rgb(10, 56, 71, 0.25);
     font-size: 0.8vw;
     border-radius: 5px;
     perspective: 300px;
@@ -361,7 +361,7 @@
 .otherplayer {
     width: 20vw;
     aspect-ratio: 21/10;
-    border: 2px solid rgb(10, 56, 71);
+    border: 2px solid rgb(10, 56, 71, 0.25);
     background-color: white;
     opacity: 1;
 }
@@ -372,6 +372,7 @@
     transform: translateX(120%);
     top: 60%;
     animation: slideright 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .other2 {
@@ -380,6 +381,7 @@
     transform: translateX(120%);
     top: 40%;
     animation: slideright 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .other3 {
@@ -388,6 +390,7 @@
     transform: translateX(120%);
     top: 20%;
     animation: slideright 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .other2:hover {
@@ -422,7 +425,7 @@
     bottom: 5px;
     width: 33vw;
     aspect-ratio: 21/10;
-    border: 2px solid rgb(10, 56, 71);
+    border: 2px solid rgb(10, 56, 71, 0.25);
     animation: slideout 0.5s ease-in-out;
     z-index: 1;
 }
@@ -459,7 +462,7 @@
 }
 
 .ABcardDeck {
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     position: absolute;
     top: 34%;
     left: 5%;
@@ -467,7 +470,7 @@
 }
 
 .ABspot1 {
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     position: absolute;
     top: 4%;
     left: 37%;
@@ -476,7 +479,7 @@
 
 .ABspot2 {
     position: absolute;
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     top: 4%;
     left: 67%;
     border-radius: 5px;
@@ -484,7 +487,7 @@
 
 .ABspot3 {
     position: absolute;
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     top: 34%;
     left: 37%;
     border-radius: 5px;
@@ -492,7 +495,7 @@
 
 .ABspot4 {
     position: absolute;
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     top: 34%;
     left: 67%;
     border-radius: 5px;
@@ -500,7 +503,7 @@
 
 .ABspot5 {
     position: absolute;
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     top: 64%;
     left: 37%;
     border-radius: 5px;
@@ -508,7 +511,7 @@
 
 .ABspot6 {
     position: absolute;
-    border: 1px rgb(10, 56, 71) solid;
+    border: 1px rgb(10, 56, 71, 0.25) solid;
     border-radius: 5px;
     top: 64%;
     left: 67%;
@@ -531,7 +534,7 @@
     position: fixed;
     top: 40%;
     left: 30%;
-    border: 3px solid rgb(73, 73, 73);
+    border: 3px solid rgb(73, 73, 73, 0.25);
     border-radius: 10px;
     opacity: 0;
     transition: opacity 0.75s;
@@ -607,18 +610,18 @@
     position: fixed;
     top: 20%;
     left: 10%;
-    border: 3px solid rgb(73, 73, 73);
+    border: 3px solid rgb(73, 73, 73, 0.25);
     border-radius: 10px;
     opacity: 0;
 }
 
 .LTitle {
-    border: 1px blue solid;
+    border: 1px rgba(0, 0, 255, 0.355) solid;
     grid-area: title;
 }
 
 .LDeck {
-    border: 1px blue solid;
+    border: 1px rgba(0, 0, 255, 0.355) solid;
     grid-area: deck;
     background-color: rgba(105, 105, 105, 0.5);
 }
@@ -640,18 +643,18 @@
     position: fixed;
     top: 20%;
     left: 75%;
-    border: 3px solid rgb(73, 73, 73);
+    border: 3px solid rgb(73, 73, 73, 0.25);
     border-radius: 10px;
     opacity: 0;
 }
 
 .TDTitle {
-    border: 1px blue solid;
+    border: 1px rgba(0, 0, 255, 0.355) solid;
     grid-area: title;
 }
 
 .TDDeck {
-    border: 1px blue solid;
+    border: 1px rgba(0, 0, 255, 0.355) solid;
     grid-area: deck;
     background-color: rgba(105, 105, 105, 0.5);
 }
@@ -659,6 +662,24 @@
 .fadeIn {
     /* transition: opacity 0.75s; */
     opacity: 1;
+}
+
+#MonsterDeck {
+    background-image: url('../src/assets/card assets/monster card.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#LocDeck {
+    background-image: url('../src/assets/card assets/locationcardnew.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#TDDeck {
+    background-image: url('../src/assets/card assets/towerdefense.png');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 @keyframes slidein {

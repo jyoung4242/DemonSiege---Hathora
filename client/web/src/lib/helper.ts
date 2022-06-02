@@ -1,12 +1,7 @@
 import cardback from '../assets/card assets/newcardback.png';
-import { animate, AnimationControls } from 'motion';
-import { Cardstatus, RoundState } from '../../../../api/types';
+import { animate } from 'motion';
+import { Cardstatus } from '../../../../api/types';
 import ABcardback from '../assets/card assets/newcardback.png';
-import { retrieveCardData } from '../lib/abilitycardsLV1';
-import { retrieveStarterBarbarianCardData } from '../lib/starter_b';
-import { retrieveStarterWizardCardData } from '../lib/starter_w';
-import { retrieveStarterPaladinCardData } from '../lib/starter_p';
-import { retrieveStarterRogueCardData } from '../lib/starter_r';
 import { isCardinDB, retrieveMasterCardData } from './allAbilityCards';
 import { ABcard, AbilityCard } from './card';
 import { playerHand } from '../index';

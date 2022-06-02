@@ -6,18 +6,13 @@ import { Role } from './scenes/chooseRole';
 import { GameStates, Roles } from '../../../api/types';
 import { HathoraClient, UpdateArgs } from '../../.hathora/client';
 import { AbilityCard, MonsterCard, LocationCard, TDCard } from './lib/card';
-import { dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, toggleCardpoolDrawer } from './lib/helper';
 import { loadAbilityCardDatabase } from './lib/allAbilityCards';
 import { ClientState, GS, mappedRoles, mappedStatus } from './types';
 
 const body = document.getElementById('myApp');
 
-let token: string;
-let gameID: string;
 export let myRole: Roles = Roles.Barbarian;
-let myStartFlag: boolean = false;
 export let gameStatus: GameStates;
-
 export const client = new HathoraClient();
 
 export let playerInfo: ClientState = {
@@ -41,15 +36,20 @@ export let playerInfo: ClientState = {
     otherABP: [],
 };
 
-/*******************/
+/*********************************************/
 //Card buffers - for the Game
 let cardPool: AbilityCard[] = [];
 let activeMonsters: MonsterCard[] = [];
 let towerDefensePile: TDCard[] = [];
 let activeLocation: LocationCard = undefined;
 export let playerHand: AbilityCard[] = [];
-/*******************/
+/*********************************************/
 
+/*********************************************
+Main State Update Routine
+This comes from Server state pushes, and is called when
+ever there is an event or state change
+**********************************************/
 export let updateState = (update: UpdateArgs) => {
     //do something with state here
     console.log(`State: `, update);
@@ -82,122 +82,9 @@ export let updateState = (update: UpdateArgs) => {
                 console.log(`playerinfo.other`, playerInfo);
             });
     }
-
     //process events
-    if (update.events.length) parseEvents(update);
+    if (update.events.length && game) game.parseEvents(update);
     if (game) game.updateInfo(playerInfo);
-};
-
-function parseEvents(state: UpdateArgs) {
-    state.events.forEach(event => {
-        console.log(`EVENT: `, event);
-        switch (event) {
-            case 'Player Joined':
-                if (state.state.players.length > 1) {
-                    if (state.state.gameSequence == GameStates.ReadyForRound) {
-                        console.log(`RR - joining event HERE!!!!`);
-                        showOther(state.state.players.length - 1);
-                    } else if (state.state.gameSequence == GameStates.PlayersJoining) {
-                        console.log(`joining event HERE!!!!`);
-                        showOther(state.state.players.length - 1);
-                    }
-                }
-                break;
-            case 'game starting':
-                (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
-                toggleCardpoolDrawer('open');
-                runCardPoolAnimation().then(() => {
-                    //next animation - Monster Deck
-                    document.getElementById('MonsterDiv').classList.add('fadeIn');
-                    document.getElementById('LocationsDiv').classList.add('fadeIn');
-                    document.getElementById('TDDiv').classList.add('fadeIn');
-                    setTimeout(() => {
-                        runPlayerHandAnimation();
-                        if (state.state.turn == playerInfo.id && myStartFlag) {
-                            (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
-                        }
-                    }, 750);
-                });
-
-                //TODO if other players, load their UI too
-
-                break;
-            case 'ReadyToStartTurn':
-                myStartFlag = true;
-                break;
-            case 'Enable TD':
-                //TODO Deal Players Hand
-                let elem = document.getElementsByClassName('playersArea');
-                elem[0].classList.add('openPlayersHand');
-                setTimeout(() => {
-                    //Get cards from state
-                    dealPlayerCardFromDeck(playerInfo.hand[0]);
-                }, 1000);
-                //TODO Deal the TD cards from STATE
-                break;
-            case 'SelectTD':
-                //TODO Enable TD to be clicked and selected and there's active effects
-                //TODO Maybe Pulse and/or Glow
-                break;
-            default:
-                break;
-        }
-    });
-}
-
-function showOther(numOtherPlayers: number) {
-    console.log(`num other players:`, numOtherPlayers);
-    const elm = document.getElementById(`other${numOtherPlayers}`);
-    console.log(`other player element: `, elm);
-    elm.classList.remove('hidden');
-}
-
-const divLoaded = () => {
-    console.log(`loaded state: `, playerInfo);
-    playerInfo.otherid.forEach((player, index) => {
-        showOther(index + 1);
-    });
-};
-
-let startGame = (e: Event) => {
-    playerInfo.myConnection.startGame({});
-};
-
-let startTurn = (e: Event) => {
-    playerInfo.myConnection.startTurn({});
-};
-
-let endTurn = (e: Event) => {
-    playerInfo.myConnection.endTurn({});
-};
-
-let roleSelected = (e: Event) => {
-    const parsedButtonPress = (e.target as HTMLElement).getAttribute('id');
-    //console.log(`ID: `, parsedButtonPress);
-    const charname = document.getElementById('characterName');
-    playerInfo.myConnection.nameCharacter({ name: (charname as HTMLInputElement).value });
-    switch (parsedButtonPress) {
-        case 'btnBarbarian':
-            playerInfo.myConnection.selectRole({ role: Roles.Barbarian });
-            myRole = Roles.Barbarian;
-        case 'btnWizard':
-            playerInfo.myConnection.selectRole({ role: Roles.Wizard });
-            myRole = Roles.Wizard;
-            break;
-        case 'btnPaladin':
-            playerInfo.myConnection.selectRole({ role: Roles.Paladin });
-            myRole = Roles.Paladin;
-            break;
-        case 'btnRogue':
-            playerInfo.myConnection.selectRole({ role: Roles.Rogue });
-            myRole = Roles.Rogue;
-            break;
-
-        default:
-            break;
-    }
-
-    reRender(myGameState, GS.game);
 };
 
 let loginscreen = undefined;
@@ -206,6 +93,11 @@ let game = undefined;
 let role = undefined;
 let myGameState: GS = GS.null;
 
+/****************************************
+ * Main Scene Selection
+ * when ever reRender is called
+ * its passed (from,to) in its parameters
+ ****************************************/
 export const reRender = (state: GS, gs: GS) => {
     if (state == gs) return;
     switch (gs) {
@@ -232,21 +124,21 @@ export const reRender = (state: GS, gs: GS) => {
                 myGameState = GS.login;
                 loginscreen.mount(body);
             }
-
             break;
         case GS.game:
             if (state == GS.role) {
                 role.leaving();
                 //can't jump from login to game
-                if (!game) game = new Game(divLoaded, startGame, startTurn, endTurn);
+                if (!game) game = new Game(client, playerInfo);
                 myGameState = GS.game;
-                game.setUserInfo(playerInfo);
                 game.mount(body);
             }
             break;
     }
 };
 
-//initial
+//*********************** */
+//initializations
+//*********************** */
 loadAbilityCardDatabase();
 reRender(myGameState, GS.login);

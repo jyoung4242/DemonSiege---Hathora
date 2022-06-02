@@ -27,7 +27,10 @@ export class Lobby {
             }
         },
         joinGame: () => {
-            console.log(`Join Here`);
+            const gameToJoin = (document.getElementById('joinGameInput') as HTMLInputElement).value;
+            this.state.myConnection = this.client.connect(this.state.token, gameToJoin, updateState, console.error);
+            this.state.myConnection.joinGame({});
+            reRender(GS.lobby, GS.role);
         },
         inputValidation: () => {
             if ((document.getElementById('joinGameInput') as HTMLInputElement).value.length) {
@@ -48,20 +51,21 @@ export class Lobby {
     mount(element: HTMLElement) {
         const template = `
         <div>
-          <div class="Header">
+            <div class="Header">
             <h1 class="LoginPageheader">Welcome to the Lobby</h1>
-          </div>
-          <div class="Header">
-            <h3 class="LoginPageheader">Username: \${name}</h3>
-            <h3 class="LoginPageheader">ID: \${id}</h3>
-            
-          </div>
-          <button id='btnCreateGame' \${click @=> newGame} class="loginButton">Create New Game</button>
+            </div>
+
+            <div class="Header">
+                <h3 class="LoginPageheader">Username: \${name}</h3>
+                <h3 class="LoginPageheader">ID: \${id}</h3>
+            </div>
+
+            <button id='btnCreateGame' \${click @=> newGame} class="loginButton">Create New Game</button>
           
-          <div>
-            <input  \${input @=> inputValidation} id="joinGameInput"/>
-            <button id='btnJoinGame' \${click @=> joinGame} class="loginButton" disabled>Join Existing Game</button>
-          </div>
+            <div>
+                <input  \${input @=> inputValidation} id="joinGameInput"/>
+                <button id='btnJoinGame' \${click @=> joinGame} class="loginButton" disabled>Join Existing Game</button>
+            </div>
       </div>
       `;
         this.ui = UI.create(element, template, this.model);
