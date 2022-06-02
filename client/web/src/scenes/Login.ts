@@ -1,4 +1,4 @@
-import { ClientState, ElementAttributes, GS } from '../types';
+import { ClientState, GS } from '../types';
 import { reRender } from '..';
 import { UI, UIView } from 'peasy-ui';
 import { HathoraClient } from '../../../.hathora/client';
@@ -7,15 +7,15 @@ export class Login {
     ui: UIView;
     intervalID: NodeJS.Timer;
     state: ClientState;
-    classClientReference: HathoraClient;
+    client: HathoraClient;
 
     model = {
-        loginUser: (event, model) => this.login(this.classClientReference),
+        loginUser: () => this.login(this.client),
     };
 
     constructor(client: HathoraClient, state: ClientState) {
         this.state = state;
-        this.classClientReference = client;
+        this.client = client;
     }
 
     mount(element: HTMLElement) {
@@ -40,6 +40,7 @@ export class Login {
         }
         this.state.token = sessionStorage.getItem('token')!;
         this.state.user = HathoraClient.getUserFromToken(this.state.token);
+        this.state.username = this.state.user.name;
         this.state.type = this.state.user.type;
         reRender(GS.login, GS.lobby);
     };

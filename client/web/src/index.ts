@@ -4,23 +4,23 @@ import { Lobby } from './scenes/Lobby';
 import { Game } from './scenes/Game';
 import { Role } from './scenes/chooseRole';
 import { GameStates, Roles } from '../../../api/types';
-import { HathoraClient, HathoraConnection, UpdateArgs } from '../../.hathora/client';
+import { HathoraClient, UpdateArgs } from '../../.hathora/client';
 import { AbilityCard, MonsterCard, LocationCard, TDCard } from './lib/card';
 import { dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, toggleCardpoolDrawer } from './lib/helper';
 import { loadAbilityCardDatabase } from './lib/allAbilityCards';
-import { ClientState, GS, mappedRoles, mappedStatus, user } from './types';
+import { ClientState, GS, mappedRoles, mappedStatus } from './types';
 
 const body = document.getElementById('myApp');
-const client = new HathoraClient();
 
 let token: string;
-let myConnection: HathoraConnection;
 let gameID: string;
-let gameStatus: GameStates;
-let myRole: Roles;
+export let myRole: Roles = Roles.Barbarian;
 let myStartFlag: boolean = false;
+export let gameStatus: GameStates;
 
-let playerInfo: ClientState = {
+export const client = new HathoraClient();
+
+export let playerInfo: ClientState = {
     username: '',
     name: '',
     id: '',
@@ -50,14 +50,14 @@ let activeLocation: LocationCard = undefined;
 export let playerHand: AbilityCard[] = [];
 /*******************/
 
-let updateState = (update: UpdateArgs) => {
+export let updateState = (update: UpdateArgs) => {
     //do something with state here
     console.log(`State: `, update);
     gameStatus = update.state.gameSequence;
     playerInfo.gameLevel = update.state.gameLevel;
     playerInfo.status = mappedStatus[gameStatus];
     if (update.state.players.length != 0) {
-        const playerIndex = update.state.players.findIndex(player => player.Id == user.id);
+        const playerIndex = update.state.players.findIndex(player => player.Id == playerInfo.user.id);
         if (playerIndex >= 0) {
             playerInfo.id = update.state.players[playerIndex].Id;
             playerInfo.hand = update.state.players[playerIndex].Hand;
@@ -70,7 +70,7 @@ let updateState = (update: UpdateArgs) => {
     }
     if (update.state.players.length > 1) {
         update.state.players
-            .filter(player => player.Id != user.id)
+            .filter(player => player.Id != playerInfo.user.id)
             .forEach((player, index) => {
                 console.log(`filling other players stuff`);
                 playerInfo.othername[index] = player.characterName;
@@ -85,8 +85,7 @@ let updateState = (update: UpdateArgs) => {
 
     //process events
     if (update.events.length) parseEvents(update);
-
-    game.updateInfo(playerInfo);
+    if (game) game.updateInfo(playerInfo);
 };
 
 function parseEvents(state: UpdateArgs) {
@@ -160,75 +159,37 @@ const divLoaded = () => {
     });
 };
 
-let manageInput = (e: Event) => {
-    let inputControl: HTMLInputElement = document.getElementById('joinGameInput') as HTMLInputElement;
-    let inputtext: string = inputControl.value;
-    let btnJoin: HTMLButtonElement = document.getElementById('btnJoinGame') as HTMLButtonElement;
-    if (inputtext.length) btnJoin.disabled = false;
-    else btnJoin.disabled = true;
-};
-
 let startGame = (e: Event) => {
-    myConnection.startGame({});
+    playerInfo.myConnection.startGame({});
 };
 
 let startTurn = (e: Event) => {
-    myConnection.startTurn({});
+    playerInfo.myConnection.startTurn({});
 };
 
 let endTurn = (e: Event) => {
-    myConnection.endTurn({});
-};
-
-let createNewGame = async (e: Event) => {
-    if (location.pathname.length > 1) {
-        reRender(myGameState, GS.role);
-        myConnection = client.connect(token, location.pathname.split('/').pop()!, updateState, console.error);
-        myConnection.joinGame({});
-    } else {
-        const stateId = await client.create(playerInfo.token, {});
-        gameID = stateId;
-        playerInfo.gameID = gameID;
-        history.pushState({}, '', `/${stateId}`);
-        reRender(myGameState, GS.role);
-        myConnection = client.connect(token, stateId, updateState, console.error);
-        myConnection.joinGame({});
-    }
-};
-
-let joinCurrentGame = (e: Event) => {
-    const gameToJoin: HTMLInputElement = document.getElementById('joinGameInput') as HTMLInputElement;
-    console.log(`game to join: `, gameToJoin.value);
-    history.pushState({}, '', `/${gameToJoin.value}`);
-
-    if (gameToJoin.value.length > 1) {
-        gameID = gameToJoin.value;
-        playerInfo.gameID = gameID;
-        reRender(myGameState, GS.role);
-        myConnection = client.connect(token, location.pathname.split('/').pop()!, updateState, console.error);
-        myConnection.joinGame({});
-    }
+    playerInfo.myConnection.endTurn({});
 };
 
 let roleSelected = (e: Event) => {
     const parsedButtonPress = (e.target as HTMLElement).getAttribute('id');
     //console.log(`ID: `, parsedButtonPress);
     const charname = document.getElementById('characterName');
-    myConnection.nameCharacter({ name: (charname as HTMLInputElement).value });
+    playerInfo.myConnection.nameCharacter({ name: (charname as HTMLInputElement).value });
     switch (parsedButtonPress) {
         case 'btnBarbarian':
-            myConnection.selectRole({ role: Roles.Barbarian });
+            playerInfo.myConnection.selectRole({ role: Roles.Barbarian });
             myRole = Roles.Barbarian;
         case 'btnWizard':
-            myConnection.selectRole({ role: Roles.Wizard });
+            playerInfo.myConnection.selectRole({ role: Roles.Wizard });
             myRole = Roles.Wizard;
             break;
         case 'btnPaladin':
-            myConnection.selectRole({ role: Roles.Paladin });
+            playerInfo.myConnection.selectRole({ role: Roles.Paladin });
             myRole = Roles.Paladin;
             break;
         case 'btnRogue':
-            myConnection.selectRole({ role: Roles.Rogue });
+            playerInfo.myConnection.selectRole({ role: Roles.Rogue });
             myRole = Roles.Rogue;
             break;
 
@@ -239,10 +200,10 @@ let roleSelected = (e: Event) => {
     reRender(myGameState, GS.game);
 };
 
-const loginscreen = new Login(client, playerInfo);
-const lobby = new Lobby(client, playerInfo);
-const game = new Game(divLoaded, startGame, startTurn, endTurn);
-const role = new Role(roleSelected);
+let loginscreen = undefined;
+let lobby = undefined;
+let game = undefined;
+let role = undefined;
 let myGameState: GS = GS.null;
 
 export const reRender = (state: GS, gs: GS) => {
@@ -251,6 +212,7 @@ export const reRender = (state: GS, gs: GS) => {
         case GS.lobby:
             if (state == GS.login) loginscreen.leaving();
             else game.leaving(body);
+            if (!lobby) lobby = new Lobby(client, playerInfo);
             myGameState = GS.lobby;
             lobby.mount(body);
 
@@ -259,13 +221,14 @@ export const reRender = (state: GS, gs: GS) => {
             if (state == GS.lobby) lobby.leaving();
             else if (state == GS.login) return; //invalid route
             else if (state == GS.game) return; //invalid route
+            if (!role) role = new Role(client, playerInfo);
             myGameState = GS.role;
-            role.setUserInfo(playerInfo);
             role.mount(body);
             break;
         case GS.login:
             if (state == GS.lobby) lobby.leaving();
             else if (state == GS.null) {
+                if (!loginscreen) loginscreen = new Login(client, playerInfo);
                 myGameState = GS.login;
                 loginscreen.mount(body);
             }
@@ -273,8 +236,9 @@ export const reRender = (state: GS, gs: GS) => {
             break;
         case GS.game:
             if (state == GS.role) {
-                role.leaving(body);
+                role.leaving();
                 //can't jump from login to game
+                if (!game) game = new Game(divLoaded, startGame, startTurn, endTurn);
                 myGameState = GS.game;
                 game.setUserInfo(playerInfo);
                 game.mount(body);

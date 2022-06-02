@@ -1,36 +1,48 @@
 import { UI, UIView } from 'peasy-ui';
+import { reRender, updateState } from '..';
 import { HathoraClient } from '../../../.hathora/client';
-import { ClientState } from '../types';
-
-type UserInformation = {
-    name: string;
-    id: string;
-    type: string;
-};
+import { ClientState, GS } from '../types';
 
 export class Lobby {
-    userInfo: UserInformation;
-    createNGM: EventListener;
-    joinEGM: EventListener;
-    inputchanged: EventListener;
+    client: HathoraClient;
+    state: ClientState;
     ui: UIView;
     intervalID: NodeJS.Timer;
 
     model = {
         name: '',
         id: '',
-        newGame: () => {
-            console.log(`Here`);
+        newGame: async () => {
+            if (location.pathname.length > 1) {
+                reRender(GS.lobby, GS.role);
+                this.state.myConnection = this.client.connect(this.state.token, location.pathname.split('/').pop()!, updateState, console.error);
+                this.state.myConnection.joinGame({});
+            } else {
+                const stateId = await this.client.create(this.state.token, {});
+                this.state.gameID = stateId;
+                history.pushState({}, '', `/${stateId}`);
+                reRender(GS.lobby, GS.role);
+                this.state.myConnection = this.client.connect(this.state.token, stateId, updateState, console.error);
+                this.state.myConnection.joinGame({});
+            }
         },
         joinGame: () => {
             console.log(`Join Here`);
         },
-        input: '',
+        inputValidation: () => {
+            if ((document.getElementById('joinGameInput') as HTMLInputElement).value.length) {
+                (document.getElementById('btnJoinGame') as HTMLButtonElement).disabled = false;
+            } else {
+                (document.getElementById('btnJoinGame') as HTMLButtonElement).disabled = true;
+            }
+        },
     };
 
     constructor(client: HathoraClient, state: ClientState) {
-        this.model.name = state.name;
-        this.model.id = state.id;
+        this.client = client;
+        this.state = state;
+        this.model.name = state.user.name;
+        this.model.id = state.user.id;
     }
 
     mount(element: HTMLElement) {
@@ -47,7 +59,7 @@ export class Lobby {
           <button id='btnCreateGame' \${click @=> newGame} class="loginButton">Create New Game</button>
           
           <div>
-            <input id="joinGameInput"/>
+            <input  \${input @=> inputValidation} id="joinGameInput"/>
             <button id='btnJoinGame' \${click @=> joinGame} class="loginButton" disabled>Join Existing Game</button>
           </div>
       </div>

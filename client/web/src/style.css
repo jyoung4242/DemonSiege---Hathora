@@ -80,6 +80,11 @@
     background-color: rgb(10, 56, 71);
 }
 
+.loginButton:disabled {
+    color: rgb(10, 56, 71);
+    background-color: rgb(198, 198, 198);
+}
+
 .card {
     width: 7vw;
     aspect-ratio: 2.5/3.5;

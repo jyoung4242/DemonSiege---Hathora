@@ -16,6 +16,7 @@ export type ElementAttributes = {
 export let user: AnonymousUserData;
 
 export type ClientState = {
+    myConnection?: HathoraConnection;
     client?: HathoraClient;
     user?: AnonymousUserData;
     token?: string;

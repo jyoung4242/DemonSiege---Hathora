@@ -1,18 +1,50 @@
-import { ClientState } from '../types';
-import { GameStates } from '../../../../api/types';
+import { ClientState, GS } from '../types';
 import { UI, UIView } from '../ui';
+import { HathoraClient } from '../../../.hathora/client';
+import { Roles } from '../../../../api/types';
+import { reRender } from '..';
 
 export class Role {
-    userInfo: ClientState;
     ui: UIView;
-    cbRoleChoice: EventListener;
-    constructor(roleCB: EventListener) {
-        this.cbRoleChoice = roleCB;
-    }
+    state: ClientState;
+    client: HathoraClient;
+    intervalID: NodeJS.Timer;
 
-    setUserInfo = (u: ClientState) => {
-        this.userInfo = u;
+    model = {
+        name: '',
+        gameID: '',
+        status: '',
+        id: '',
+        setBarbarian: () => {
+            this.state.myConnection.selectRole({ role: Roles.Barbarian });
+            reRender(GS.role, GS.game);
+        },
+        setWizard: () => {
+            this.state.myConnection.selectRole({ role: Roles.Wizard });
+            reRender(GS.role, GS.game);
+        },
+        setPaladin: () => {
+            this.state.myConnection.selectRole({ role: Roles.Paladin });
+            reRender(GS.role, GS.game);
+        },
+        setRogue: () => {
+            this.state.myConnection.selectRole({ role: Roles.Rogue });
+            reRender(GS.role, GS.game);
+        },
+        characterName: ``,
     };
+
+    constructor(client: HathoraClient, state: ClientState) {
+        this.state = state;
+        this.client = client;
+        console.log(`state:`, state);
+        this.model.name = state.username;
+        this.model.gameID = state.gameID;
+        this.model.status = state.status;
+        this.model.id = state.user.id;
+        this.model.characterName = 'Enter Name';
+        console.log(`model:`, this.model);
+    }
 
     mount(element: HTMLElement) {
         const template = `
@@ -30,7 +62,7 @@ export class Role {
                    
           <div class="Header">
             <h5 class="LoginPageheader">Name your character: </h5>
-            <input id="characterName" value=\${name} />
+            <input id="charName" \${value<=>characterName}/>
           </div>
           
           <div>
@@ -41,17 +73,23 @@ export class Role {
           </div>
       </div>
       `;
+        /**
+         * \${click @=> setBarbarian}
+         * \${click @=> setWizard}
+         *  \${click @=> setPaladin}
+         * \${click @=> setRogue}
+         */
 
-        this.ui = UI.create(element, template, this.userInfo);
-        UI.update();
-        this.ui.element.querySelector('#btnBarbarian').addEventListener('click', this.cbRoleChoice);
-        this.ui.element.querySelector('#btnWizard').addEventListener('click', this.cbRoleChoice);
-        this.ui.element.querySelector('#btnPaladin').addEventListener('click', this.cbRoleChoice);
-        this.ui.element.querySelector('#btnRogue').addEventListener('click', this.cbRoleChoice);
+        this.ui = UI.create(element, template, this.model);
+
+        this.intervalID = setInterval(() => {
+            UI.update();
+        }, 1000 / 60);
     }
 
-    leaving(element: HTMLElement) {
+    leaving() {
         this.ui.destroy();
         this.ui = null;
+        clearInterval(this.intervalID);
     }
 }
