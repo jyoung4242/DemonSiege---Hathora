@@ -62,22 +62,23 @@ export class Role {
                    
           <div class="Header">
             <h5 class="LoginPageheader">Name your character: </h5>
-            <input id="charName" \${value<=>characterName}/>
+            <input id="charName" \${value <=> characterName} />
           </div>
           
           <div>
-            <button id='btnBarbarian' class="loginButton">Barbarian</button>
-            <button id='btnWizard' class="loginButton">Wizard</button>
-            <button id='btnPaladin' class="loginButton">Paladin</button>
-            <button id='btnRogue' class="loginButton">Rogue</button>
+            <button id="btnBarbarian" \${click @=> setBarbarian} class="loginButton">Barbarian</button>
+            <button id="btnWizard" \${click @=> setWizard} class="loginButton">Wizard</button>
+            <button id="btnPaladin" \${click @=> setPaladin} class="loginButton">Paladin</button>
+            <button id="btnRogue" \${click @=> setRogue} class="loginButton">Rogue</button>
           </div>
       </div>
       `;
         /**
-         * \${click @=> setBarbarian}
-         * \${click @=> setWizard}
-         *  \${click @=> setPaladin}
-         * \${click @=> setRogue}
+         *
+         *
+         *
+         *
+         *
          */
 
         this.ui = UI.create(element, template, this.model);
