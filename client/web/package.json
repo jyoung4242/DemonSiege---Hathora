@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "motion": "^10.8.2",
-        "peasy-ui": "^0.9.4"
+        "peasy-ui": "^0.9.4",
+        "toastify-js": "^1.11.2"
     }
 }

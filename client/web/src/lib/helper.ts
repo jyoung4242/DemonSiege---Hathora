@@ -4,7 +4,7 @@ import { Cardstatus } from '../../../../api/types';
 import ABcardback from '../assets/card assets/newcardback.png';
 import { isCardinDB, retrieveMasterCardData } from './allAbilityCards';
 import { ABcard, AbilityCard } from './card';
-import { playerHand } from '../index';
+import { playerHand, game } from '../index';
 import { ABCARDASPECTRATIO } from '../types';
 
 export const toggleCardpoolDrawer = (status: 'open' | 'closed') => {
@@ -16,7 +16,7 @@ export const toggleCardpoolDrawer = (status: 'open' | 'closed') => {
 };
 
 export const runCardPoolAnimation = () => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(resolve => {
         const NUM_CARDS = 20;
         let elementArray: HTMLElement[] = [];
 
@@ -132,7 +132,7 @@ export const dealPlayerCardFromDeck = async myCard => {
 
         let args: ABcard = {
             name: foundCard.name,
-            cardsize: { width: width, aspectRatio: ABCARDASPECTRATIO },
+            size: { width: width, aspectRatio: ABCARDASPECTRATIO },
             orientation: Cardstatus.FaceUp,
             position: { x: 0, y: 0, theta: 0 },
             title: foundCard.title,
@@ -141,16 +141,18 @@ export const dealPlayerCardFromDeck = async myCard => {
             cost: foundCard.cost,
             image: foundCard.image,
             level: foundCard.level,
-            parent: 'playerdeck',
+            parent: 'innerPlayerHand',
         };
-        let card = new AbilityCard(args);
-        playerHand.push(card);
-        let cardDiv = document.getElementById(`${card.name}`);
+        console.log(`Helper.ts, line 146, calling create `);
+        let card = AbilityCard.create(args);
+        game.myHand.addCard(card);
+        playerHand.push(myCard);
+        /*let cardDiv = document.getElementById(`${card.name}`);
         document.getElementById('innerPlayerHand').appendChild(cardDiv);
         console.log(`card name`, card.name);
         let elem = document.getElementById(`${card.name}`);
         await animate(elem, { rotate: 1080, x: 300 }, { duration: 0.4 });
-        reorganizePlayerHand();
+        reorganizePlayerHand(); */
     }
 };
 

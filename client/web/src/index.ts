@@ -89,7 +89,7 @@ export let updateState = (update: UpdateArgs) => {
 
 let loginscreen = undefined;
 let lobby = undefined;
-let game = undefined;
+export let game = undefined;
 let role = undefined;
 let myGameState: GS = GS.null;
 
@@ -103,7 +103,7 @@ export const reRender = (state: GS, gs: GS) => {
     switch (gs) {
         case GS.lobby:
             if (state == GS.login) loginscreen.leaving();
-            else game.leaving(body);
+            else game.leaving();
             if (!lobby) lobby = new Lobby(client, playerInfo);
             myGameState = GS.lobby;
             lobby.mount(body);

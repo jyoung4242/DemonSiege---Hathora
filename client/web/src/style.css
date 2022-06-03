@@ -24,6 +24,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: transform 0.4s;
     z-index: 5;
 }
 
@@ -333,17 +334,19 @@
 .playerdiscard {
     position: absolute;
     top: 32%;
-    right: 5%;
+    right: 2%;
     background-color: rgba(111, 111, 111, 0.516);
     border-radius: 5px;
 }
 
 .hand {
-    position: absolute;
-    width: 47%;
-    aspect-ratio: 4/2.5;
+    display: flex;
+    position: relative;
+    align-items: center;
+    width: 55%;
+    aspect-ratio: 3.2/1.5;
     border: 1px solid rgba(0, 0, 0, 0.335);
-    top: 32%;
+    top: 20%;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(111, 111, 111, 0.124);
@@ -353,7 +356,7 @@
 .playerdeck {
     position: absolute;
     top: 32%;
-    left: 5%;
+    left: 2%;
     background-color: rgba(111, 111, 111, 0.516);
     border-radius: 5px;
 }
@@ -423,7 +426,7 @@
     transform: translate(-50%, 90%);
     position: fixed;
     bottom: 5px;
-    width: 33vw;
+    width: 40vw;
     aspect-ratio: 21/10;
     border: 2px solid rgb(10, 56, 71, 0.25);
     animation: slideout 0.5s ease-in-out;
@@ -432,13 +435,7 @@
 
 .playersArea:hover,
 .openPlayersHand {
-    left: 50%;
     transform: translate(-50%);
-    position: fixed;
-    bottom: 5px;
-    width: 33vw;
-    aspect-ratio: 21/10;
-    border: 2px solid rgb(10, 56, 71);
     animation: slidein 0.5s ease-in-out;
 }
 
@@ -617,11 +614,13 @@
 
 .LTitle {
     border: 1px rgba(0, 0, 255, 0.355) solid;
+    border-radius: 10px;
     grid-area: title;
 }
 
 .LDeck {
     border: 1px rgba(0, 0, 255, 0.355) solid;
+    border-radius: 10px;
     grid-area: deck;
     background-color: rgba(105, 105, 105, 0.5);
 }
@@ -650,6 +649,7 @@
 
 .TDTitle {
     border: 1px rgba(0, 0, 255, 0.355) solid;
+    border-radius: 10px;
     grid-area: title;
 }
 
@@ -657,6 +657,7 @@
     border: 1px rgba(0, 0, 255, 0.355) solid;
     grid-area: deck;
     background-color: rgba(105, 105, 105, 0.5);
+    border-radius: 10px;
 }
 
 .fadeIn {

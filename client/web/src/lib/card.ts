@@ -27,7 +27,7 @@ type Vector2 = Omit<Vector3, 'theta'>;
 
 type baseCardArgs = {
     position: Vector3;
-    cardsize: CardSize;
+    size: CardSize;
     orientation: Cardstatus;
     name: string;
     parent?: string;
@@ -35,7 +35,7 @@ type baseCardArgs = {
 
 export type ABcard = {
     name: string;
-    cardsize: CardSize;
+    size: CardSize;
     orientation: Cardstatus;
     position: Vector3;
     title: string;
@@ -49,7 +49,7 @@ export type ABcard = {
 
 export type TDcard = {
     name: string;
-    cardsize: CardSize;
+    size: CardSize;
     orientation: Cardstatus;
     position: Vector3;
     title: string;
@@ -81,7 +81,7 @@ export type ABcardData = {
 
 export type LOCcard = {
     name: string;
-    cardsize: CardSize;
+    size: CardSize;
     orientation: Cardstatus;
     position: Vector3;
     title: string;
@@ -120,7 +120,7 @@ export type MonsterCardData = {
 
 export type MCdata = {
     name: string;
-    cardsize: CardSize;
+    size: CardSize;
     orientation: Cardstatus;
     position: Vector3;
     title: string;
@@ -144,23 +144,22 @@ export class Card {
     back: HTMLElement;
     contentDiv: HTMLElement;
     zoomed: number;
+    myCard: HTMLElement;
 
-    constructor(name: string, size: CardSize, position: Vector3, orientation: Cardstatus, parent: string) {
-        this.position = position;
+    constructor(name: string, size: CardSize, parent: string) {
+        this.position = { x: 0, y: 0, theta: 0 };
         this.size = size;
         this.name = name;
-        this.orientation = orientation;
-        console.log(`parent:`, parent);
+        this.orientation = Cardstatus.FaceUp;
         this.parent = parent ?? 'myApp';
-
         this.parentElement = document.getElementById(this.parent);
-        console.log(`parent: `, this.parentElement);
+
         this.cardDiv = document.createElement('div');
         this.cardDiv.id = this.name;
         this.cardDiv.classList.add('card');
         this.cardDiv.style.width = `${this.size.width}px`;
         this.cardDiv.style.aspectRatio = `${this.size.aspectRatio}`;
-        this.cardDiv.style.position = 'absolute';
+        this.cardDiv.style.position = 'relative';
         this.cardDiv.style.opacity = '1';
         this.zoomed = 1;
 
@@ -180,6 +179,7 @@ export class Card {
         this.contentDiv.appendChild(this.back);
         this.cardDiv.appendChild(this.contentDiv);
         this.parentElement.appendChild(this.cardDiv);
+        console.log(`Adding Div to parent`, this.cardDiv);
         this.updateCardTransform(0);
         return this;
     }
@@ -231,7 +231,7 @@ export class Card {
     }
 
     static create(params: baseCardArgs) {
-        return new Card(params.name, params.cardsize, params.position, params.orientation, params.parent);
+        return new Card(params.name, params.size, params.parent);
     }
 
     destroy() {
@@ -241,6 +241,12 @@ export class Card {
 
     getPosition(): Vector3 {
         return this.position;
+    }
+
+    getTransformX() {
+        var style = window.getComputedStyle(this.myCard);
+        var matrix = new WebKitCSSMatrix(style.transform);
+        return matrix.m41;
     }
 
     getSize(): object {
@@ -259,10 +265,11 @@ export class AbilityCard extends Card {
     cost: number;
     image: string;
     level: number;
+    oldZ: string;
 
     constructor(abcard: ABcard) {
-        console.log(abcard.parent);
-        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, abcard.parent ?? 'myApp');
+        console.log(`Calling super`);
+        super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
         this.catagory = abcard.catagory;
@@ -271,8 +278,8 @@ export class AbilityCard extends Card {
         this.parent = abcard.parent;
         this.level = abcard.level;
         //inject ability card data into DOM elements
-        const myCard = document.getElementById(`${this.name}`);
-        myCard.style.fontFamily = 'demonsiege';
+        this.myCard = document.getElementById(`${this.name}`);
+        this.myCard.style.fontFamily = 'demonsiege';
         const front_side = document.getElementById(`${this.name}_front`);
         front_side.style.backgroundSize = 'contain';
         if (this.cost > 0) front_side.style.backgroundImage = `url(${cardcost}), url(${cardborder}),url(${this.image}), url(${baseimage})`;
@@ -323,6 +330,7 @@ export class AbilityCard extends Card {
     }
 
     static create(params: ABcard) {
+        console.log(`card.ts 333, create function, AB cards`);
         return new AbilityCard(params);
     }
 
@@ -342,7 +350,6 @@ export class AbilityCard extends Card {
             levelspan.style.fontSize = `4px`;
         }
         const levelcount = levelspan.innerHTML.length;
-        console.log(`levle count, ${levelcount}`);
     }
 }
 
@@ -356,7 +363,7 @@ export class MonsterCard extends Card {
     reward: string;
 
     constructor(abcard: MCdata) {
-        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -432,7 +439,6 @@ export class MonsterCard extends Card {
             levelspan.style.fontSize = `4px`;
         }
         const levelcount = levelspan.innerHTML.length;
-        console.log(`levle count, ${levelcount}`);
     }
 }
 
@@ -447,7 +453,7 @@ export class LocationCard extends Card {
     TD: number;
 
     constructor(abcard: LOCcard) {
-        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -550,7 +556,6 @@ export class LocationCard extends Card {
             sequenceelement.style.fontSize = `4px`;
         }
         const levelcount = levelspan.innerHTML.length;
-        console.log(`levle count, ${levelcount}`);
     }
 }
 
@@ -561,7 +566,7 @@ export class TDCard extends Card {
     level: number;
 
     constructor(abcard: TDcard) {
-        super(abcard.name, abcard.cardsize, abcard.position, abcard.orientation, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -623,6 +628,5 @@ export class TDCard extends Card {
             levelspan.style.fontSize = `6px`;
         }
         const levelcount = levelspan.innerHTML.length;
-        console.log(`levle count, ${levelcount}`);
     }
 }

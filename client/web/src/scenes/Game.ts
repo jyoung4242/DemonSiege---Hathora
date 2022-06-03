@@ -4,33 +4,27 @@ import background from '../assets/game assets/background.png';
 import { HathoraClient, UpdateArgs } from '../../../.hathora/client';
 import { GameStates } from '../../../../api/types';
 import { dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, toggleCardpoolDrawer } from '../lib/helper';
+import { hand } from '../lib/hand';
+import Toastify from 'toastify-js';
+import 'toastify-js/src/toastify.css';
 
 export class Game {
     ui: UIView;
-
     client: HathoraClient;
     intervalID: NodeJS.Timer;
     myStartFlag: boolean = false;
+    myHand;
 
     model = {
         state: undefined,
-        startGame: () => {
-            this.model.state.myConnection.startGame({});
-        },
-        startTurn: () => {
-            this.model.state.myConnection.startTurn({});
-        },
+        startGame: () => this.model.state.myConnection.startGame({}),
+        startTurn: () => this.model.state.myConnection.startTurn({}),
     };
 
     constructor(client: HathoraClient, state: ClientState) {
         this.client = client;
         this.model.state = state;
-        console.log(`model: `, this.model);
     }
-
-    updateInfo = (state: ClientState) => {
-        this.model.state = state;
-    };
 
     mount(element: HTMLElement) {
         const template = `
@@ -67,59 +61,61 @@ export class Game {
               <div id='playerdeck' class='card playerdeck'></div>
               <div class='card playerdiscard'></div>
               <div id='innerPlayerHand' class="hand"></div>
-            </div>                    
-          
+            </div>          
+            
             <div id="other1" class="otherplayer other1 hidden ">
-              <div class="otherplayerHeader">
-                <div class="otherplayerHeaderContent">\${state.othername.0}</div>
-                <div class="otherplayerHeaderContent">\${state.otherrole.0}</div>
+            <div class="otherplayerHeader">
+              <div class="otherplayerHeaderContent">\${state.othername.0}</div>
+              <div class="otherplayerHeaderContent">\${state.otherrole.0}</div>
 
-              </div>
-              <div class="otherplayerHeader">
-                <div class="otherplayerHeaderContent">H: </div>
-                <div class="otherplayerHeaderContent">\${state.otherHP.0}</div>
-                <div class="otherplayerHeaderContent">ATP: </div>
-                <div class="otherplayerHeaderContent">\${state.otherATP.0}</div>
-                <div class="otherplayerHeaderContent">ABP: </div>
-                <div class="otherplayerHeaderContent">\${state.otherABP.0}</div>
-              </div>
-              <div class='smallcard playerdeck'></div>
-              <div class='smallcard playerdiscard'></div>
             </div>
-
-            <div id="other2" class="otherplayer other2 hidden">
-              <div class="otherplayerHeader">
-                <div class="otherplayerHeaderContent">\${state.othername.1}</div>
-                <div class="otherplayerHeaderContent">\${state.otherrole.1}</div>
-              </div>
-              <div class="otherplayerHeader">
-                <div class="otherplayerHeaderContent">H: </div>
-                <div class="otherplayerHeaderContent">\${state.otherHP.1}</div>
-                <div class="otherplayerHeaderContent">ATP: </div>
-                <div class="otherplayerHeaderContent">\${state.otherATP.1}</div>
-                <div class="otherplayerHeaderContent">ABP: </div>
-                <div class="otherplayerHeaderContent">\${state.otherABP.1}</div>
-              </div>
-              <div class='smallcard playerdeck'></div>
-              <div class='smallcard playerdiscard'></div>
-            </div>
-
-            <div id="other3" class="otherplayer other3 hidden ">
-              <div class="otherplayerHeader">
-                <div class="otherplayerHeaderContent">\${state.othername.2}</div>
-                <div class="otherplayerHeaderContent">\${state.otherrole.2}</div>
-              </div>
             <div class="otherplayerHeader">
               <div class="otherplayerHeaderContent">H: </div>
-              <div class="otherplayerHeaderContent">\${state.otherHP.2}</div>
+              <div class="otherplayerHeaderContent">\${state.otherHP.0}</div>
               <div class="otherplayerHeaderContent">ATP: </div>
-              <div class="otherplayerHeaderContent">\${state.otherATP.2}</div>
+              <div class="otherplayerHeaderContent">\${state.otherATP.0}</div>
               <div class="otherplayerHeaderContent">ABP: </div>
-              <div class="otherplayerHeaderContent">\${state.otherABP.2}</div>
-             </div>
-              <div class='smallcard playerdeck'></div>
-              <div class='smallcard playerdiscard'></div>
+              <div class="otherplayerHeaderContent">\${state.otherABP.0}</div>
             </div>
+            <div class='smallcard playerdeck'></div>
+            <div class='smallcard playerdiscard'></div>
+          </div>
+
+          <div id="other2" class="otherplayer other2 hidden">
+            <div class="otherplayerHeader">
+              <div class="otherplayerHeaderContent">\${state.othername.1}</div>
+              <div class="otherplayerHeaderContent">\${state.otherrole.1}</div>
+            </div>
+            <div class="otherplayerHeader">
+              <div class="otherplayerHeaderContent">H: </div>
+              <div class="otherplayerHeaderContent">\${state.otherHP.1}</div>
+              <div class="otherplayerHeaderContent">ATP: </div>
+              <div class="otherplayerHeaderContent">\${state.otherATP.1}</div>
+              <div class="otherplayerHeaderContent">ABP: </div>
+              <div class="otherplayerHeaderContent">\${state.otherABP.1}</div>
+            </div>
+            <div class='smallcard playerdeck'></div>
+            <div class='smallcard playerdiscard'></div>
+          </div>
+
+          <div id="other3" class="otherplayer other3 hidden ">
+            <div class="otherplayerHeader">
+              <div class="otherplayerHeaderContent">\${state.othername.2}</div>
+              <div class="otherplayerHeaderContent">\${state.otherrole.2}</div>
+            </div>
+          <div class="otherplayerHeader">
+            <div class="otherplayerHeaderContent">H: </div>
+            <div class="otherplayerHeaderContent">\${state.otherHP.2}</div>
+            <div class="otherplayerHeaderContent">ATP: </div>
+            <div class="otherplayerHeaderContent">\${state.otherATP.2}</div>
+            <div class="otherplayerHeaderContent">ABP: </div>
+            <div class="otherplayerHeaderContent">\${state.otherABP.2}</div>
+           </div>
+            <div class='smallcard playerdeck'></div>
+            <div class='smallcard playerdiscard'></div>
+          </div>
+
+          
 
             <div id="cardPoolDrawer" class="ABcardDrawer">
               <div id="cardPoolDeck" class='card  ABcardDeck'></div>
@@ -155,17 +151,20 @@ export class Game {
       `;
 
         this.ui = UI.create(element, template, this.model);
-        UI.update();
-
+        this.myHand = new hand('innerPlayerHand');
         document.body.style.backgroundImage = `url(${background})`;
         document.body.style.backgroundSize = `cover`;
         document.body.style.backgroundRepeat = `no-repeat`;
-        console.clear();
+
         this.divLoaded();
         this.intervalID = setInterval(() => {
             UI.update();
         }, 1000 / 60);
     }
+
+    updateInfo = (state: ClientState) => {
+        this.model.state = state;
+    };
 
     showOther(numOtherPlayers: number) {
         console.log(`num other players:`, numOtherPlayers);
@@ -187,8 +186,8 @@ export class Game {
             switch (event) {
                 case 'Player Joined':
                     if (state.state.players.length > 1) {
+                        this.postToastMessage('Player Joined');
                         if (state.state.gameSequence == GameStates.ReadyForRound) {
-                            console.log(`RR - joining event HERE!!!!`);
                             this.showOther(state.state.players.length - 1);
                         } else if (state.state.gameSequence == GameStates.PlayersJoining) {
                             console.log(`joining event HERE!!!!`);
@@ -197,6 +196,7 @@ export class Game {
                     }
                     break;
                 case 'game starting':
+                    this.postToastMessage('Game Starting');
                     (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
                     toggleCardpoolDrawer('open');
                     runCardPoolAnimation().then(() => {
@@ -217,14 +217,20 @@ export class Game {
                     break;
                 case 'ReadyToStartTurn':
                     this.myStartFlag = true;
+                    this.postToastMessage('Ready To Start Turn');
                     break;
                 case 'Enable TD':
                     //TODO Deal Players Hand
+                    this.postToastMessage('Turn Started');
                     let elem = document.getElementsByClassName('playersArea');
                     elem[0].classList.add('openPlayersHand');
                     setTimeout(() => {
                         //Get cards from state
-                        dealPlayerCardFromDeck(this.model.state.hand[0]);
+                        for (let index = 0; index < 5; index++) {
+                            let dealtCard = this.model.state.hand.pop();
+                            console.log(`Games.ts, line 231, calling card dealt`);
+                            dealPlayerCardFromDeck(dealtCard);
+                        }
                     }, 1000);
                     //TODO Deal the TD cards from STATE
                     break;
@@ -232,15 +238,39 @@ export class Game {
                     //TODO Enable TD to be clicked and selected and there's active effects
                     //TODO Maybe Pulse and/or Glow
                     break;
+                case 'PASSIVE TD EFFECTS':
+                    this.postToastMessage('Passive TD Effects');
+                    break;
+                case 'PASSIVE MONSTER EFFECTS':
+                    this.postToastMessage('Passive Monster Effects');
+                    break;
+                case 'PASSIVE PLAYER EFFECTS':
+                    this.postToastMessage('Passive Player Effects');
+                    break;
                 default:
                     break;
             }
         });
     }
 
-    leaving(element: HTMLElement) {
+    leaving() {
         this.ui.destroy();
         this.ui = null;
         clearInterval(this.intervalID);
+    }
+
+    postToastMessage(messageString) {
+        Toastify({
+            text: messageString,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: 'top', // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            stopOnFocus: false, // Prevents dismissing of toast on hover
+            style: {
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
+            },
+        }).showToast();
     }
 }

@@ -76,8 +76,10 @@ export class Lobby {
     }
 
     leaving() {
-        this.ui.destroy();
-        this.ui = null;
+        if (this.ui) {
+            this.ui.destroy();
+            this.ui = null;
+        }
         clearInterval(this.intervalID);
     }
 }
