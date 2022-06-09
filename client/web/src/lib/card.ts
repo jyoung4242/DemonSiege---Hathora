@@ -13,6 +13,9 @@ import TDback from '../assets/card assets/towerdefense.png';
 import Token from '../assets/card assets/tokenspot.png';
 import DamageToken from '../assets/card assets/badtokenspot.png';
 import { runLocationDamageAnimation } from './helper';
+import { ClientState } from '../types';
+
+export type cardBehavior = 'discard' | 'play' | 'idle';
 
 type Vector3 = {
     x: number;
@@ -270,6 +273,8 @@ export class AbilityCard extends Card {
     image: string;
     level: number;
     oldZ: string;
+    cdBehavior: cardBehavior;
+    state: ClientState;
 
     constructor(abcard: ABcard) {
         super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
@@ -282,6 +287,7 @@ export class AbilityCard extends Card {
         this.level = abcard.level;
         //inject ability card data into DOM elements
         this.myCard = document.getElementById(`${this.name}`);
+        this.myCard.addEventListener('click', e => this.cardClickEvent(e));
         this.myCard.style.fontFamily = 'demonsiege';
         const front_side = document.getElementById(`${this.name}_front`);
         front_side.style.backgroundSize = 'contain';
@@ -331,6 +337,29 @@ export class AbilityCard extends Card {
         back_side.style.backgroundRepeat = 'no-repeat';
         return this;
     }
+
+    cardClickEvent(e: Event) {
+        switch (this.cdBehavior) {
+            case 'discard':
+                console.log(`discard/state: `, this.state);
+                this.state.myConnection.discard({ cardname: this.name });
+                this.destroy();
+                break;
+            case 'play':
+                console.log(`play`);
+                break;
+            case 'idle':
+            //do nothing
+            default:
+                break;
+        }
+    }
+
+    setCardAction = (action: cardBehavior, state: ClientState) => {
+        this.cdBehavior = action;
+        this.state = state;
+        console.log(`setting card action: `, this.cdBehavior, this.state);
+    };
 
     static create(params: ABcard) {
         return new AbilityCard(params);

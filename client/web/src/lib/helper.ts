@@ -342,7 +342,7 @@ export const runPlayerHandAnimation = (state, classInstance) => {
         pdeck.style.backgroundRepeat = 'no-repeat';
         setTimeout(() => {
             elem.classList.remove('openPlayersHand');
-            if (state.state.turn == classInstance.model.state.id && classInstance.myStartFlag) {
+            if (state.turn == state.id && classInstance.myStartFlag) {
                 (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
             }
             resolve();

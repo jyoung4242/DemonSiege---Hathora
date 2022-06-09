@@ -7,66 +7,84 @@ import { bloom, dealLocationCardFromDeck, dealTDcardFromDeck, dealMonsterCardFro
 import { hand } from '../lib/hand';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
-import { activeLocation, game, towerDefensePile } from '..';
+import { activeLocation, game, towerDefensePile, playerHand } from '..';
+
+//TODO UI processing queue
+
+class GameUI {
+    state: ClientState = undefined;
+    ui: UIView;
+    isDiscard: boolean;
+    cardAction: string = 'discard';
+
+    constructor(state: ClientState) {
+        this.state = state;
+    }
+    startGame = () => {
+        this.state.myConnection.startGame({});
+    };
+    startTurn = () => {
+        this.state.myConnection.startTurn({});
+    };
+    drawTD = () => {
+        if (document.getElementById('TDDeck').classList.contains('bloom')) {
+            let nextTDcard = this.state.towerDefense.pop();
+            dealTDcardFromDeck(nextTDcard);
+        }
+    };
+    playTD = () => {
+        if (document.getElementById('TDPile').classList.contains('bloom')) {
+            this.state.myConnection.selectTowerDefense({ cardname: `${towerDefensePile[0].name}` });
+        }
+    };
+    playM1 = () => {
+        if (document.getElementById('Monster1').classList.contains('bloom')) {
+            playMonsterCard(1, this.state);
+        }
+    };
+    playM2 = () => {
+        if (document.getElementById('Monster2').classList.contains('bloom')) {
+            playMonsterCard(2, this.state);
+        }
+    };
+    playM3 = () => {
+        if (document.getElementById('Monster3').classList.contains('bloom')) {
+            playMonsterCard(3, this.state);
+        }
+    };
+
+    get showDiscard() {
+        return this.isDiscard;
+    }
+
+    public create = (elm: HTMLElement, temp: string) => {
+        this.ui = UI.create(elm, temp, this);
+    };
+    public destroy = () => {
+        this.ui.destroy();
+        this.ui = null;
+    };
+}
 
 export class Game {
-    ui: UIView;
+    gameUI: GameUI;
     client: HathoraClient;
     intervalID: NodeJS.Timer;
     myStartFlag: boolean = false;
     myHand;
-    isDiscard: boolean = false;
-
-    model = {
-        state: undefined,
-        startGame: () => this.model.state.myConnection.startGame({}),
-        startTurn: () => this.model.state.myConnection.startTurn({}),
-        drawTD: () => {
-            if (document.getElementById('TDDeck').classList.contains('bloom')) {
-                let nextTDcard = this.model.state.towerDefense.pop();
-                dealTDcardFromDeck(nextTDcard);
-            }
-        },
-        playTD: () => {
-            if (document.getElementById('TDPile').classList.contains('bloom')) {
-                this.model.state.myConnection.selectTowerDefense({ cardname: `${towerDefensePile[0].name}` });
-            }
-        },
-        playM1: () => {
-            console.log(`monster card clicked`);
-            if (document.getElementById('Monster1').classList.contains('bloom')) {
-                playMonsterCard(1, this.model.state);
-            }
-        },
-        playM2: () => {
-            if (document.getElementById('Monster2').classList.contains('bloom')) {
-                playMonsterCard(2, this.model.state);
-            }
-        },
-        playM3: () => {
-            if (document.getElementById('Monster3').classList.contains('bloom')) {
-                playMonsterCard(3, this.model.state);
-            }
-        },
-        get showDiscard() {
-            console.clear();
-            console.log('flag: ', this.isDiscard);
-
-            return this.isDiscard;
-        },
-    };
 
     constructor(client: HathoraClient, state: ClientState) {
         this.client = client;
-        this.model.state = state;
-        this.isDiscard = false;
+        this.gameUI = new GameUI(state);
     }
 
     mount(element: HTMLElement) {
         const template = `
         <div >
           <div id="damageFlash"></div>
-          <div id="discardModal" \${ === showDiscard}></div>
+          <div id="discardModal" \${ === showDiscard}>
+            <div class="innerModal">Select Card to discard</div>
+          </div>
           
           <div id="gamediv">
             <div class="Header">
@@ -197,7 +215,7 @@ export class Game {
       </div>
       `;
 
-        this.ui = UI.create(element, template, this.model);
+        this.gameUI.create(element, template);
         this.myHand = new hand('innerPlayerHand');
         document.body.style.backgroundImage = `url(${background})`;
         document.body.style.backgroundSize = `cover`;
@@ -210,7 +228,8 @@ export class Game {
     }
 
     updateInfo = (state: ClientState) => {
-        this.model.state = state;
+        this.gameUI.state = state;
+        console.log(`updating gameUI state:`, this.gameUI.state, state);
     };
 
     showOther(numOtherPlayers: number) {
@@ -219,7 +238,7 @@ export class Game {
     }
 
     divLoaded = () => {
-        this.model.state.otherid.forEach((player, index) => {
+        this.gameUI.state.otherid.forEach((player, index) => {
             this.showOther(index + 1);
         });
     };
@@ -241,7 +260,7 @@ export class Game {
                 case 'game starting':
                     this.postToastMessage('Game Starting');
                     (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
-                    //toggleCardpoolDrawer('open');
+
                     runCardPoolAnimation().then(() => {
                         //next animation - Monster Deck
                         const allAnimations = document.getAnimations();
@@ -252,7 +271,7 @@ export class Game {
                         document.getElementById('LocationsDiv').classList.add('fadeIn');
                         document.getElementById('TDDiv').classList.add('fadeIn');
                         setTimeout(() => {
-                            runPlayerHandAnimation(state, this);
+                            runPlayerHandAnimation(this.gameUI.state, this);
                         }, 750);
                     });
 
@@ -271,7 +290,7 @@ export class Game {
                         this.postToastMessage('Player Hand Dealt');
                         //Get cards from state
                         for (let index = 0; index < 5; index++) {
-                            let dealtCard = this.model.state.hand.pop();
+                            let dealtCard = this.gameUI.state.hand.pop();
                             dealPlayerCardFromDeck(dealtCard);
                         }
                         setTimeout(() => {
@@ -294,11 +313,11 @@ export class Game {
                     this.postToastMessage('Passive Player Effects');
                     break;
                 case 'deal monster card':
-                    const nextMonster: string = this.model.state.activeMonsters.pop();
+                    const nextMonster: string = this.gameUI.state.activeMonsters.pop();
                     dealMonsterCardFromDeck(nextMonster);
                     break;
                 case 'deal location card':
-                    const nextLocation: string = this.model.state.locationPile;
+                    const nextLocation: string = this.gameUI.state.locationPile;
                     dealLocationCardFromDeck(nextLocation);
                     break;
                 case 'STATUS EFFECT - LocationCurseLoseHealth2':
@@ -320,9 +339,11 @@ export class Game {
 
                 case 'UE Discard1':
                     this.postToastMessage('Must Discard 1');
-                    this.isDiscard = true;
-                    UI.update();
-                    console.log(`discard value: `, this.isDiscard);
+                    this.myHand.cards.forEach(card => {
+                        console.log(`card: `, card);
+                        card.setCardAction('discard', this.gameUI.state);
+                    });
+                    this.gameUI.isDiscard = true;
                     let element = document.getElementById('playerHand');
                     element.classList.add('openPlayersHand');
                     element.style.zIndex = `8`;
@@ -335,7 +356,12 @@ export class Game {
                 case 'Enable Current Users Cards':
                     this.postToastMessage('Ready for user to play');
                     console.trace(`enable current user cards`);
-                    userTurn(this.model.state);
+                    this.myHand.cards.forEach(card => {
+                        card.setCardAction('play', this.gameUI.state);
+                    });
+                    let playertray = document.getElementById('playerHand');
+                    playertray.classList.add('openPlayersHand');
+                    userTurn(this.gameUI.state);
                     break;
                 case 'Add Location 1':
                     console.log(`Add Location 1`);
@@ -360,14 +386,28 @@ export class Game {
                     }
                     break;
                 default:
+                    //parse event string
+                    let eventArray = event.split(':');
+                    switch (eventArray[0]) {
+                        case 'DISCARD':
+                            this.postToastMessage(`user ${eventArray[2]} has discarded ${eventArray[4]}`);
+                            this.gameUI.isDiscard = false;
+                            this.myHand.cards.forEach(card => {
+                                card.setCardAction('idle', this.gameUI.state);
+                            });
+                            element.classList.remove('openPlayersHand');
+                            element.style.zIndex = `1`;
+                            this.myHand.organizeCards();
+                            break;
+                    }
                     break;
             }
         });
     }
 
     leaving() {
-        this.ui.destroy();
-        this.ui = null;
+        this.gameUI.destroy();
+        this.gameUI.ui = null;
         clearInterval(this.intervalID);
     }
 

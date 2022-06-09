@@ -201,7 +201,7 @@ export class Impl implements Methods<InternalState> {
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
         //check for card data
         if (!request.cardname.length) return Response.error('no card submitted');
-        console.log(`card sent`, request.cardname);
+
         //find index of card sent
         const index = state.activeMonsters.findIndex(card => card.Title == request.cardname);
         if (index < 0) return Response.error('Invalid Card Played');
@@ -290,7 +290,7 @@ export class Impl implements Methods<InternalState> {
 
         const cardIndex = state.players[playerIndex].Hand.findIndex(c => c.Title == request.cardname);
         discard(state.players[playerIndex].Hand, state.playersHidden[playerIndex].Discard, cardIndex);
-        ctx.broadcastEvent(`USER: ${userId} Discarded ${request.cardname}`);
+        ctx.broadcastEvent(`DISCARD: USER: ${userId}: Discarded: ${request.cardname}`);
         gameLog(userId, state, `Player card discarded: ${request.cardname}`);
         //Passive Effect
         if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.DiscardCurse)) {

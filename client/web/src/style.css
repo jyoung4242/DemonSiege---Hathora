@@ -393,6 +393,25 @@ body {
     z-index: 7;
 }
 
+.innerModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: dimgray;
+    background-color: lightgray;
+    border: 3px solid rgb(212, 181, 1);
+    text-align: center;
+    font-size: xx-large;
+    border-radius: 10px;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    width: 20%;
+    aspect-ratio: 2/1;
+    transform: translate(-50%, -50%);
+}
+
 .hand {
     display: flex;
     position: relative;
