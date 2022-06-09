@@ -13,9 +13,9 @@ export const LocationCardRawData = [
     {
         name: 'Cellar',
         title: 'Cellar',
-        description: 'Fake description info',
+        description: '',
         level: 1,
-        health: 10,
+        health: 5,
         orientation: Cardstatus.FaceDown,
         image: cellar,
         sequence: 1,

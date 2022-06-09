@@ -35,6 +35,7 @@ export class Login {
     }
 
     login = async (client: HathoraClient) => {
+        (document.getElementById('btnLogin') as HTMLButtonElement).disabled = true;
         if (sessionStorage.getItem('token') === null) {
             sessionStorage.setItem('token', await client.loginAnonymous());
         }

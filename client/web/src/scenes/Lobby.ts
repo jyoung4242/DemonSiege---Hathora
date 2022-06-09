@@ -13,22 +13,30 @@ export class Lobby {
         name: '',
         id: '',
         newGame: async () => {
+            (document.getElementById('btnCreateGame') as HTMLButtonElement).disabled = true;
             if (location.pathname.length > 1) {
                 reRender(GS.lobby, GS.role);
-                this.state.myConnection = this.client.connect(this.state.token, location.pathname.split('/').pop()!, updateState, console.error);
+                this.state.myConnection = await this.client.connect(this.state.token, location.pathname.split('/').pop()!);
+                this.state.myConnection.onUpdate(updateState);
+                this.state.myConnection.onError(console.error);
                 this.state.myConnection.joinGame({});
             } else {
                 const stateId = await this.client.create(this.state.token, {});
                 this.state.gameID = stateId;
                 history.pushState({}, '', `/${stateId}`);
                 reRender(GS.lobby, GS.role);
-                this.state.myConnection = this.client.connect(this.state.token, stateId, updateState, console.error);
+                this.state.myConnection = await this.client.connect(this.state.token, stateId);
+                this.state.myConnection.onUpdate(updateState);
+                this.state.myConnection.onError(console.error);
                 this.state.myConnection.joinGame({});
             }
         },
-        joinGame: () => {
+        joinGame: async () => {
+            (document.getElementById('btnJoinGame') as HTMLButtonElement).disabled = true;
             const gameToJoin = (document.getElementById('joinGameInput') as HTMLInputElement).value;
-            this.state.myConnection = this.client.connect(this.state.token, gameToJoin, updateState, console.error);
+            this.state.myConnection = await this.client.connect(this.state.token, gameToJoin);
+            this.state.myConnection.onUpdate(updateState);
+            this.state.myConnection.onError(console.error);
             this.state.myConnection.joinGame({});
             reRender(GS.lobby, GS.role);
         },

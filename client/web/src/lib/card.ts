@@ -11,6 +11,8 @@ import locationback from '../assets/card assets/locationcardnew.png';
 import TDborder from '../assets/card assets/towerdefensefrontborder.png';
 import TDback from '../assets/card assets/towerdefense.png';
 import Token from '../assets/card assets/tokenspot.png';
+import DamageToken from '../assets/card assets/badtokenspot.png';
+import { runLocationDamageAnimation } from './helper';
 
 type Vector3 = {
     x: number;
@@ -66,6 +68,7 @@ export type TDcardData = {
     level: number;
     orientation: Cardstatus;
     image: string;
+    active: boolean;
 };
 
 export type ABcardData = {
@@ -116,6 +119,7 @@ export type MonsterCardData = {
     reward: string;
     parent?: string;
     health: number;
+    active: boolean;
 };
 
 export type MCdata = {
@@ -130,6 +134,7 @@ export type MCdata = {
     parent?: string;
     reward: string;
     health: number;
+    active: boolean;
 };
 
 export class Card {
@@ -153,7 +158,6 @@ export class Card {
         this.orientation = Cardstatus.FaceUp;
         this.parent = parent ?? 'myApp';
         this.parentElement = document.getElementById(this.parent);
-
         this.cardDiv = document.createElement('div');
         this.cardDiv.id = this.name;
         this.cardDiv.classList.add('card');
@@ -179,7 +183,7 @@ export class Card {
         this.contentDiv.appendChild(this.back);
         this.cardDiv.appendChild(this.contentDiv);
         this.parentElement.appendChild(this.cardDiv);
-        console.log(`Adding Div to parent`, this.cardDiv);
+
         this.updateCardTransform(0);
         return this;
     }
@@ -268,7 +272,6 @@ export class AbilityCard extends Card {
     oldZ: string;
 
     constructor(abcard: ABcard) {
-        console.log(`Calling super`);
         super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
@@ -330,7 +333,6 @@ export class AbilityCard extends Card {
     }
 
     static create(params: ABcard) {
-        console.log(`card.ts 333, create function, AB cards`);
         return new AbilityCard(params);
     }
 
@@ -361,9 +363,10 @@ export class MonsterCard extends Card {
     image: string;
     level: number;
     reward: string;
+    active: boolean;
 
     constructor(abcard: MCdata) {
-        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -371,9 +374,12 @@ export class MonsterCard extends Card {
         this.level = abcard.level;
         this.reward = abcard.reward;
         this.health = abcard.health;
+        this.active = abcard.active;
 
         //inject ability card data into DOM elements
         const myCard = document.getElementById(`${this.name}`);
+        myCard.setAttribute('active', `${this.active}`);
+        myCard.classList.add('noclick');
         myCard.style.fontFamily = 'demonsiege';
         const front_side = document.getElementById(`${this.name}_front`);
         front_side.style.backgroundSize = 'contain';
@@ -446,14 +452,14 @@ export class LocationCard extends Card {
     title: string;
     description: string;
     health: number;
-    activeDamage: number;
+    activeDamage: number = 0;
     image: string;
     level: number;
     sequence: number;
     TD: number;
 
     constructor(abcard: LOCcard) {
-        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -490,6 +496,7 @@ export class LocationCard extends Card {
         healthDiv.classList.add('LOCcardDHealth');
         for (let index = 0; index < this.health; index++) {
             const tokenDiv = document.createElement('div');
+            tokenDiv.id = `${this.title}_healthDiv${index + 1}`;
             if (index % 2) tokenDiv.classList.add('LOCcardDHealthToken1');
             else tokenDiv.classList.add('LOCcardDHealthToken2');
             tokenDiv.style.backgroundImage = `url(${Token})`;
@@ -532,6 +539,21 @@ export class LocationCard extends Card {
         return this;
     }
 
+    addDamage(dmg: number) {
+        console.log('here in addDamage');
+        //increment active damage
+        this.activeDamage += 1;
+        console.log(`damage: `, this.activeDamage);
+        //for each active damage, change token image
+        for (let index = 1; index <= this.activeDamage; index++) {
+            let elementString = `${this.title}_healthDiv${index}`;
+            const tokenDiv = document.getElementById(elementString);
+            tokenDiv.style.backgroundImage = `url(${DamageToken})`;
+            console.log(`setting token images: index: ${index} tokenDiv: ${tokenDiv}`);
+            if (index == this.activeDamage) runLocationDamageAnimation();
+        }
+    }
+
     static create(params: LOCcard) {
         return new LocationCard(params);
     }
@@ -566,7 +588,7 @@ export class TDCard extends Card {
     level: number;
 
     constructor(abcard: TDcard) {
-        super(abcard.name, abcard.size, (abcard.parent = 'myApp'));
+        super(abcard.name, abcard.size, abcard.parent ?? 'myApp');
         this.title = abcard.title;
         this.description = abcard.description;
         this.image = abcard.image;
@@ -597,7 +619,7 @@ export class TDCard extends Card {
         const descriptionDiv = document.createElement('div');
         descriptionDiv.classList.add('TDdescription');
         descriptionDiv.innerHTML = this.description;
-        descriptionDiv.style.fontSize = `1.4vw`;
+        descriptionDiv.style.fontSize = `0.8vw`;
         front_side.appendChild(descriptionDiv);
 
         //back of card

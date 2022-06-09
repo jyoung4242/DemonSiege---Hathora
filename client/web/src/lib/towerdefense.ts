@@ -19,6 +19,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: tripwire,
+        active: true,
     },
     {
         name: 'Tripwire2',
@@ -27,6 +28,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: tripwire,
+        active: true,
     },
     {
         name: 'Tripwire3',
@@ -35,6 +37,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: tripwire,
+        active: true,
     },
     {
         name: 'Net1',
@@ -43,6 +46,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: nettrap,
+        active: true,
     },
     {
         name: 'Net2',
@@ -51,6 +55,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: nettrap,
+        active: true,
     },
     {
         name: 'Net3',
@@ -59,6 +64,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: nettrap,
+        active: true,
     },
     {
         name: 'Pit1',
@@ -67,6 +73,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: pittrap,
+        active: true,
     },
     {
         name: 'Pit2',
@@ -75,6 +82,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: pittrap,
+        active: true,
     },
     {
         name: 'Quicksand1',
@@ -83,6 +91,7 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: quicksand,
+        active: true,
     },
     {
         name: 'Quicksand2',
@@ -91,5 +100,6 @@ export const TDCardRawData = [
         level: 1,
         orientation: Cardstatus.FaceDown,
         image: quicksand,
+        active: true,
     },
 ];

@@ -34,14 +34,18 @@ export let playerInfo: ClientState = {
     otherHP: [],
     otherATP: [],
     otherABP: [],
+    activeMonsters: [],
+    locationPile: '',
+    towerDefense: [],
+    turn: '',
 };
 
 /*********************************************/
 //Card buffers - for the Game
 let cardPool: AbilityCard[] = [];
-let activeMonsters: MonsterCard[] = [];
-let towerDefensePile: TDCard[] = [];
-let activeLocation: LocationCard = undefined;
+export let activeMonsters: MonsterCard[] = [];
+export let towerDefensePile: TDCard[] = [];
+export let activeLocation: LocationCard[] = [];
 export let playerHand: AbilityCard[] = [];
 /*********************************************/
 
@@ -53,9 +57,14 @@ ever there is an event or state change
 export let updateState = (update: UpdateArgs) => {
     //do something with state here
     console.log(`State: `, update);
+
     gameStatus = update.state.gameSequence;
     playerInfo.gameLevel = update.state.gameLevel;
+    playerInfo.turn = update.state.turn;
     playerInfo.status = mappedStatus[gameStatus];
+    if (update.state.activeMonsters) update.state.activeMonsters.forEach(monster => playerInfo.activeMonsters.push(monster.Title));
+    if (update.state.locationPile) playerInfo.locationPile = update.state.locationPile.Title;
+    if (update.state.towerDefensePile) update.state.towerDefensePile.forEach(TD => playerInfo.towerDefense.push(TD.Title));
     if (update.state.players.length != 0) {
         const playerIndex = update.state.players.findIndex(player => player.Id == playerInfo.user.id);
         if (playerIndex >= 0) {
@@ -72,14 +81,12 @@ export let updateState = (update: UpdateArgs) => {
         update.state.players
             .filter(player => player.Id != playerInfo.user.id)
             .forEach((player, index) => {
-                console.log(`filling other players stuff`);
                 playerInfo.othername[index] = player.characterName;
                 playerInfo.otherrole[index] = mappedRoles[player.Role];
                 playerInfo.otherid[index] = player.Id;
                 playerInfo.otherHP[index] = player.Health;
                 playerInfo.otherATP[index] = player.AttackPoints;
                 playerInfo.otherABP[index] = player.AbilityPoints;
-                console.log(`playerinfo.other`, playerInfo);
             });
     }
     //process events

@@ -110,6 +110,9 @@ export class Impl implements Methods<InternalState> {
         state.gameSequence = GameStates.ReadyForRound;
         ctx.broadcastEvent('game starting');
         ctx.sendEvent('ReadyToStartTurn', state.turn!);
+
+        ctx.broadcastEvent('deal monster card');
+        ctx.broadcastEvent('deal location card');
         return Response.ok();
     }
 
@@ -198,7 +201,7 @@ export class Impl implements Methods<InternalState> {
         if (state.gameSequence != GameStates.InProgress) return Response.error('Not ready for this response yet');
         //check for card data
         if (!request.cardname.length) return Response.error('no card submitted');
-
+        console.log(`card sent`, request.cardname);
         //find index of card sent
         const index = state.activeMonsters.findIndex(card => card.Title == request.cardname);
         if (index < 0) return Response.error('Invalid Card Played');

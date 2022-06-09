@@ -33,7 +33,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'net1',
+        Title: 'Net1',
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
@@ -43,7 +43,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'net2',
+        Title: 'Net2',
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
@@ -53,7 +53,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'net3',
+        Title: 'Net3',
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
@@ -63,7 +63,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'pit1',
+        Title: 'Pit1',
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
@@ -73,7 +73,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'pit2',
+        Title: 'Pit2',
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
@@ -83,7 +83,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'quicksand1',
+        Title: 'Quicksand1',
         Level: 1,
         ActiveEffect: {
             target: targetType.AllHeroes,
@@ -98,7 +98,7 @@ export default TDCardPool = [
         CardStatus: Cardstatus.FaceDown,
     },
     {
-        Title: 'quicksand2',
+        Title: 'Quicksand2',
         Level: 1,
         ActiveEffect: {
             target: targetType.AllHeroes,

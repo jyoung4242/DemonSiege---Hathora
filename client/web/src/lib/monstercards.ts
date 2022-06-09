@@ -6,6 +6,7 @@ import { MonsterCardData } from '../lib/card';
 
 export function retrieveMCCardData(cardchosen: string): MonsterCardData {
     const foundArray = MonsterCardRawData.filter(card => card.name == cardchosen);
+
     return foundArray[0];
 }
 
@@ -19,6 +20,7 @@ export const MonsterCardRawData = [
         orientation: Cardstatus.FaceDown,
         image: goblin,
         reward: 'All players draw one card',
+        active: false,
     },
     {
         name: 'Kobalt',
@@ -29,6 +31,7 @@ export const MonsterCardRawData = [
         orientation: Cardstatus.FaceDown,
         image: kobalt,
         reward: 'All players +1 Ability, +1 Health',
+        active: true,
     },
     {
         name: 'Skeleton',
@@ -39,5 +42,6 @@ export const MonsterCardRawData = [
         orientation: Cardstatus.FaceDown,
         image: skeleton,
         reward: 'Remove 1 influence point from location',
+        active: false,
     },
 ];

@@ -38,6 +38,10 @@ export type ClientState = {
     otherHP?: number[];
     otherATP?: number[];
     otherABP?: number[];
+    activeMonsters: string[];
+    towerDefense: string[];
+    locationPile: string;
+    turn: string;
 };
 
 export const mappedRoles = {
@@ -63,3 +67,5 @@ export enum GS {
     role,
     game,
 }
+
+export const numberMonstersActiveByLevel: Array<number> = [1, 1, 2, 2, 3, 3, 3, 3];

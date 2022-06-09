@@ -3,10 +3,11 @@ import { UI, UIView } from 'peasy-ui';
 import background from '../assets/game assets/background.png';
 import { HathoraClient, UpdateArgs } from '../../../.hathora/client';
 import { GameStates } from '../../../../api/types';
-import { dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, toggleCardpoolDrawer } from '../lib/helper';
+import { bloom, dealLocationCardFromDeck, dealTDcardFromDeck, dealMonsterCardFromDeck, dealPlayerCardFromDeck, runCardPoolAnimation, runPlayerHandAnimation, showStatusEffect, toggleCardpoolDrawer, removeActiveTDCard, runDamageAnimation, userTurn, playMonsterCard } from '../lib/helper';
 import { hand } from '../lib/hand';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
+import { activeLocation, game, towerDefensePile } from '..';
 
 export class Game {
     ui: UIView;
@@ -14,11 +15,43 @@ export class Game {
     intervalID: NodeJS.Timer;
     myStartFlag: boolean = false;
     myHand;
+    isDiscard: boolean = false;
 
     model = {
         state: undefined,
         startGame: () => this.model.state.myConnection.startGame({}),
         startTurn: () => this.model.state.myConnection.startTurn({}),
+        drawTD: () => {
+            if (document.getElementById('TDDeck').classList.contains('bloom')) {
+                let nextTDcard = this.model.state.towerDefense.pop();
+                dealTDcardFromDeck(nextTDcard);
+            }
+        },
+        playTD: () => {
+            if (document.getElementById('TDPile').classList.contains('bloom')) {
+                this.model.state.myConnection.selectTowerDefense({ cardname: `${towerDefensePile[0].name}` });
+            }
+        },
+        playM1: () => {
+            console.log(`monster card clicked`);
+            if (document.getElementById('Monster1').classList.contains('bloom')) {
+                playMonsterCard(1, this.model.state);
+            }
+        },
+        playM2: () => {
+            if (document.getElementById('Monster2').classList.contains('bloom')) {
+                playMonsterCard(2, this.model.state);
+            }
+        },
+        playM3: () => {
+            if (document.getElementById('Monster3').classList.contains('bloom')) {
+                playMonsterCard(3, this.model.state);
+            }
+        },
+        get showDiscard() {
+            console.trace('show discard model');
+            return this.isDiscard;
+        },
     };
 
     constructor(client: HathoraClient, state: ClientState) {
@@ -29,6 +62,9 @@ export class Game {
     mount(element: HTMLElement) {
         const template = `
         <div >
+          <div id="damageFlash"></div>
+          <div id="discardModal" \${ === showDiscard}></div>
+          
           <div id="gamediv">
             <div class="Header">
               <h1 class="LoginPageheader">Enjoy your game!!!</h1>
@@ -41,26 +77,34 @@ export class Game {
               <button id="btnStartGame" \${click@=>startGame} >Start Game</button>
               <button id="btnStartTurn" \${click@=>startTurn} disabled>Start Turn</button>
               <button id="btnEndTurn" disabled>End Turn</button>
+             
             </div>
             
-            <div id="playerHand" class="playersArea">
-              <div class="playerHeader">
-                <div class="playerHeaderContent"> Players Hand </div>
-                <div class="playerHeaderContent">Name: \${state.name}</div>
-                <div class="playerHeaderContent">Role: \${state.role}</div>
-              </div>
-              <div class="playerHeader">
-                <div class="playerHeaderContent">Health: </div>
-                <div class="playerHeaderContent">\${state.Health}</div>
-                <div class="playerHeaderContent">Attack: </div>
-                <div class="playerHeaderContent">\${state.AttackPoints}</div>
-                <div class="playerHeaderContent">Ability: </div>
-                <div class="playerHeaderContent">\${state.AbilityPoints}</div>
+            <div id="playerHand" class="playerContainer" >
+              <div id="playerStatusArea" class="playerStatus"></div>
+              <div class="playersArea">
+                <div class="playerHeader">
+                  <div class="playerHeaderContent"> Players Hand </div>
+                  <div class="playerHeaderContent">Name: \${state.name}</div>
+                  <div class="playerHeaderContent">Role: \${state.role}</div>
+                </div>
+                <div class="playerHeader">
+                  <div class="playerHeaderContent">Health: </div>
+                  <div class="playerHeaderContent">\${state.Health}</div>
+                  <div class="playerHeaderContent">Attack: </div>
+                  <div class="playerHeaderContent">\${state.AttackPoints}</div>
+                  <div class="playerHeaderContent">Ability: </div>
+                  <div class="playerHeaderContent">\${state.AbilityPoints}</div>
+                </div>
+                <div class="playersHandArea" >
+                  <div id='playerdeck' class='card playerdeck'></div>
+                  <div class='card playerdiscard'></div>
+                  <div id='innerPlayerHand' class="hand"></div>
+                </div>
               </div>
               
-              <div id='playerdeck' class='card playerdeck'></div>
-              <div class='card playerdiscard'></div>
-              <div id='innerPlayerHand' class="hand"></div>
+              
+             
             </div>          
             
             <div id="other1" class="otherplayer other1 hidden ">
@@ -131,9 +175,9 @@ export class Game {
             <div id="MonsterDiv" class="MonsterDiv">
               <div id="MonsterTitle" class="MonsterSpotTitle">Monster Cards</div>              
               <div id="MonsterDeck" class="MonsterSpot MDeck"></div>
-              <div id="Monster1" class="MonsterSpot M1"></div>
-              <div id="Monster2" class="MonsterSpot M2"></div>
-              <div id="Monster3" class="MonsterSpot M3"></div>
+              <div id="Monster1" \${click@=>playM1} class="MonsterSpot M1"></div>
+              <div id="Monster2" \${click@=>playM2} class="MonsterSpot M2"></div>
+              <div id="Monster3" \${click@=>playM3} class="MonsterSpot M3"></div>
               <div id="MonsterDiscard" class="MonsterSpot MDiscard"><span>Discard</span></div>
             </div>
 
@@ -143,8 +187,8 @@ export class Game {
             </div>
 
             <div id="TDDiv" class="TDDiv">
-              <div id="TDDeck" class="TDTitle"></div>              
-              <div id="TDPile" class="TDDeck"></div>
+              <div id="TDDeck" \${click@=>drawTD} class="TDTitle"></div>              
+              <div id="TDPile" \${click@=>playTD} class="TDDeck"></div>
             </div>
         </div>
       </div>
@@ -167,22 +211,19 @@ export class Game {
     };
 
     showOther(numOtherPlayers: number) {
-        console.log(`num other players:`, numOtherPlayers);
         const elm = document.getElementById(`other${numOtherPlayers}`);
-        console.log(`other player element: `, elm);
         elm.classList.remove('hidden');
     }
 
     divLoaded = () => {
-        console.log(`loaded state: `, this.model.state);
         this.model.state.otherid.forEach((player, index) => {
             this.showOther(index + 1);
         });
     };
 
     parseEvents(state: UpdateArgs) {
-        state.events.forEach(event => {
-            console.log(`EVENT: `, event);
+        state.events.forEach((event, eventIndex) => {
+            console.log(`EVENT: `, event, ` event Index: `, eventIndex);
             switch (event) {
                 case 'Player Joined':
                     if (state.state.players.length > 1) {
@@ -190,7 +231,6 @@ export class Game {
                         if (state.state.gameSequence == GameStates.ReadyForRound) {
                             this.showOther(state.state.players.length - 1);
                         } else if (state.state.gameSequence == GameStates.PlayersJoining) {
-                            console.log(`joining event HERE!!!!`);
                             this.showOther(state.state.players.length - 1);
                         }
                     }
@@ -198,45 +238,48 @@ export class Game {
                 case 'game starting':
                     this.postToastMessage('Game Starting');
                     (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
-                    toggleCardpoolDrawer('open');
+                    //toggleCardpoolDrawer('open');
                     runCardPoolAnimation().then(() => {
                         //next animation - Monster Deck
+                        const allAnimations = document.getAnimations();
+                        console.log(`Animations: `, allAnimations);
+                        allAnimations.forEach(anim => anim.cancel());
+                        console.log(`Animations: `, allAnimations);
                         document.getElementById('MonsterDiv').classList.add('fadeIn');
                         document.getElementById('LocationsDiv').classList.add('fadeIn');
                         document.getElementById('TDDiv').classList.add('fadeIn');
                         setTimeout(() => {
-                            runPlayerHandAnimation();
-                            if (state.state.turn == this.model.state.id && this.myStartFlag) {
-                                (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
-                            }
+                            runPlayerHandAnimation(state, this);
                         }, 750);
                     });
 
                     //TODO if other players, load their UI too
-
                     break;
+
                 case 'ReadyToStartTurn':
                     this.myStartFlag = true;
                     this.postToastMessage('Ready To Start Turn');
                     break;
                 case 'Enable TD':
-                    //TODO Deal Players Hand
                     this.postToastMessage('Turn Started');
-                    let elem = document.getElementsByClassName('playersArea');
-                    elem[0].classList.add('openPlayersHand');
+                    let elem = document.getElementById('playerHand');
+                    elem.classList.add('openPlayersHand');
                     setTimeout(() => {
+                        this.postToastMessage('Player Hand Dealt');
                         //Get cards from state
                         for (let index = 0; index < 5; index++) {
                             let dealtCard = this.model.state.hand.pop();
-                            console.log(`Games.ts, line 231, calling card dealt`);
                             dealPlayerCardFromDeck(dealtCard);
                         }
+                        setTimeout(() => {
+                            elem.classList.remove('openPlayersHand');
+                            bloom(true, 'TDDeck');
+                            (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = true;
+                        }, 1000);
                     }, 1000);
-                    //TODO Deal the TD cards from STATE
+
                     break;
                 case 'SelectTD':
-                    //TODO Enable TD to be clicked and selected and there's active effects
-                    //TODO Maybe Pulse and/or Glow
                     break;
                 case 'PASSIVE TD EFFECTS':
                     this.postToastMessage('Passive TD Effects');
@@ -246,6 +289,71 @@ export class Game {
                     break;
                 case 'PASSIVE PLAYER EFFECTS':
                     this.postToastMessage('Passive Player Effects');
+                    break;
+                case 'deal monster card':
+                    const nextMonster: string = this.model.state.activeMonsters.pop();
+                    dealMonsterCardFromDeck(nextMonster);
+                    break;
+                case 'deal location card':
+                    const nextLocation: string = this.model.state.locationPile;
+                    dealLocationCardFromDeck(nextLocation);
+                    break;
+                case 'STATUS EFFECT - LocationCurseLoseHealth2':
+                    showStatusEffect('locationLoseHealth');
+                    break;
+                case 'STATUS EFFECT - NO DRAW':
+                    showStatusEffect('noDraw');
+                    break;
+                case 'Found TD card':
+                    this.postToastMessage('Found TD card');
+                    break;
+                case 'Health Lowered 2':
+                    console.log(`Health Lowered 2`);
+                case 'Health Lowered 1':
+                    console.log(`Health Lowered 1`);
+                    this.postToastMessage('Damage Taken to Player');
+                    runDamageAnimation();
+                    break;
+
+                case 'UE Discard1':
+                    this.postToastMessage('Must Discard 1');
+                    this.isDiscard = true;
+                    console.log(`discard value: `, this.isDiscard);
+                    let element = document.getElementById('playerHand');
+                    element.classList.add('openPlayersHand');
+                    element.style.zIndex = `8`;
+                    break;
+                case 'discard TD card: 0':
+                    this.postToastMessage('Remove TD Card');
+                    bloom(false, 'TDPile');
+                    removeActiveTDCard();
+                    break;
+                case 'Enable Current Users Cards':
+                    this.postToastMessage('Ready for user to play');
+                    console.trace(`enable current user cards`);
+                    userTurn(this.model.state);
+                    break;
+                case 'Add Location 1':
+                    console.log(`Add Location 1`);
+                    this.postToastMessage('Adding Location point');
+                    //Get location card
+                    activeLocation[0].addDamage(1);
+                    break;
+                case 'LOCATION CURSE':
+                    this.postToastMessage('Passive Effect - Location Curse');
+                    runDamageAnimation();
+                    break;
+                case 'STATUS EFFECT - DiscardLoseHealth1':
+                    showStatusEffect('discardLoseHealth');
+                    break;
+                case 'Enable Monsters':
+                    //show bloom for each active monster
+                    for (let i = 1; i < 4; i++) {
+                        const card = document.getElementById(`Monster${i}`).firstElementChild;
+                        if (card && card.getAttribute('active')) {
+                            bloom(true, `Monster${i}`);
+                        }
+                    }
                     break;
                 default:
                     break;

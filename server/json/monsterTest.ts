@@ -13,6 +13,7 @@ export default MonsterCardPool = [
             cb: 'whenDiscardLoseHealth1',
             userPrompt: false,
         },
+
         Rewards: {
             target: targetType.AllHeroes,
             cb: 'draw1',
@@ -31,7 +32,6 @@ export default MonsterCardPool = [
             cb: 'lowerHealth1',
             userPrompt: false,
         },
-
         Rewards: {
             target: targetType.AllHeroes,
             cb: 'addHealth1Ability1',

@@ -25,6 +25,7 @@ export class hand {
                 newCard.myCard.style.zIndex = '10';
                 //zoom in on card
                 var xTransform = newCard.getTransformX();
+                newCard.myCard.style.transition = `tranform 0.5s`;
                 newCard.myCard.style.transform = `translateX(${xTransform}px) translateY(-50px) scale(1.25,1.25)`;
             }
         });
@@ -34,6 +35,7 @@ export class hand {
                 newCard.myCard.style.zIndex = newCard.oldZ;
                 //zoom in on card
                 var xTransform = newCard.getTransformX();
+                newCard.myCard.style.transition = `tranform 0.5s`;
                 newCard.myCard.style.transform = `translateX(${xTransform}px) translateY(0px) scale(1,1)`;
             } else this.removingCard = false;
         });
@@ -46,7 +48,7 @@ export class hand {
     removeCard(crd) {
         //remove from array
         let myIndex = this.cards.findIndex(card => card.name == crd.name);
-        console.clear();
+
         if (myIndex != -1) {
             //splice array
             this.cards.splice(myIndex, 1);
@@ -68,16 +70,20 @@ export class hand {
 
     organizeCards() {
         let handMetrics = document.getElementById('innerPlayerHand').getBoundingClientRect();
-        var cards = document.getElementsByClassName('card'),
-            cw = handMetrics.right - handMetrics.left, // this.myDiv.clientWidth, //512
-            sw = this.cards.length * 135, //this.myDiv.scrollWidth, //# of cards * 135
-            diff = sw - cw,
-            offset = diff / this.cards.length - 1;
-        console.log('cw:', cw);
+        let cardwidth = this.vw(7);
+        let cw = handMetrics.right - handMetrics.left; // this.myDiv.clientWidth, //512
+        let sw = this.cards.length * cardwidth; //this.myDiv.scrollWidth, //# of cards * 135
+        let diff = sw - cw;
+        let offset = diff < 0 ? 0 : diff / (this.cards.length - 1);
+
         this.cards.forEach((card, i) => {
             let newOffset = offset * i;
-            console.log('new offset: ', newOffset);
             card.myCard.style.transform = `translateX(-${newOffset}px) translateY(0px) scale(1,1)`;
         });
+    }
+
+    vw(v) {
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        return (v * w) / 100;
     }
 }

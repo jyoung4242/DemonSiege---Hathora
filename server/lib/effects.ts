@@ -163,7 +163,7 @@ const addAbility2: EffectCallback = (userId: UserId, state: InternalState, c: Co
 };
 
 export const lowerHealth1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
-    console.log(`Lowering Player Health By 1`);
+    console.trace(`Lowering Player Health By 1`);
 
     let listOfTargets: Array<UserId> = arrayOfTargets(userId, state.players, t, c);
     listOfTargets.forEach(player => {
@@ -175,7 +175,7 @@ export const lowerHealth1: EffectCallback = (userId: UserId, state: InternalStat
             return;
         }
         state.players[index].Health -= 1;
-        c.sendEvent('Health Lowered 1 ', player);
+        c.sendEvent('Health Lowered 1', player);
         if (state.players[index].Health <= 0) stunned(userId, state, c);
     });
 };
@@ -211,7 +211,7 @@ const lowerHealth1Discard1: EffectCallback = (userId: UserId, state: InternalSta
             c.sendEvent('TAKING DAMAGE BLOCKED BY STUNNED', player);
         } else {
             state.players[index].Health -= 1;
-            c.sendEvent('Health Lowered', player);
+            c.sendEvent('Health Lowered 1', player);
         }
 
         if (state.players[index].Health <= 0) stunned(userId, state, c);
@@ -350,6 +350,7 @@ const removeLocation1: EffectCallback = (userId: UserId, state: InternalState, c
 const addLocation1: EffectCallback = (userId: UserId, state: InternalState, c: Context, t: targetType) => {
     console.log(`Adding location point by 1`);
     state.locationPile!.ActiveDamage += 1;
+    c.broadcastEvent(`Add Location 1`);
     const playerIndex = state.players.findIndex(player => player.Id == userId);
     //test for status effects
     if (state.players[playerIndex].StatusEffects.find(status => status == StatusEffect.LocationCursed)) {

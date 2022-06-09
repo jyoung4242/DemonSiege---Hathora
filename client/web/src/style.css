@@ -3,6 +3,19 @@
     src: url('./assets/game assets/MorrisRoman-Black.ttf');
 }
 
+body {
+    background-color: rgb(98, 98, 98);
+    box-sizing: border-box;
+}
+
+#myApp {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+
 /*style.css*/
 .Header {
     background-color: rgb(73, 73, 73);
@@ -35,6 +48,7 @@
 
 .playerHeader {
     display: flex;
+    flex-grow: 1;
     justify-content: space-between;
     background-color: rgb(73, 73, 73);
     margin: 1px;
@@ -88,9 +102,9 @@
 
 .card {
     width: 7vw;
+    flex-shrink: 0;
     aspect-ratio: 2.5/3.5;
     font-size: 1.1vw;
-    /* perspective: 500px; */
 }
 
 .content {
@@ -99,6 +113,21 @@
     height: 100%;
     text-align: center;
     transform-style: preserve-3d;
+}
+
+.bloom {
+    box-shadow: 0 0 50px #fff, /* outer white */ -10px 0 80px #f0f, /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
+    animation: glow 1.2s infinite;
+}
+
+@keyframes glow {
+    0%,
+    100% {
+        box-shadow: 0 0 50px #fff, /* outer white */ -10px 0 80px #f0f, /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
+    }
+    50% {
+        box-shadow: 0 0 80px #fff, /* outer white */ -24px 0 120px #f0f, /* outer left magenta */ 24px 0 120px #0ff; /* outer right cyan */
+    }
 }
 
 .front,
@@ -299,10 +328,10 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 157px;
-    left: 210px;
-    width: 11%;
-    height: 11%;
+    top: 83%;
+    left: 83%;
+    width: 13%;
+    height: 12%;
     font-size: 16px;
 }
 
@@ -333,10 +362,35 @@
 
 .playerdiscard {
     position: absolute;
-    top: 32%;
+    top: 43%;
     right: 2%;
     background-color: rgba(111, 111, 111, 0.516);
     border-radius: 5px;
+}
+
+.noclick {
+    pointer-events: none;
+}
+
+#damageFlash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.33;
+    z-index: -1;
+}
+
+#discardModal {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.33;
+    z-index: 7;
 }
 
 .hand {
@@ -346,7 +400,7 @@
     width: 55%;
     aspect-ratio: 3.2/1.5;
     border: 1px solid rgba(0, 0, 0, 0.335);
-    top: 20%;
+    top: 6%;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(111, 111, 111, 0.124);
@@ -355,7 +409,7 @@
 
 .playerdeck {
     position: absolute;
-    top: 32%;
+    top: 43%;
     left: 2%;
     background-color: rgba(111, 111, 111, 0.516);
     border-radius: 5px;
@@ -420,20 +474,55 @@
     animation: slideleft 0.5s ease-in-out;
 }
 
-.playersArea {
-    left: 50%;
-    background-color: lightgray;
-    transform: translate(-50%, 90%);
+.playerStatusArea {
+    height: 5vh;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.playerStatusEffect {
+    height: 5vh;
+    aspect-ratio: 1/1;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerContainer {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     bottom: 5px;
     width: 40vw;
     aspect-ratio: 21/10;
-    border: 2px solid rgb(10, 56, 71, 0.25);
+    transform: translate(-50%, 85%);
+    left: 50%;
     animation: slideout 0.5s ease-in-out;
     z-index: 1;
 }
 
-.playersArea:hover,
+.playersArea {
+    flex-grow: 6;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgb(10, 56, 71, 0.25);
+}
+
+.playersHandArea {
+    flex-grow: 5;
+    background-color: lightgray;
+    height: 50%;
+}
+
+.playerStatus {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.playerContainer:hover,
 .openPlayersHand {
     transform: translate(-50%);
     animation: slidein 0.5s ease-in-out;

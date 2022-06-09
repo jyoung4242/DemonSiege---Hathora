@@ -39,7 +39,7 @@ export const starterPaladinCardData = [
         image: concentration,
     },
     {
-        name: 'Starter_Defend',
+        name: 'Starter_Defense',
         title: 'Celestial Defense',
         description: 'Ability +1, For any one player',
         catagory: 'SPELL',
@@ -99,7 +99,7 @@ export const starterPaladinCardData = [
         image: redemption,
     },
     {
-        name: 'Starter_Paladin_Shield',
+        name: 'Starter_Paladin_Sheild',
         title: 'Shield of the Devine',
         description: 'Choose: Ability +1 -or- Health +1',
         catagory: 'ITEM',
