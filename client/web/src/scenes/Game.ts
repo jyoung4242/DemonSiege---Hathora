@@ -49,7 +49,9 @@ export class Game {
             }
         },
         get showDiscard() {
-            console.trace('show discard model');
+            console.clear();
+            console.log('flag: ', this.isDiscard);
+
             return this.isDiscard;
         },
     };
@@ -57,6 +59,7 @@ export class Game {
     constructor(client: HathoraClient, state: ClientState) {
         this.client = client;
         this.model.state = state;
+        this.isDiscard = false;
     }
 
     mount(element: HTMLElement) {
@@ -318,6 +321,7 @@ export class Game {
                 case 'UE Discard1':
                     this.postToastMessage('Must Discard 1');
                     this.isDiscard = true;
+                    UI.update();
                     console.log(`discard value: `, this.isDiscard);
                     let element = document.getElementById('playerHand');
                     element.classList.add('openPlayersHand');

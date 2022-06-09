@@ -37,7 +37,7 @@ export default TDCardPool = [
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
-            cb: 'addLocation1',
+            cb: 'lowerHealth1Discard1',
             userPrompt: false,
         },
         CardStatus: Cardstatus.FaceDown,
@@ -47,7 +47,7 @@ export default TDCardPool = [
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
-            cb: 'addLocation1',
+            cb: 'lowerHealth1Discard1',
             userPrompt: false,
         },
         CardStatus: Cardstatus.FaceDown,
@@ -57,7 +57,7 @@ export default TDCardPool = [
         Level: 1,
         ActiveEffect: {
             target: targetType.ActiveHero,
-            cb: 'addLocation1',
+            cb: 'lowerHealth1Discard1', //addLocation1
             userPrompt: false,
         },
         CardStatus: Cardstatus.FaceDown,
@@ -87,7 +87,7 @@ export default TDCardPool = [
         Level: 1,
         ActiveEffect: {
             target: targetType.AllHeroes,
-            cb: 'lowerHealth1',
+            cb: 'lowerHealth1Discard1', //lowerHealth1
             userPrompt: false,
         },
         PassiveEffect: {
@@ -102,7 +102,7 @@ export default TDCardPool = [
         Level: 1,
         ActiveEffect: {
             target: targetType.AllHeroes,
-            cb: 'lowerHealth1',
+            cb: 'lowerHealth1Discard1', //lowerHealth1
             userPrompt: false,
         },
         PassiveEffect: {
