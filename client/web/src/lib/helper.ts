@@ -1,6 +1,4 @@
 import cardback from '../assets/card assets/newcardback.png';
-//import { animate, stagger } from 'motion';
-//import { animator } from './animator';
 import { waApiSequencer } from './sequencer';
 import { Cardstatus } from '../../../../api/types';
 import ABcardback from '../assets/card assets/newcardback.png';
@@ -15,6 +13,7 @@ import { retrieveMCCardData } from './monstercards';
 import { retrieveLocCardData } from './locationCards';
 import { retrieveTDCardData } from './towerdefense';
 import { Shake } from './shake';
+import { postToastMessage } from './events';
 
 export const toggleCardpoolDrawer = (status: 'open' | 'closed') => {
     if (status == 'open') {
@@ -24,135 +23,42 @@ export const toggleCardpoolDrawer = (status: 'open' | 'closed') => {
     }
 };
 
+export const sleep = async (t: number) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('I can sleep!');
+        }, t);
+    });
+};
+
 export const bloom = (setBloom: boolean, target: string) => {
     const myTarget = document.getElementById(target);
     if (setBloom) myTarget.classList.add('bloom');
     else myTarget.classList.remove('bloom');
 };
 
-export const runCardPoolAnimation = () => {
+export const runCardPoolAnimation = async () => {
     return new Promise<void>(resolve => {
-        const NUM_CARDS = 20;
-        let elementArray: HTMLElement[] = [];
-
-        /*************************************
-         * setup element array for DOM
-         *************************************/
-        for (let index = 0; index < NUM_CARDS; index++) {
-            elementArray[index] = document.createElement('div');
-            elementArray[index].classList.add('card');
-            elementArray[index].classList.add('cardPoolAnimation');
-            elementArray[index].setAttribute('index', `${index}`);
-
-            let innerDivElement = document.createElement('div');
-            innerDivElement.style.backgroundImage = `url(${cardback})`;
-            innerDivElement.style.backgroundRepeat = 'no-repeat';
-            innerDivElement.style.backgroundSize = `cover`;
-            innerDivElement.classList.add('spinningDiv');
-            elementArray[index].appendChild(innerDivElement);
-
-            document.getElementById('myApp').appendChild(elementArray[index]);
-        }
-
-        /*************************************
-         * setup array of random 'magnitudes'
-         *************************************/
-        let randomValuesArray = [];
-        elementArray.forEach(() => {
-            randomValuesArray.push(Math.random() * 300);
+        console.log(`starting sleep`);
+        sleep(4000).then(() => {
+            console.log(`ending sleep`);
+            resolve();
         });
-
-        /*************************************
-         * setup deck image in the drawer
-         *************************************/
-        let pooldeck = document.getElementById('cardPoolDeck');
-        pooldeck.style.backgroundImage = `url(${cardback})`;
-        pooldeck.style.backgroundSize = 'cover';
-        pooldeck.style.backgroundRepeat = 'no-repeat';
-        pooldeck.style.opacity = `0`;
-
-        let shuffledArray = shuffle(elementArray);
-        let animArray = [];
-
-        /*************************************
-         * setup and execute
-         * initial shuffle animation
-         *************************************/
-        for (let index = 0; index < NUM_CARDS; index++) {
-            let myAngle = (360 / 20) * index;
-            let magnitude = randomValuesArray[index];
-            let retObject = getCoordFromAngleMag(myAngle, magnitude);
-            animArray[index] = new waApiSequencer({ loop: false, gapDelay: 750 });
-            animArray[index]
-                .addSeq({
-                    element: elementArray[index],
-                    keyFrames: [{ transform: `translate(-50%,-50%) rotate(0deg)` }, { transform: `translate(${retObject.x}px,${retObject.y}px) rotate(0deg)` }],
-                    options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
-                })
-                .addSeq({
-                    element: shuffledArray[index],
-                    keyFrames: [{ transform: `translate(${retObject.x}px,${retObject.y}px) rotate(0deg)` }, { transform: `translate(-50%,-50%) rotate(360deg)` }],
-                    options: { duration: 500, easing: 'ease-in-out', delay: Math.random() * 400, iterations: 1, fill: 'forwards' },
-                });
-
-            animArray[index].playSeq();
-        }
-
-        /*************************************
-         * setup and execute
-         * drawer open animation
-         *************************************/
-        setTimeout(() => {
-            let drawerOpening = new waApiSequencer({ loop: false, gapDelay: 0 });
-            drawerOpening.addSeq({
-                element: 'cardPoolDrawer',
-                keyFrames: [{ left: `-34%` }, { left: `0%` }],
-                options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
-            });
-            drawerOpening.playSeq();
-        }, 2000);
-
-        /*************************************
-         * show the cardPool deck
-         *************************************/
-
-        setTimeout(() => {
-            for (let index = 0; index < NUM_CARDS; index++) {
-                let moveCards = new waApiSequencer({ loop: false, gapDelay: 0 });
-                moveCards.addSeq({
-                    element: elementArray[index],
-                    keyFrames: [{ transform: `translate(-50%,-50%) rotate(360deg)` }, { top: `${getOffset(document.getElementById('cardPoolDeck')).top}px`, left: `${getOffset(document.getElementById('cardPoolDeck')).left}px`, transform: `none` }],
-                    options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
-                });
-                moveCards.playSeq();
-            }
-        }, 3000);
-
-        /*************************************
-         * show the cardPool deck
-         *************************************/
-        setTimeout(() => (pooldeck.style.opacity = `1`), 4250);
-
-        /*************************************
-         * close the drawer
-         *************************************/
-        setTimeout(() => {
-            for (let index = 0; index < NUM_CARDS; index++) {
-                document.getElementById('myApp').removeChild(elementArray[index]);
-            }
-
-            let drawerClosing = new waApiSequencer({ loop: false, gapDelay: 0 });
-            drawerClosing.addSeq({
-                element: 'cardPoolDrawer',
-                keyFrames: [{ left: `0%` }, { left: `-34%` }],
-                options: { duration: 500, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
-            });
-            drawerClosing.playSeq();
-            setTimeout(() => {
-                resolve();
-            }, 2000);
-        }, 4850);
     });
+};
+
+export const showGameUI = async () => {
+    //next animation - Monster Deck
+    let promise = new Promise((resolve, reject) => {
+        const allAnimations = document.getAnimations();
+        console.log(`Animations: `, allAnimations);
+        allAnimations.forEach(anim => anim.cancel());
+        console.log(`Animations: `, allAnimations);
+        document.getElementById('MonsterDiv').classList.add('fadeIn');
+        document.getElementById('LocationsDiv').classList.add('fadeIn');
+        document.getElementById('TDDiv').classList.add('fadeIn');
+    });
+    return promise;
 };
 
 export const dealTDcardFromDeck = TD => {
@@ -320,7 +226,7 @@ export const dealPlayerCardFromDeck = myCard => {
         playerHand.push(myCard);
     }
 };
-
+/* 
 export const reorganizePlayerHand = () => {
     //get number of cards in player hand
     let numCards = playerHand.length;
@@ -330,9 +236,9 @@ export const reorganizePlayerHand = () => {
     let cardOffset = playerHand[0];
     //get size in pixels of hand area
     let handWidth = document.getElementById('innerPlayerHand').style.width;
-};
+}; */
 
-export const runPlayerHandAnimation = (state, classInstance) => {
+export const runPlayerHandAnimation = async () => {
     return new Promise<void>((resolve, reject) => {
         let elem = document.getElementById('playerHand');
         elem.classList.add('openPlayersHand');
@@ -342,14 +248,14 @@ export const runPlayerHandAnimation = (state, classInstance) => {
         pdeck.style.backgroundRepeat = 'no-repeat';
         setTimeout(() => {
             elem.classList.remove('openPlayersHand');
-            if (state.turn == state.id && classInstance.myStartFlag) {
+            if (playerInfo.turn == playerInfo.id && game.myStartFlag) {
                 (document.getElementById('btnStartTurn') as HTMLButtonElement).disabled = false;
             }
             resolve();
         }, 1500);
     });
 };
-
+/* 
 const getCoordFromAngleMag = (thetaDeg, MagPixels): { x: number; y: number } => {
     //x=r×cos(θ), y=r×sin(θ)
     const thetaRad = thetaDeg * (Math.PI / 180);
@@ -364,8 +270,8 @@ function getOffset(el) {
         left: rect.left + window.scrollX,
         top: rect.top + window.scrollY,
     };
-}
-
+} */
+/* 
 function shuffle<T>(array: Array<T>): Array<T> {
     let currentIndex = array.length,
         randomIndex;
@@ -380,8 +286,8 @@ function shuffle<T>(array: Array<T>): Array<T> {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
 
-    return array;
-}
+    return  array;
+}*/
 
 export const showStatusEffect = (effect: string) => {
     const parentDiv = document.getElementById('playerStatusArea');
@@ -404,11 +310,11 @@ export const showStatusEffect = (effect: string) => {
     newStatusIcon.id = `${effect}`;
     parentDiv.appendChild(newStatusIcon);
 };
-
+/* 
 export const vw = (v: number) => {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     return (v * w) / 100;
-};
+}; */
 
 export const runLocationDamageAnimation = () => {
     let seq1 = new waApiSequencer({

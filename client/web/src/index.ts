@@ -8,12 +8,17 @@ import { HathoraClient, UpdateArgs } from '../../.hathora/client';
 import { AbilityCard, MonsterCard, LocationCard, TDCard } from './lib/card';
 import { loadAbilityCardDatabase } from './lib/allAbilityCards';
 import { ClientState, GS, mappedRoles, mappedStatus } from './types';
+import { parseEvents } from './lib/events';
+import { UIManager } from './lib/UI-Manager';
 
 const body = document.getElementById('myApp');
 
 export let myRole: Roles = Roles.Barbarian;
 export let gameStatus: GameStates;
 export const client = new HathoraClient();
+
+let UIM: UIManager = new UIManager(1000, true);
+UIM.startQue();
 
 export let playerInfo: ClientState = {
     username: '',
@@ -90,7 +95,7 @@ export let updateState = (update: UpdateArgs) => {
             });
     }
     //process events
-    if (update.events.length && game) game.parseEvents(update);
+    if (update.events.length && game) parseEvents(update, UIM);
     if (game) game.updateInfo(playerInfo);
 };
 

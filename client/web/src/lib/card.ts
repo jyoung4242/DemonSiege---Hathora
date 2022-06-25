@@ -347,6 +347,8 @@ export class AbilityCard extends Card {
                 break;
             case 'play':
                 console.log(`play`);
+                this.state.myConnection.selectPlayerCard({ cardname: this.name });
+                this.destroy();
                 break;
             case 'idle':
             //do nothing

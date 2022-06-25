@@ -261,6 +261,9 @@ export class Impl implements Methods<InternalState> {
         };
         applyActiveEffect(state, state.turn, cardObject, ctx);
         state.players[playerIndex].Hand[index].CardStatus = Cardstatus.FaceUpDisabled;
+        //move to discard pile
+        discard(state.players[playerIndex].Hand, state.playersHidden[playerIndex].Discard, index);
+
         gameLog(userId, state, `Player card played: ${request.cardname}`);
         //check for additional ability cards that aren't disabled
         if (state.players[playerIndex].Hand.every(card => card.CardStatus == Cardstatus.FaceUpDisabled)) {

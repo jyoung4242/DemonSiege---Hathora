@@ -21,14 +21,18 @@ export class Lobby {
                 this.state.myConnection.onError(console.error);
                 this.state.myConnection.joinGame({});
             } else {
+                console.log(`creating client`, this.client, this.state.token);
                 const stateId = await this.client.create(this.state.token, {});
+                console.log(`created client`);
                 this.state.gameID = stateId;
                 history.pushState({}, '', `/${stateId}`);
                 reRender(GS.lobby, GS.role);
+                console.log(`connecting`);
                 this.state.myConnection = await this.client.connect(this.state.token, stateId);
                 this.state.myConnection.onUpdate(updateState);
                 this.state.myConnection.onError(console.error);
                 this.state.myConnection.joinGame({});
+                console.log(`connected`);
             }
         },
         joinGame: async () => {

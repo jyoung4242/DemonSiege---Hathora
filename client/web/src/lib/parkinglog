@@ -1,0 +1,123 @@
+/* const NUM_CARDS = 20;
+        let elementArray: HTMLElement[] = [];
+        postToastMessage('Game Starting');
+        (document.getElementById('btnStartGame') as HTMLButtonElement).disabled = true;
+
+        /*************************************
+         * setup element array for DOM
+         *************************************/
+/*   for (let index = 0; index < NUM_CARDS; index++) {
+            elementArray[index] = document.createElement('div');
+            elementArray[index].classList.add('card');
+            elementArray[index].classList.add('cardPoolAnimation');
+            elementArray[index].setAttribute('index', `${index}`);
+
+            let innerDivElement = document.createElement('div');
+            innerDivElement.style.backgroundImage = `url(${cardback})`;
+            innerDivElement.style.backgroundRepeat = 'no-repeat';
+            innerDivElement.style.backgroundSize = `cover`;
+            innerDivElement.classList.add('spinningDiv');
+            elementArray[index].appendChild(innerDivElement);
+
+            document.getElementById('myApp').appendChild(elementArray[index]);
+        } */
+
+/*************************************
+ * setup array of random 'magnitudes'
+ *************************************/
+/* let randomValuesArray = [];
+        elementArray.forEach(() => {
+            randomValuesArray.push(Math.random() * 300);
+        }); */
+
+/*************************************
+ * setup deck image in the drawer
+ *************************************/
+/* let pooldeck = document.getElementById('cardPoolDeck');
+        pooldeck.style.backgroundImage = `url(${cardback})`;
+        pooldeck.style.backgroundSize = 'cover';
+        pooldeck.style.backgroundRepeat = 'no-repeat';
+        pooldeck.style.opacity = `0`;
+
+        let shuffledArray = shuffle(elementArray);
+        let animArray = []; */
+
+/*************************************
+ * setup and execute
+ * initial shuffle animation
+ *************************************/
+/* for (let index = 0; index < NUM_CARDS; index++) {
+            let myAngle = (360 / 20) * index;
+            let magnitude = randomValuesArray[index];
+            let retObject = getCoordFromAngleMag(myAngle, magnitude);
+            animArray[index] = new waApiSequencer({ loop: false, gapDelay: 750 });
+            animArray[index]
+                .addSeq({
+                    element: elementArray[index],
+                    keyFrames: [{ transform: `translate(-50%,-50%) rotate(0deg)` }, { transform: `translate(${retObject.x}px,${retObject.y}px) rotate(0deg)` }],
+                    options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
+                })
+                .addSeq({
+                    element: shuffledArray[index],
+                    keyFrames: [{ transform: `translate(${retObject.x}px,${retObject.y}px) rotate(0deg)` }, { transform: `translate(-50%,-50%) rotate(360deg)` }],
+                    options: { duration: 500, easing: 'ease-in-out', delay: Math.random() * 400, iterations: 1, fill: 'forwards' },
+                });
+
+            animArray[index].playSeq();
+        } */
+
+/*************************************
+ * setup and execute
+ * drawer open animation
+ *************************************/
+/* setTimeout(() => {
+            let drawerOpening = new waApiSequencer({ loop: false, gapDelay: 0 });
+            drawerOpening.addSeq({
+                element: 'cardPoolDrawer',
+                keyFrames: [{ left: `-34%` }, { left: `0%` }],
+                options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
+            });
+            drawerOpening.playSeq();
+        }, 2000); */
+
+/*************************************
+ * show the cardPool deck
+ *************************************/
+
+/*  setTimeout(() => {
+            for (let index = 0; index < NUM_CARDS; index++) {
+                let moveCards = new waApiSequencer({ loop: false, gapDelay: 0 });
+                moveCards.addSeq({
+                    element: elementArray[index],
+                    keyFrames: [{ transform: `translate(-50%,-50%) rotate(360deg)` }, { top: `${getOffset(document.getElementById('cardPoolDeck')).top}px`, left: `${getOffset(document.getElementById('cardPoolDeck')).left}px`, transform: `none` }],
+                    options: { duration: 600, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
+                });
+                moveCards.playSeq();
+            }
+        }, 3000); */
+
+/*************************************
+ * show the cardPool deck
+ *************************************/
+//setTimeout(() => (pooldeck.style.opacity = `1`), 4250);
+
+/*************************************
+ * close the drawer
+ *************************************/
+/*setTimeout(() => {
+            for (let index = 0; index < NUM_CARDS; index++) {
+                document.getElementById('myApp').removeChild(elementArray[index]);
+            }
+
+            let drawerClosing = new waApiSequencer({ loop: false, gapDelay: 0 });
+            drawerClosing.addSeq({
+                element: 'cardPoolDrawer',
+                keyFrames: [{ left: `0%` }, { left: `-34%` }],
+                options: { duration: 500, easing: 'ease-in-out', iterations: 1, fill: 'forwards' },
+            });
+            drawerClosing.playSeq();
+            setTimeout(() => {
+                resolve();
+            }, 2000);
+        }, 4850);
+        sleep(5000); */

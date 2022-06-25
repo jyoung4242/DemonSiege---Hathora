@@ -40,7 +40,9 @@ export class Login {
             sessionStorage.setItem('token', await client.loginAnonymous());
         }
         this.state.token = sessionStorage.getItem('token')!;
+        console.log(`getting token`);
         this.state.user = HathoraClient.getUserFromToken(this.state.token);
+        console.log(`got token`);
         this.state.username = this.state.user.name;
         this.state.type = this.state.user.type;
         reRender(GS.login, GS.lobby);
