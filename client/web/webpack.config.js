@@ -41,6 +41,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/template.html'),
         }),
-        new webpack.EnvironmentPlugin({ COORDINATOR_HOST: undefined, MATCHMAKER_HOST: undefined }),
+        new webpack.EnvironmentPlugin({ COORDINATOR_HOST: null, MATCHMAKER_HOST: null }),
     ],
 };

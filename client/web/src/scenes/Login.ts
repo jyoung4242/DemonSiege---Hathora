@@ -32,6 +32,8 @@ export class Login {
         this.intervalID = setInterval(() => {
             UI.update();
         }, 1000 / 60);
+
+        console.log(`UI loaded`);
     }
 
     login = async (client: HathoraClient) => {
@@ -39,6 +41,7 @@ export class Login {
         if (sessionStorage.getItem('token') === null) {
             sessionStorage.setItem('token', await client.loginAnonymous());
         }
+        console.log(`checking session`);
         this.state.token = sessionStorage.getItem('token')!;
         console.log(`getting token`);
         this.state.user = HathoraClient.getUserFromToken(this.state.token);
