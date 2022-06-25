@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const mode = process.env.NODE_ENV == 'production' ? 'production' : 'development';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -40,5 +41,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/template.html'),
         }),
+        new webpack.EnvironmentPlugin([{ COORDINATOR_HOST: undefined, MATCHMAKER_HOST: undefined }]),
     ],
 };
