@@ -41,6 +41,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/template.html'),
         }),
-        new webpack.EnvironmentPlugin({ COORDINATOR_HOST: null, MATCHMAKER_HOST: null }),
+        new webpack.EnvironmentPlugin({ COORDINATOR_HOST: 'coordinator.hathora.com', MATCHMAKER_HOST: 'matchmaker.hathora.com' }),
     ],
 };
